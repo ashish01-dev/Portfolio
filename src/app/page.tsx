@@ -361,6 +361,73 @@ function MotionSection({ children, className, delay = 0 }: { children: React.Rea
   );
 }
 
+function ForeignWordTooltip() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+
+  const updatePosition = (clientX: number, clientY: number) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const padding = 14;
+    setPos({
+      x: clientX - rect.left + padding,
+      y: clientY - rect.top + padding,
+    });
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative inline-block cursor-help py-8"
+      onPointerEnter={(e) => {
+        setVisible(true);
+        updatePosition(e.clientX, e.clientY);
+      }}
+      onPointerMove={(e) => {
+        if (!visible) return;
+        updatePosition(e.clientX, e.clientY);
+      }}
+      onPointerLeave={() => setVisible(false)}
+    >
+      <div className="group relative">
+        <span className="text-inner-shadow pointer-events-none absolute inset-0 -z-10 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px] bg-clip-text text-center text-9xl font-bold whitespace-nowrap text-transparent italic select-none">
+          अध्यात्म
+        </span>
+        <span className="text-inner-shadow z-10 block -translate-x-4 -translate-y-4 text-center text-9xl font-bold whitespace-nowrap text-[#808080] italic transition-all duration-200 group-hover:translate-x-0 group-hover:translate-y-0 hover:text-black dark:hover:text-white">
+          अध्यात्म
+        </span>
+      </div>
+      <AnimatePresence>
+        {visible && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300, damping: 22 }}
+            className="pointer-events-none absolute w-[260px] bg-background border-border z-10 rounded-xl border shadow-lg"
+            style={{ left: pos.x, top: pos.y }}
+          >
+            <div className="space-y-2 p-4">
+              <div className="flex items-baseline gap-2">
+                <span className="text-lg font-semibold text-black dark:text-white">अध्यात्म</span>
+                <span className="text-xs font-medium text-black/60 italic dark:text-white/60">/adhyātma/</span>
+              </div>
+              <div className="bg-border h-px w-full" />
+              <div>
+                <div className="text-xs font-medium tracking-wide text-black uppercase dark:text-white">noun</div>
+                <p className="text-xs leading-relaxed font-medium text-black/50 dark:text-white/50">
+                  The inner self; that which pertains to the spiritual essence of being — the journey inward toward self-realization.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 function ScrollIndicator() {
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
@@ -397,7 +464,6 @@ function ScrollIndicator() {
 export default function Home() {
   const [expanded, setExpanded] = useState(false);
   const [x, setX] = useState(100);
-  const [kaizenHover, setKaizenHover] = useState(false);
   const [showInstaPopup, setShowInstaPopup] = useState(false);
   const { theme } = useTheme();
 
@@ -647,7 +713,7 @@ export default function Home() {
               ))}
             </div>
             <h5 className="font-serif mt-4 bg-linear-to-r from-gray-200 via-gray-400 to-gray-600 bg-clip-text py-1 text-center text-3xl font-bold whitespace-nowrap text-transparent opacity-30 md:text-6xl">
-              Shipping More Soon
+              Shipping More Soon . . .
             </h5>
           </div>
         </MotionSection>
@@ -791,42 +857,12 @@ export default function Home() {
 
         <Separator />
 
-        {/* KAIZEN DECORATIVE SECTION */}
+        {/* ADHYATMA DECORATIVE SECTION */}
         <div className="border-border ring-0.5 ring-border mx-auto max-w-3xl border-x relative flex w-full flex-col items-center overflow-visible py-0 select-none">
           <div className="relative h-8 w-full">
             <div className="absolute inset-0 opacity-15" style={{ backgroundImage: "repeating-linear-gradient(-45deg, transparent, transparent 10px, var(--color-foreground) 10px, var(--color-foreground) 11px)" }} />
           </div>
-          <div
-            className="relative inline-block cursor-help py-8"
-            onMouseEnter={() => setKaizenHover(true)}
-            onMouseLeave={() => setKaizenHover(false)}
-          >
-            <div className="group relative">
-              <span className="pointer-events-none absolute inset-0 -z-10 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px] bg-clip-text text-center text-9xl font-bold whitespace-nowrap text-transparent italic select-none">
-                改善
-              </span>
-              <span className="z-10 block -translate-x-4 -translate-y-4 text-center text-9xl font-bold whitespace-nowrap text-[#808080] italic transition-all duration-200 group-hover:translate-x-0 group-hover:translate-y-0 hover:text-black dark:hover:text-white">
-                改善
-              </span>
-            </div>
-            {/* Tooltip */}
-            <div
-              className={`absolute top-1/2 left-full ml-4 -translate-y-1/2 w-72 p-4 rounded-lg border bg-background shadow-lg transition-all duration-200 ${
-                kaizenHover ? "opacity-100 visible translate-x-0" : "opacity-0 invisible -translate-x-2"
-              }`}
-            >
-              <p className="text-xs text-foreground/80 text-left leading-relaxed">
-                <span className="font-serif italic text-lg">Kaizen</span>
-                <br />
-                <span className="text-foreground/60">(かいぜん)</span>
-                <br />
-                <span className="text-foreground/50 mt-2 block">
-                  Japanese philosophy of continuous improvement — the practice of constantly making small, incremental improvements for greater efficiency and quality.
-                </span>
-              </p>
-              <div className="absolute top-1/2 right-full -translate-y-1/2 border-8 border-transparent border-r-background" />
-            </div>
-          </div>
+          <ForeignWordTooltip />
           <div className="relative h-8 w-full overflow-hidden">
             <div className="absolute inset-0 opacity-15" style={{ backgroundImage: "repeating-linear-gradient(-45deg, transparent, transparent 10px, currentColor 10px, currentColor 11px)" }} />
           </div>
@@ -844,11 +880,11 @@ export default function Home() {
           <div className="relative z-10 flex flex-col justify-center">
             <div className="flex flex-col">
               <p className="font-serif text-lg leading-relaxed text-foreground/40 italic dark:text-white/40">
-                &quot;You have a right to perform your prescribed duty, but you are not entitled to the fruits of actions.&quot;
+                &quot;karmaṇy evādhikāras te mā phaleṣu kadācana. mā karma-phala-hetur bhūr mā te saṅgo&apos;stv akarmaṇi&quot;
               </p>
               <div className="mt-4 flex items-center gap-3 self-end">
                 <div className="h-px w-8 bg-foreground/20" />
-                <span className="text-sm font-medium text-foreground italic">Bhagavad Gita</span>
+                <span className="text-sm font-medium text-foreground italic">Bhagavad Gita 2.47</span>
               </div>
             </div>
           </div>

@@ -10,7 +10,7 @@
   --secondary: #f4f4f5;
   --secondary-foreground: #09090b;
   --primary: #000000;
-  --pattern-fg: #e4e4e7;
+  --pattern-fg: color-mix(in oklch, black, transparent 95%);
 }
 
 .dark {
@@ -23,7 +23,7 @@
   --secondary: #18181b;
   --secondary-foreground: #ededed;
   --primary: #ffffff;
-  --pattern-fg: #27272a;
+  --pattern-fg: color-mix(in oklch, white, transparent 95%);
 }
 
 @theme inline {
@@ -75,4 +75,15 @@ body {
   transition-property: border-color;
   transition-duration: 0.3s;
   transition-timing-function: ease;
+}
+
+.text-inner-shadow {
+  text-shadow:
+    1px 1px 1px rgba(255, 255, 255, 0.5),
+    -1px -1px 1px rgba(0, 0, 0, 0.1);
+}
+.dark .text-inner-shadow {
+  text-shadow:
+    -1px -1px 1px rgba(0, 0, 0, 0.5),
+    1px 1px 1px rgba(255, 255, 255, 0.1);
 }

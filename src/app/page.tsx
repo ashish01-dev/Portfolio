@@ -4,8 +4,9 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { motion, useScroll, useMotionValueEvent, useMotionValue, animate, AnimatePresence } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
+import GithubContributions from "./components/github-contributions";
 import {
   House,
   MessageCircle,
@@ -15,31 +16,37 @@ import {
   Moon,
   MoveRight,
 } from "lucide-react";
+import { NextJS, TypeScript, TailwindCSS, ReactIcon, Prisma, Supabase, Figma, Sanity, Drizzle } from "./components/icons";
 
 function GithubIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" className={className || "size-4"} fill="currentColor">
-      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+    <svg viewBox="0 0 24 24" className={className || "size-4"}>
+      <path fill="#181717" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+      <path fill="#ffffff" d="M9.5 15.5c-2.5 0-4.5 1-4.5 2.5s2 2.5 4.5 2.5 4.5-1 4.5-2.5-2-2.5-4.5-2.5z" opacity="0" />
     </svg>
   );
 }
 
 function XIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" className={className || "size-4"} fill="currentColor">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    <svg viewBox="0 0 24 24" className={className || "size-4"}>
+      <path fill="#000000" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
     </svg>
   );
 }
 
 function InstagramIcon({ className }: { className?: string }) {
-  return <Image src="/instagram.svg" alt="Instagram" width={24} height={24} className={className || "size-4"} />;
+  return (
+    <svg viewBox="0 0 24 24" className={className || "size-4"}>
+      <path fill="#E4405F" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+    </svg>
+  );
 }
 
 function LinkedinIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" className={className || "size-4"} fill="currentColor">
-      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+    <svg viewBox="0 0 24 24" className={className || "size-4"}>
+      <path fill="#0A66C2" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
     </svg>
   );
 }
@@ -56,25 +63,24 @@ const projects = [
     title: "Divine Canvas",
     description: "An e-commerce platform offering premium, sacred vector paintings.",
     href: "/projects/divine-canvas",
-    image: "/projects/divine-canvas/home.svg",
+    image: "/placeholder-banner.svg",
     stack: [
-      { name: "Next.js", type: "next" },
-      { name: "Tailwind", type: "tailwind" },
-      { name: "Motion", type: "image", src: "/skills/motion.svg" },
-      { name: "Payload", type: "payload" },
+      { name: "Next.js", type: "icon" },
+      { name: "Tailwind", type: "icon" },
+      { name: "Motion", type: "image", src: "/skills/motion.png" },
+      { name: "Supabase", type: "icon" },
     ],
-    more: "+3",
   },
   {
     title: "rvyu.",
     description: "A place for developers to share their side projects and get feedback from peers.",
     href: "/projects/rvyu",
-    image: "/rvyu.svg",
+    image: "/placeholder-banner.svg",
     stack: [
-      { name: "Next.js", type: "next" },
-      { name: "Tailwind", type: "tailwind" },
-      { name: "Motion", type: "image", src: "/skills/motion.svg" },
-      { name: "Drizzle", type: "drizzle" },
+      { name: "Next.js", type: "icon" },
+      { name: "Tailwind", type: "icon" },
+      { name: "Motion", type: "image", src: "/skills/motion.png" },
+      { name: "Drizzle", type: "icon" },
     ],
     more: "+3",
   },
@@ -82,13 +88,13 @@ const projects = [
     title: "The Leansuite",
     description: "SaaS website and dashboard with a custom CMS to manage blogs and pages.",
     href: "/projects/theleansuite",
-    image: "/projects/theleansuite/theleansuite.svg",
+    image: "/placeholder-banner.svg",
     stack: [
-      { name: "Next.js", type: "next" },
-      { name: "Tailwind", type: "tailwind" },
-      { name: "Motion", type: "image", src: "/skills/motion.svg" },
+      { name: "Next.js", type: "icon" },
+      { name: "Tailwind", type: "icon" },
+      { name: "Motion", type: "image", src: "/skills/motion.png" },
+      { name: "Supabase", type: "icon" },
     ],
-    more: "+2",
   },
 ];
 
@@ -102,15 +108,16 @@ const blogs = [
 ];
 
 const skills = [
-  { name: "Next.js", icon: "next" },
-  { name: "TypeScript", icon: "ts" },
-  { name: "Tailwind CSS", icon: "tailwind" },
-  { name: "Node.js", icon: "node" },
-  { name: "React", icon: "react" },
-  { name: "Framer Motion", icon: "image", src: "/skills/motion.svg" },
-  { name: "Prisma", icon: "prisma" },
-  { name: "Supabase", icon: "supabase" },
-  { name: "Figma", icon: "figma" },
+  { name: "Next.js", type: "icon" },
+  { name: "TypeScript", type: "icon" },
+  { name: "Tailwind CSS", type: "icon" },
+  { name: "React", type: "icon" },
+  { name: "Supabase", type: "icon" },
+  { name: "Drizzle", type: "icon" },
+  { name: "Prisma", type: "icon" },
+  { name: "Sanity", type: "icon" },
+  { name: "Framer Motion", type: "image", src: "/skills/motion.png" },
+  { name: "Figma", type: "icon" },
 ];
 
 const footerSocials = [
@@ -208,48 +215,51 @@ function ThemeToggle() {
   );
 }
 
+const iconMap: Record<string, React.ComponentType<React.ComponentProps<"svg">>> = {
+  "Next.js": NextJS,
+  "TypeScript": TypeScript,
+  "Tailwind CSS": TailwindCSS,
+  "React": ReactIcon,
+  "Prisma": Prisma,
+  "Supabase": Supabase,
+  "Figma": Figma,
+  "Sanity": Sanity,
+  "Drizzle": Drizzle,
+};
+
 function TechIcon({ name, className }: { name: string; className?: string }) {
-  const cn = className || "size-full";
-  switch (name) {
-    case "Next.js":
-      return <svg viewBox="0 0 24 24" className={cn} fill="none"><circle cx="12" cy="12" r="11" className="fill-foreground" /><text x="12" y="16" textAnchor="middle" fontSize="11" fontWeight="bold" className="fill-background">N</text></svg>;
-    case "TypeScript":
-      return <svg viewBox="0 0 24 24" className={cn} fill="none"><rect x="1" y="1" width="22" height="22" rx="4" className="fill-[#3178C6]" /><text x="12" y="17" textAnchor="middle" fontSize="11" fontWeight="bold" fill="white">TS</text></svg>;
-    case "Tailwind CSS":
-      return <svg viewBox="0 0 24 24" className={cn} fill="none"><path d="M12 2C7 2 4.5 5.5 6 9.5c2-1 3.5-.5 4.5.5 1.2 1.2 2.5 2.5 5.5 2.5 5 0 7.5-3.5 6-7.5-2 1-3.5.5-4.5-.5-1.2-1.2-2.5-2.5-5.5-2.5z" className="fill-[#06B6D4]" /><path d="M6 12c-5 0-7.5 3.5-6 7.5 2-1 3.5-.5 4.5.5 1.2 1.2 2.5 2.5 5.5 2.5 5 0 7.5-3.5 6-7.5-2 1-3.5.5-4.5-.5-1.2-1.2-2.5-2.5-5.5-2.5z" className="fill-[#06B6D4]" /></svg>;
-    case "Node.js":
-      return <svg viewBox="0 0 24 24" className={cn} fill="none"><path d="M12 1L2 6.5v11L12 23l10-5.5v-11L12 1zm0 2.5l7.5 4.1v8.3L12 20l-7.5-4.1V7.6L12 3.5z" className="fill-[#339933]" /><text x="12" y="16" textAnchor="middle" fontSize="7" fontWeight="bold" fill="white">node</text></svg>;
-    case "React":
-      return <svg viewBox="0 0 24 24" className={cn} fill="none"><ellipse cx="12" cy="12" rx="10" ry="3.5" className="stroke-[#61DAFB] stroke-[1.5]" /><ellipse cx="12" cy="12" rx="3.5" ry="10" className="stroke-[#61DAFB] stroke-[1.5]" transform="rotate(60 12 12)" /><ellipse cx="12" cy="12" rx="3.5" ry="10" className="stroke-[#61DAFB] stroke-[1.5]" transform="rotate(-60 12 12)" /><circle cx="12" cy="12" r="2" className="fill-[#61DAFB]" /></svg>;
-    case "Prisma":
-      return <svg viewBox="0 0 24 24" className={cn} fill="none"><path d="M20.657 18.457L12.97 1.512a.89.89 0 00-1.565-.07L2.89 16.414a.89.89 0 00.418 1.25l10.36 4.665a.89.89 0 001.1-.386l5.89-9.97a.55.55 0 00-.88-.657l-8.388 6.398a.34.34 0 01-.541-.388l5.281-12.19c.06-.14.254-.142.318-.003l5.71 11.74a.55.55 0 01-.494.774h-1.53" className="fill-[#2D3748] dark:fill-white/80" /></svg>;
-    case "Supabase":
-      return <svg viewBox="0 0 24 24" className={cn} fill="none"><path d="M13.5 1L4.5 13.5H12l-1.5 9.5 9-12.5H12l1.5-9.5z" className="fill-[#3ECF8E]" /></svg>;
-    case "Figma":
-      return <svg viewBox="0 0 24 24" className={cn} fill="none"><circle cx="12" cy="6.5" r="4.5" className="fill-[#F24E1E]" /><rect x="7.5" y="11" width="9" height="4.5" rx="2.25" className="fill-[#FF7262]" /><circle cx="16.5" cy="15.5" r="4.5" className="fill-[#A259FF]" /></svg>;
-    default:
-      return <span className="text-[10px] font-bold text-foreground/60">{name.slice(0, 2)}</span>;
-  }
+  const Icon = iconMap[name];
+  if (Icon) return <Icon className={className || "size-4"} />;
+  return <span className="text-[10px] font-bold text-foreground/60">{name.slice(0, 2)}</span>;
 }
 
-function StackIcon({ name, icon, src }: { name: string; icon: string; src?: string }) {
+function StackIcon({ name, type, src }: { name: string; type: string; src?: string }) {
   const [hovered, setHovered] = useState(false);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
   return (
     <motion.div
       className="relative z-20 cursor-grab touch-none select-none active:cursor-grabbing"
+      style={{ x, y }}
       drag
-      dragConstraints={{ left: -50, right: 50, top: -50, bottom: 50 }}
-      whileTap={{ scale: 1.1 }}
+      dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+      dragElastic={0.1}
+      dragMomentum={false}
+      onDragEnd={() => {
+        animate(x, 0, { type: "spring", stiffness: 350, damping: 24, mass: 1.1 });
+        animate(y, 0, { type: "spring", stiffness: 350, damping: 24, mass: 1.1 });
+      }}
+      whileTap={{ cursor: "grabbing", scale: 1.1 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       {src ? (
-        <Image src={src} alt={name} width={40} height={40} className="h-8 w-8 md:h-10 md:w-10 dark:invert" />
-      ) : (
-        <div className="h-8 w-8 md:h-10 md:w-10 flex items-center justify-center rounded-lg border border-black/10 dark:border-white/10 bg-muted">
-          <TechIcon name={name} className="size-5 md:size-6" />
+        <div className="relative h-8 w-8 md:h-10 md:w-10">
+          <Image src={src} alt={name} fill draggable={false} className="object-contain" />
         </div>
+      ) : (
+        <TechIcon name={name} className="h-8 w-8 text-black md:h-10 md:w-10 dark:text-white" />
       )}
       <motion.div
         className="pointer-events-none absolute -top-8 left-1/2 z-30 -translate-x-1/2 rounded-md border bg-background px-2 py-1 shadow-sm whitespace-nowrap"
@@ -264,32 +274,75 @@ function StackIcon({ name, icon, src }: { name: string; icon: string; src?: stri
 }
 
 function ProjectStackBadge({ stack, more }: { stack: any[]; more?: string }) {
+  const [hoveredTech, setHoveredTech] = useState<string | null>(null);
+
   return (
     <div className="mt-auto flex items-center pt-2">
-      {stack.map((s, i) => (
-        <div
-          key={s.name}
-          className="flex h-7 cursor-pointer items-center rounded-full border border-black/5 bg-white shadow-sm dark:border-white/5 dark:bg-white/5"
-          style={{ marginLeft: i > 0 ? -8 : 0, zIndex: stack.length - i }}
-        >
-          <div className="flex h-7 w-7 shrink-0 items-center justify-center">
-            {s.type === "image" ? (
-              <Image src={s.src} alt={s.name} width={16} height={16} className="h-4 w-4 rounded-full object-contain" />
-            ) : (
-              <TechIcon name={s.name} className="size-3.5" />
-            )}
-          </div>
-        </div>
-      ))}
+      {stack.slice(0, 5).map((s) => {
+        const isHovered = hoveredTech === s.name;
+        return (
+          <motion.div
+            key={s.name}
+            className="flex h-7 cursor-pointer items-center rounded-full border border-black/5 bg-white shadow-sm dark:border-white/5 dark:bg-white/5"
+            style={{ marginLeft: "-8px", zIndex: isHovered ? 10 : 1 }}
+            animate={{ width: isHovered ? "auto" : "28px" }}
+            onMouseEnter={() => setHoveredTech(s.name)}
+            onMouseLeave={() => setHoveredTech(null)}
+            layout
+            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+          >
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center">
+              {s.type === "image" ? (
+                <Image src={s.src} alt={s.name} width={16} height={16} className="h-4 w-4 rounded-full object-contain" />
+              ) : (
+                <div className="flex h-4 w-4 items-center justify-center">
+                  <TechIcon name={s.name} className="size-4" />
+                </div>
+              )}
+            </div>
+            <AnimatePresence>
+              {isHovered && (
+                <motion.span
+                  className="overflow-hidden pr-2 text-xs font-medium"
+                  initial={{ width: 0, opacity: 0, marginLeft: 0 }}
+                  animate={{ width: "auto", opacity: 1, marginLeft: "4px" }}
+                  exit={{ width: 0, opacity: 0, marginLeft: 0 }}
+                  transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                >
+                  <span className="whitespace-nowrap">{s.name}</span>
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        );
+      })}
       {more && (
-        <div
-          className="flex h-7 cursor-pointer items-center rounded-full border border-black/5 bg-white text-[10px] font-medium text-black/40 shadow-sm dark:border-white/5 dark:bg-white/5"
-          style={{ marginLeft: -8, zIndex: 0 }}
+        <motion.div
+          className="flex h-7 cursor-pointer items-center rounded-full border border-black/5 bg-white text-[10px] font-medium text-black/40 shadow-sm hover:bg-white dark:border-white/5 dark:bg-white/5 dark:text-white/40"
+          style={{ marginLeft: "-8px", zIndex: hoveredTech === "more" ? 10 : 1 }}
+          animate={{ width: hoveredTech === "more" ? "auto" : "28px" }}
+          onMouseEnter={() => setHoveredTech("more")}
+          onMouseLeave={() => setHoveredTech(null)}
+          layout
+          transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
         >
           <div className="flex h-7 w-7 shrink-0 items-center justify-center">
             <span className="text-[10px] font-semibold text-black/60 dark:text-white/60">{more}</span>
           </div>
-        </div>
+          <AnimatePresence>
+            {hoveredTech === "more" && (
+              <motion.span
+                className="overflow-hidden pr-2 text-xs font-medium"
+                initial={{ width: 0, opacity: 0, marginLeft: 0 }}
+                animate={{ width: "auto", opacity: 1, marginLeft: "4px" }}
+                exit={{ width: 0, opacity: 0, marginLeft: 0 }}
+                transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+              >
+                <span className="whitespace-nowrap">more</span>
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </motion.div>
       )}
     </div>
   );
@@ -507,21 +560,7 @@ export default function Home() {
         </div>
 
         {/* GITHUB ACTIVITY */}
-        <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
-          >
-            <div className="overflow-hidden rounded-lg border border-border bg-muted/30 p-2 sm:p-4">
-              <img
-                src="https://ghchart.rshah.org/ashish01-dev"
-                alt="GitHub contribution graph for ashish01-dev"
-                className="w-full"
-              />
-            </div>
-          </motion.div>
-        </div>
+        <GithubContributions />
 
         <Separator />
 
@@ -577,7 +616,7 @@ export default function Home() {
         <MotionSection delay={0.2}>
           <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="font-serif text-xl text-foreground/50">Proof of work</h2>
+              <h2 className="font-serif text-xl text-black/50 dark:text-white/40">Proof of work</h2>
               <Link href="/projects" className="inline-flex items-center gap-1 text-xs font-medium text-foreground/30 transition-colors duration-200 hover:text-foreground/90">
                 ALL <MoveRight className="size-3" />
               </Link>
@@ -593,7 +632,7 @@ export default function Home() {
                 >
                   <Link
                     href={project.href}
-                    className="group flex cursor-pointer flex-col gap-4 rounded-lg pb-4 transition-shadow duration-300 hover:shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] dark:hover:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)]"
+                    className="group flex cursor-pointer flex-col gap-4 rounded-lg pb-4"
                   >
                     <div className="relative aspect-[3/2] overflow-hidden rounded-lg transition-all duration-500 group-hover:scale-[1.05]">
                       <Image src={project.image} alt={project.title} width={400} height={300} className="h-full w-full object-cover object-top" />
@@ -618,14 +657,15 @@ export default function Home() {
         {/* STACK */}
         <MotionSection delay={0.3}>
           <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
-            <h2 className="mb-6 font-serif text-xl text-foreground/50">Stack I use</h2>
+              <h2 className="mb-6 font-serif text-xl text-black/50 dark:text-white/40">Stack I use</h2>
             <div className="relative grid grid-cols-4 justify-items-center gap-8 sm:grid-cols-6 md:grid-cols-8 md:justify-items-start lg:grid-cols-12">
-              <span className="pointer-events-none absolute -top-12 right-0 size-12 -rotate-12 font-mono text-[10px] font-medium text-foreground/30">drag me :D</span>
-              <svg className="pointer-events-none absolute -top-12 right-15 size-10 rotate-30 text-foreground/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M5 15l7-7 7 7" />
+              <span className="pointer-events-none absolute -top-12 right-0 size-12 -rotate-34 font-mono text-[10px] font-medium text-foreground/30">drag me :D</span>
+              <svg className="pointer-events-none absolute -top-12 right-15 size-10 rotate-120 text-foreground/30" viewBox="0 0 323.057 323.057" fill="currentColor">
+                <path d="M281.442 256.312c-47.124 59.364-139.536 44.676-160.956-29.376-1.224-3.672-1.836-7.956-2.448-11.628 49.572-11.016 97.92-47.124 102.204-90.576 3.672-39.168-36.108-50.796-62.424-28.764-31.212 26.316-53.244 64.872-55.08 105.875-31.824 4.284-63.036-4.284-80.172-35.496-28.764-52.631 9.792-123.624 61.2-144.432 5.508-1.836 3.06-10.404-2.448-8.568C10.326 33.544-26.394 132.688 21.954 191.439c18.972 22.645 49.572 29.988 81.396 26.316 4.284 41.616 36.72 74.664 75.275 87.516 44.676 14.688 85.68-6.731 111.996-41.616 4.285-5.508-4.896-12.239-9.179-7.343M144.354 132.688c9.792-13.464 22.644-28.764 39.168-34.272 15.911-5.508 21.42 16.524 22.031 26.316.612 12.24-7.956 23.256-15.912 31.824-16.523 18.971-44.063 35.496-72.215 42.839 1.836-23.868 13.464-47.123 26.928-66.707"></path>
+                <path d="M315.713 233.668c-17.136 0-34.884 1.224-51.408 5.508-6.731 1.836-3.672 11.016 3.061 9.792 13.464-2.448 27.54-1.836 41.004-1.224-.612 7.955-1.224 16.523-2.448 24.479-1.224 6.12-5.508 15.3-1.836 21.42 1.836 3.061 4.896 3.061 7.956 1.836 7.344-3.06 7.344-15.912 8.568-22.644 1.836-11.017 2.447-21.42 2.447-32.437 0-3.67-3.672-6.73-7.344-6.73"></path>
               </svg>
               {skills.map((skill) => (
-                <StackIcon key={skill.name} name={skill.name} icon={skill.icon} src={skill.src} />
+                <StackIcon key={skill.name} name={skill.name} type={skill.type} src={skill.src} />
               ))}
             </div>
           </div>
@@ -645,12 +685,15 @@ export default function Home() {
                 <Link key={blog.title} href={blog.href} className="group relative block">
                   <div className="h-full space-y-4 py-2">
                     <div className="relative perspective-[2000px]">
-                      <div
+                      <motion.div
+                        initial={{ rotateY: -12, rotateX: 5, x: 8, y: -6 }}
+                        whileHover={{ rotateY: 0, rotateX: 0, x: 0, y: 0 }}
+                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                        style={{ transformStyle: "preserve-3d" }}
                         className="border-border bg-muted/30 relative aspect-video w-full overflow-hidden rounded-sm border"
-                        style={{ transformStyle: "preserve-3d", transform: "translateX(8px) translateY(-6px) rotateX(5deg) rotateY(-12deg)" }}
                       >
                         <Image src={blog.image} alt={blog.title} fill className="rounded-sm object-cover" />
-                      </div>
+                      </motion.div>
                       <div className="pointer-events-none absolute inset-0 -z-10 rounded-sm border-x border-(--pattern-fg) bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px]" />
                     </div>
                     <div className="space-y-1">

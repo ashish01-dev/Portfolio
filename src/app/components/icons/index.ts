@@ -1,0 +1,9 @@
+export { default as NextJS } from "./nextjs";
+export { default as TypeScript } from "./typescript";
+export { default as TailwindCSS } from "./tailwind";
+export { default as ReactIcon } from "./react";
+export { default as Prisma } from "./prisma";
+export { default as Supabase } from "./supabase";
+export { default as Figma } from "./figma";
+export { default as Sanity } from "./sanity";
+export { default as Drizzle } from "./drizzle";

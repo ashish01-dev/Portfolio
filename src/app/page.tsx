@@ -302,22 +302,22 @@ function ScrollIndicator() {
 
   return (
     <motion.div
-      className="fixed right-3 top-1/2 z-50 hidden flex-col items-center gap-4 md:flex"
+      className="fixed right-6 top-1/2 z-50 hidden flex-col items-center gap-5 md:flex"
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: hidden ? 0 : 1, x: hidden ? 20 : 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
       style={{ translateY: "-50%" }}
     >
-      <span className="font-serif text-[10px] font-medium italic tracking-[0.15em] text-foreground/25 [writing-mode:vertical-rl]">
-        scroll
+      <span className="font-serif text-sm font-medium italic tracking-[0.2em] text-foreground/20 [writing-mode:vertical-rl]">
+        scroll down
       </span>
-      <svg viewBox="0 0 18 64" className="size-4 text-foreground/20" fill="none" stroke="currentColor" strokeWidth="1.2">
-        <path d="M9 0 Q 16 16, 9 32 Q 2 48, 9 64" />
-        <path d="M4 55 L9 64 L14 55" />
+      <svg viewBox="0 0 24 80" className="size-6 text-foreground/15" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M12 0 Q 20 20, 12 40 Q 4 60, 12 80" />
+        <path d="M6 68 L12 80 L18 68" />
       </svg>
       <motion.div
-        className="mt-1 h-6 w-px bg-foreground/10"
-        animate={{ height: [6, 18, 6] }}
+        className="mt-2 h-10 w-px bg-foreground/10"
+        animate={{ height: [10, 28, 10] }}
         transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
       />
     </motion.div>
@@ -488,14 +488,14 @@ export default function Home() {
           </motion.div>
         </div>
 
-        {/* GITHUB CONTRIBUTION GRAPH — fully integrated into profile area */}
-        <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-3 px-4 sm:px-8">
+        {/* GITHUB ACTIVITY */}
+        <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
           >
-            <div className="overflow-hidden rounded-lg border border-border/60 bg-muted/20 p-1 sm:p-2">
+            <div className="overflow-hidden rounded-lg border border-border bg-muted/30 p-2 sm:p-4">
               <img
                 src="https://ghchart.rshah.org/ashish01-dev"
                 alt="GitHub contribution graph for ashish01-dev"
@@ -577,7 +577,7 @@ export default function Home() {
                     href={project.href}
                     className="group flex cursor-pointer flex-col gap-4 rounded-lg pb-4 transition-shadow duration-300 hover:shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] dark:hover:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)]"
                   >
-                    <div className="relative aspect-[3/2] overflow-hidden rounded-lg transition-all duration-300 group-hover:scale-[1.02]">
+                    <div className="relative aspect-[3/2] overflow-hidden rounded-lg transition-all duration-500 group-hover:scale-[1.05]">
                       <Image src={project.image} alt={project.title} width={400} height={300} className="h-full w-full object-cover object-top" />
                     </div>
                     <div className="flex flex-col gap-1 transition-all duration-300 group-hover:translate-x-4">
@@ -697,50 +697,21 @@ export default function Home() {
 
             <p className="py-2 text-center text-sm font-medium text-foreground/30 uppercase">or</p>
 
-            {/* FOOTER SOCIAL CARDS — framer-motion spring stagger */}
-            <motion.div
-              className="flex items-center justify-center flex-wrap"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={{
-                hidden: { opacity: 0 },
-                visible: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } },
-              }}
-            >
-              {footerSocials.map((s, i) => {
-                const baseRotate = [-20, -10, -2, 10, 20][i] || 0;
-                return (
-                  <motion.a
-                    key={s.label}
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${s.z} bg-background -mr-1 flex w-13 cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-foreground/20 p-2 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] dark:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)]`}
-                    variants={{
-                      hidden: { opacity: 0, scale: 0.6, rotate: baseRotate, x: -10 },
-                      visible: {
-                        opacity: 1,
-                        scale: 1,
-                        rotate: baseRotate,
-                        x: 0,
-                        transition: { type: "spring", stiffness: 200, damping: 15 },
-                      },
-                    }}
-                    whileHover={{
-                      rotate: 0,
-                      scale: 1.12,
-                      marginRight: "0.5rem",
-                      transition: { type: "spring", stiffness: 300, damping: 12 },
-                    }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <s.icon className="size-5" />
-                    <p className="text-[8px] font-bold text-foreground/50">{s.label}</p>
-                  </motion.a>
-                );
-              })}
-            </motion.div>
+            {/* FOOTER SOCIAL CARDS — CSS group-hover matching reference */}
+            <div className="group flex items-center justify-center flex-wrap">
+              {footerSocials.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${s.z} bg-background -mr-1 flex w-13 cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-foreground/20 p-2 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition-all duration-300 group-hover:mr-2 group-hover:rotate-0 dark:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)] ${s.label === "Github" ? "-rotate-20" : s.label === "Instagram" ? "-rotate-10" : s.label === "Twitter" ? "-rotate-2" : s.label === "LinkedIn" ? "rotate-10" : "rotate-20"}`}
+                >
+                  <s.icon className="size-5" />
+                  <p className="text-[8px] font-bold text-foreground/50">{s.label}</p>
+                </a>
+              ))}
+            </div>
           </div>
         </MotionSection>
 

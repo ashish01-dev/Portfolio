@@ -159,7 +159,6 @@ function Separator() {
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [overlay, setOverlay] = useState<{ x: number; y: number; expanding: boolean; target: string } | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const isAnimating = useRef(false);
 
@@ -167,25 +166,23 @@ function ThemeToggle() {
 
   const handleToggle = () => {
     if (isAnimating.current || !buttonRef.current || !mounted) return;
-    isAnimating.current = true;
     const rect = buttonRef.current.getBoundingClientRect();
     const x = rect.left + rect.width / 2;
     const y = rect.top + rect.height / 2;
     const target = theme === "dark" ? "light" : "dark";
 
-    setOverlay({ x, y, expanding: false, target });
+    document.documentElement.style.setProperty("--toggle-x", x + "px");
+    document.documentElement.style.setProperty("--toggle-y", y + "px");
 
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setOverlay((prev) => (prev ? { ...prev, expanding: true } : null));
-      });
-    });
-
-    setTimeout(() => setTheme(target), 350);
-    setTimeout(() => {
-      setOverlay(null);
-      isAnimating.current = false;
-    }, 800);
+    if ((document as any).startViewTransition) {
+      isAnimating.current = true;
+      const t = (document as any).startViewTransition(() => setTheme(target));
+      t.finished.finally(() => { isAnimating.current = false; });
+    } else {
+      isAnimating.current = true;
+      setTheme(target);
+      setTimeout(() => { isAnimating.current = false; }, 400);
+    }
   };
 
   if (!mounted) {
@@ -200,47 +197,68 @@ function ThemeToggle() {
   }
 
   return (
-    <>
-      {overlay && (
-        <div
-          className="fixed inset-0 z-[9999] pointer-events-none"
-          style={{
-            clipPath: overlay.expanding
-              ? `circle(150vw at ${overlay.x}px ${overlay.y}px)`
-              : `circle(0px at ${overlay.x}px ${overlay.y}px)`,
-            background: overlay.target === "dark" ? "#0a0a0a" : "#ffffff",
-            transition: overlay.expanding ? "clip-path 0.7s ease-in-out" : "none",
-          }}
-        />
-      )}
-      <button
-        ref={buttonRef}
-        onClick={handleToggle}
-        className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full"
-        aria-label="Toggle theme"
-      >
-        {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
-      </button>
-    </>
+    <button
+      ref={buttonRef}
+      onClick={handleToggle}
+      className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full"
+      aria-label="Toggle theme"
+    >
+      {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+    </button>
   );
 }
 
+function TechIcon({ name, className }: { name: string; className?: string }) {
+  const cn = className || "size-full";
+  switch (name) {
+    case "Next.js":
+      return <svg viewBox="0 0 24 24" className={cn} fill="none"><circle cx="12" cy="12" r="11" className="fill-foreground" /><text x="12" y="16" textAnchor="middle" fontSize="11" fontWeight="bold" className="fill-background">N</text></svg>;
+    case "TypeScript":
+      return <svg viewBox="0 0 24 24" className={cn} fill="none"><rect x="1" y="1" width="22" height="22" rx="4" className="fill-[#3178C6]" /><text x="12" y="17" textAnchor="middle" fontSize="11" fontWeight="bold" fill="white">TS</text></svg>;
+    case "Tailwind CSS":
+      return <svg viewBox="0 0 24 24" className={cn} fill="none"><path d="M12 2C7 2 4.5 5.5 6 9.5c2-1 3.5-.5 4.5.5 1.2 1.2 2.5 2.5 5.5 2.5 5 0 7.5-3.5 6-7.5-2 1-3.5.5-4.5-.5-1.2-1.2-2.5-2.5-5.5-2.5z" className="fill-[#06B6D4]" /><path d="M6 12c-5 0-7.5 3.5-6 7.5 2-1 3.5-.5 4.5.5 1.2 1.2 2.5 2.5 5.5 2.5 5 0 7.5-3.5 6-7.5-2 1-3.5.5-4.5-.5-1.2-1.2-2.5-2.5-5.5-2.5z" className="fill-[#06B6D4]" /></svg>;
+    case "Node.js":
+      return <svg viewBox="0 0 24 24" className={cn} fill="none"><path d="M12 1L2 6.5v11L12 23l10-5.5v-11L12 1zm0 2.5l7.5 4.1v8.3L12 20l-7.5-4.1V7.6L12 3.5z" className="fill-[#339933]" /><text x="12" y="16" textAnchor="middle" fontSize="7" fontWeight="bold" fill="white">node</text></svg>;
+    case "React":
+      return <svg viewBox="0 0 24 24" className={cn} fill="none"><ellipse cx="12" cy="12" rx="10" ry="3.5" className="stroke-[#61DAFB] stroke-[1.5]" /><ellipse cx="12" cy="12" rx="3.5" ry="10" className="stroke-[#61DAFB] stroke-[1.5]" transform="rotate(60 12 12)" /><ellipse cx="12" cy="12" rx="3.5" ry="10" className="stroke-[#61DAFB] stroke-[1.5]" transform="rotate(-60 12 12)" /><circle cx="12" cy="12" r="2" className="fill-[#61DAFB]" /></svg>;
+    case "Prisma":
+      return <svg viewBox="0 0 24 24" className={cn} fill="none"><path d="M20.657 18.457L12.97 1.512a.89.89 0 00-1.565-.07L2.89 16.414a.89.89 0 00.418 1.25l10.36 4.665a.89.89 0 001.1-.386l5.89-9.97a.55.55 0 00-.88-.657l-8.388 6.398a.34.34 0 01-.541-.388l5.281-12.19c.06-.14.254-.142.318-.003l5.71 11.74a.55.55 0 01-.494.774h-1.53" className="fill-[#2D3748] dark:fill-white/80" /></svg>;
+    case "Supabase":
+      return <svg viewBox="0 0 24 24" className={cn} fill="none"><path d="M13.5 1L4.5 13.5H12l-1.5 9.5 9-12.5H12l1.5-9.5z" className="fill-[#3ECF8E]" /></svg>;
+    case "Figma":
+      return <svg viewBox="0 0 24 24" className={cn} fill="none"><circle cx="12" cy="6.5" r="4.5" className="fill-[#F24E1E]" /><rect x="7.5" y="11" width="9" height="4.5" rx="2.25" className="fill-[#FF7262]" /><circle cx="16.5" cy="15.5" r="4.5" className="fill-[#A259FF]" /></svg>;
+    default:
+      return <span className="text-[10px] font-bold text-foreground/60">{name.slice(0, 2)}</span>;
+  }
+}
+
 function StackIcon({ name, icon, src }: { name: string; icon: string; src?: string }) {
+  const [hovered, setHovered] = useState(false);
+
   return (
     <motion.div
-      className="z-20 cursor-grab touch-none select-none active:cursor-grabbing"
+      className="relative z-20 cursor-grab touch-none select-none active:cursor-grabbing"
       drag
       dragConstraints={{ left: -50, right: 50, top: -50, bottom: 50 }}
       whileTap={{ scale: 1.1 }}
-      title={name}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       {src ? (
         <Image src={src} alt={name} width={40} height={40} className="h-8 w-8 md:h-10 md:w-10 dark:invert" />
       ) : (
-        <div className="h-8 w-8 md:h-10 md:w-10 flex items-center justify-center rounded-lg border border-black/10 dark:border-white/10 bg-muted text-[10px] font-bold text-foreground/60">
-          {name.slice(0, 2)}
+        <div className="h-8 w-8 md:h-10 md:w-10 flex items-center justify-center rounded-lg border border-black/10 dark:border-white/10 bg-muted">
+          <TechIcon name={name} className="size-5 md:size-6" />
         </div>
       )}
+      <motion.div
+        className="pointer-events-none absolute -top-8 left-1/2 z-30 -translate-x-1/2 rounded-md border bg-background px-2 py-1 shadow-sm whitespace-nowrap"
+        initial={{ opacity: 0, y: 4, scale: 0.9 }}
+        animate={hovered ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 4, scale: 0.9 }}
+        transition={{ duration: 0.15, ease: "easeOut" }}
+      >
+        <span className="text-[10px] font-medium text-foreground/70">{name}</span>
+      </motion.div>
     </motion.div>
   );
 }
@@ -258,7 +276,7 @@ function ProjectStackBadge({ stack, more }: { stack: any[]; more?: string }) {
             {s.type === "image" ? (
               <Image src={s.src} alt={s.name} width={16} height={16} className="h-4 w-4 rounded-full object-contain" />
             ) : (
-              <span className="text-[10px] font-semibold text-black/60 dark:text-white/60">{s.name.slice(0, 2)}</span>
+              <TechIcon name={s.name} className="size-3.5" />
             )}
           </div>
         </div>
@@ -437,7 +455,7 @@ export default function Home() {
                   Ashish Kumar Singh
                 </h1>
                 <div className="font-manrope flex flex-wrap items-center gap-1 text-xs font-medium text-foreground/40 sm:text-sm">
-                  <p>Frontend Developer — <Typewriter words={["Designer", "Developer", "Creator"]} loop={0} cursor cursorStyle="|" typeSpeed={70} deleteSpeed={50} delaySpeed={1500} /></p>
+                  <p>Frontend Developer — <Typewriter words={["Designer", "Developer", "Creator", "Freelancer", "Problem Solver"]} loop={0} cursor cursorStyle="|" typeSpeed={50} deleteSpeed={30} delaySpeed={1200} /></p>
                 </div>
               </div>
               <div className="mt-3 flex justify-start gap-1 px-0 sm:mt-0 sm:gap-2">

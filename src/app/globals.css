@@ -46,6 +46,23 @@ html {
   transition: color-scheme 0.3s ease;
 }
 
+::view-transition-old(root) {
+  animation: none;
+}
+
+::view-transition-new(root) {
+  animation: clip-reveal 0.6s ease-in-out both;
+}
+
+@keyframes clip-reveal {
+  from {
+    clip-path: circle(0% at var(--toggle-x, 50%) var(--toggle-y, 50%));
+  }
+  to {
+    clip-path: circle(150% at var(--toggle-x, 50%) var(--toggle-y, 50%));
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

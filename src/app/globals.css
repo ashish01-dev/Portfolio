@@ -6,12 +6,24 @@
   --border: #e4e4e7;
   --muted: #f4f4f5;
   --accent: #000000;
+  --accent-foreground: #09090b;
   --secondary: #f4f4f5;
   --secondary-foreground: #09090b;
-  --accent-foreground: #09090b;
   --primary: #000000;
   --pattern-fg: #e4e4e7;
-  --radius: 0.5rem;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --border: #27272a;
+  --muted: #18181b;
+  --accent: #ffffff;
+  --accent-foreground: #ededed;
+  --secondary: #18181b;
+  --secondary-foreground: #ededed;
+  --primary: #ffffff;
+  --pattern-fg: #27272a;
 }
 
 @theme inline {
@@ -28,7 +40,6 @@
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
-  --font-neu: "Instrument Serif", ui-serif, Georgia, serif;
 }
 
 body {

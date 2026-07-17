@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { House, MoveRight, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import { House, MoveRight, Sun, Moon } from "lucide-react";
 
 const blogs = [
   {
@@ -19,14 +20,16 @@ function Separator() {
       <div className="relative z-0 mx-auto h-px max-w-3xl overflow-visible">
         <div className="bg-border absolute left-full h-px w-full" />
         <div className="bg-border h-px w-full" />
-        <span className="ring-foreground/10 absolute -top-0.5 -left-0.5 size-1.5 rounded-full bg-[#f9f9f9] ring-1 dark:bg-zinc-800" />
-        <span className="ring-foreground/10 absolute -top-0.5 -right-0.5 size-1.5 rounded-full bg-[#f9f9f9] ring-1 dark:bg-zinc-800" />
+        <span className="ring-foreground/10 absolute -top-0.5 -left-0.5 size-1.5 rounded-full bg-background ring-1" />
+        <span className="ring-foreground/10 absolute -top-0.5 -right-0.5 size-1.5 rounded-full bg-background ring-1" />
       </div>
     </div>
   );
 }
 
 export default function BlogsPage() {
+  const { theme, setTheme } = useTheme();
+
   return (
     <div className="relative min-h-dvh w-full overflow-clip">
       <div className="border-border ring-0.5 ring-border z-10 mx-auto min-h-screen w-full overflow-y-clip border-x bg-background">
@@ -40,10 +43,11 @@ export default function BlogsPage() {
                 <House className="size-4 opacity-60 transition-opacity group-hover:opacity-80" />
               </Link>
               <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                 className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full"
                 aria-label="Toggle theme"
               >
-                <Sun className="size-5" />
+                {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
               </button>
             </nav>
           </header>
@@ -51,8 +55,8 @@ export default function BlogsPage() {
 
         <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 flex-1 px-8">
           <div className="mb-8 space-y-2">
-            <h2 className="font-serif text-3xl text-black/80 italic">thoughts</h2>
-            <p className="text-base tracking-wider text-black/40">
+            <h2 className="font-serif text-3xl text-foreground/80 italic">thoughts</h2>
+            <p className="text-base tracking-wider text-foreground/40">
               Stuff I write about design, code, and building things.
             </p>
           </div>
@@ -69,18 +73,13 @@ export default function BlogsPage() {
                         transform: "translateX(8px) translateY(-6px) rotateX(5deg) rotateY(-12deg)",
                       }}
                     >
-                      <Image
-                        src={blog.image}
-                        alt={blog.title}
-                        fill
-                        className="rounded-sm object-cover"
-                      />
+                      <Image src={blog.image} alt={blog.title} fill className="rounded-sm object-cover" />
                     </div>
                     <div className="pointer-events-none absolute inset-0 -z-10 rounded-sm border-x border-(--pattern-fg) bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px]" />
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-[10px] text-black/40">{blog.date}</span>
+                      <span className="font-mono text-[10px] text-foreground/40">{blog.date}</span>
                     </div>
                     <h3 className="relative block overflow-visible">
                       <span
@@ -89,7 +88,7 @@ export default function BlogsPage() {
                       >
                         {blog.title}
                       </span>
-                      <span className="block max-w-[90%] text-sm leading-tight font-medium text-black/60 italic transition-colors duration-200 group-hover:text-black">
+                      <span className="block max-w-[90%] text-sm leading-tight font-medium text-foreground/60 italic transition-colors duration-200 group-hover:text-foreground">
                         {blog.title}
                       </span>
                     </h3>
@@ -102,8 +101,10 @@ export default function BlogsPage() {
 
         <Separator />
 
-        <div className="border-border ring-0.5 ring-border mx-auto max-w-3xl border-x py-4 w-full px-8 text-center">
-          <p className="text-xs text-black/20">&copy; 2026 All rights reserved.</p>
+        <div className="border-border ring-0.5 ring-border mx-auto max-w-3xl border-x py-4 w-full space-y-4">
+          <div className="relative flex flex-col items-center justify-between px-8 sm:flex-row">
+            <p className="font-mono text-xs text-foreground/40">&copy; 2026 All rights reserved.</p>
+          </div>
         </div>
       </div>
     </div>

@@ -2,8 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { House, ArrowUpRight, Sun } from "lucide-react";
+import { notFound, useParams } from "next/navigation";
+import { useTheme } from "next-themes";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { House, ArrowUpRight, Sun, Moon } from "lucide-react";
 
 const projectsData: Record<
   string,
@@ -11,7 +14,7 @@ const projectsData: Record<
     title: string;
     description: string;
     url: string;
-    stack: { name: string; type: string }[];
+    stack: { name: string; type: string; src?: string }[];
     screenshots: { src: string; label: string }[];
     details: string;
     prev?: { title: string; href: string };
@@ -25,10 +28,11 @@ const projectsData: Record<
     stack: [
       { name: "Next.js", type: "next" },
       { name: "Tailwind", type: "tailwind" },
-      { name: "Motion", type: "motion" },
+      { name: "Motion", type: "motion", src: "/skills/motion.svg" },
       { name: "Payload", type: "payload" },
       { name: "TanStack Query", type: "ts" },
-      { name: "Zod", type: "zod" },
+      { name: "Zod SVG Icon", type: "zod" },
+      { name: "TanStack Forms", type: "forms" },
       { name: "PostgreSQL", type: "pg" },
     ],
     screenshots: [{ src: "/projects/divine-canvas/home.svg", label: "Home" }],
@@ -43,7 +47,7 @@ const projectsData: Record<
     stack: [
       { name: "Next.js", type: "next" },
       { name: "Tailwind", type: "tailwind" },
-      { name: "Motion", type: "motion" },
+      { name: "Motion", type: "motion", src: "/skills/motion.svg" },
       { name: "Drizzle", type: "drizzle" },
       { name: "PostgreSQL", type: "pg" },
     ],
@@ -60,7 +64,7 @@ const projectsData: Record<
     stack: [
       { name: "Next.js", type: "next" },
       { name: "Tailwind", type: "tailwind" },
-      { name: "Motion", type: "motion" },
+      { name: "Motion", type: "motion", src: "/skills/motion.svg" },
       { name: "Sanity", type: "sanity" },
     ],
     screenshots: [{ src: "/projects/theleansuite/theleansuite.svg", label: "Dashboard" }],
@@ -70,8 +74,46 @@ const projectsData: Record<
   },
 };
 
-export default function ProjectPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) {
+    return (
+      <button className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full" aria-label="Toggle theme">
+        <Sun className="size-5" />
+      </button>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full"
+      aria-label="Toggle theme"
+    >
+      {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+    </button>
+  );
+}
+
+function Separator() {
+  return (
+    <div className="w-full">
+      <div className="relative z-0 mx-auto h-px max-w-3xl overflow-visible">
+        <div className="bg-border absolute left-full h-px w-full" />
+        <div className="bg-border h-px w-full" />
+        <span className="ring-foreground/10 absolute -top-0.5 -left-0.5 size-1.5 rounded-full bg-background ring-1" />
+        <span className="ring-foreground/10 absolute -top-0.5 -right-0.5 size-1.5 rounded-full bg-background ring-1" />
+      </div>
+    </div>
+  );
+}
+
+export default function ProjectPage() {
+  const params = useParams();
+  const slug = params.slug as string;
   const project = slug ? projectsData[slug] : undefined;
 
   if (!project) {
@@ -91,120 +133,127 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
               >
                 <House className="size-4 opacity-60 transition-opacity group-hover:opacity-80" />
               </Link>
-              <button
-                className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full"
-                aria-label="Toggle theme"
-              >
-                <Sun className="size-5" />
-              </button>
+              <ThemeToggle />
             </nav>
           </header>
         </div>
 
         {/* Breadcrumb */}
         <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
-          <div className="mb-6 flex items-center gap-2 font-mono text-xs text-black/40">
-            <Link href="/" className="hover:text-black transition-colors">
-              /
-            </Link>
-            <span>/</span>
-            <Link href="/projects" className="hover:text-black transition-colors">
-              projects
-            </Link>
-            <span className="text-black/20">/</span>
-            <span className="text-black/60">{project.title.toLowerCase().replace(/\s+/g, "-")}</span>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <div className="mb-6 flex items-center gap-2 font-mono text-xs text-foreground/40">
+              <Link href="/" className="hover:text-foreground transition-colors">/</Link>
+              <span>/</span>
+              <Link href="/projects" className="hover:text-foreground transition-colors">projects</Link>
+              <span className="text-foreground/20">/</span>
+              <span className="text-foreground/60">{slug}</span>
+            </div>
 
-          {/* Title & Link */}
-          <div className="flex items-start justify-between gap-4">
-            <h1 className="font-serif text-4xl text-black/80 italic">{project.title}</h1>
-            <a
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shrink-0 inline-flex items-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-xs font-medium text-black/60 hover:bg-accent/5 transition-colors"
-            >
-              <ArrowUpRight className="size-3.5" />
-              Visit
-            </a>
-          </div>
-
-          {/* Stack */}
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            {project.stack.map((s) => (
-              <span
-                key={s.name}
-                className="inline-flex items-center gap-1 rounded-full border border-black/5 bg-white px-2.5 py-1 text-[10px] font-medium text-black/60 shadow-sm"
+            {/* Title & Visit */}
+            <div className="flex items-start justify-between gap-4">
+              <h1 className="font-serif text-4xl text-foreground/80 italic">{project.title}</h1>
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 inline-flex items-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-xs font-medium text-foreground/60 hover:bg-accent/5 transition-colors"
               >
-                {s.type === "motion" ? (
-                  <Image src="/skills/motion.svg" alt={s.name} width={12} height={12} className="size-3" />
-                ) : (
-                  <span className="size-3 flex items-center justify-center text-[8px] font-bold rounded bg-black/5">
-                    {s.name[0]}
-                  </span>
-                )}
-                {s.name}
-              </span>
-            ))}
-          </div>
+                <ArrowUpRight className="size-3.5" />
+                Visit
+              </a>
+            </div>
 
-          {/* Screenshots */}
-          <div className="mt-8 space-y-8">
-            {project.screenshots.map((shot) => (
-              <div key={shot.label}>
-                <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-black/5">
-                  <Image
-                    src={shot.src}
-                    alt={shot.label}
-                    fill
-                    className="object-cover object-top"
-                  />
+            {/* Stack */}
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              {project.stack.map((s) => (
+                <span
+                  key={s.name}
+                  className="inline-flex items-center gap-1 rounded-full border border-black/5 dark:border-white/5 bg-background px-2.5 py-1 text-[10px] font-medium text-foreground/60 shadow-sm"
+                >
+                  {s.type === "motion" ? (
+                    <Image src={s.src || "/skills/motion.svg"} alt={s.name} width={12} height={12} className="size-3 dark:invert" />
+                  ) : (
+                    <span className="size-3 flex items-center justify-center text-[8px] font-bold rounded bg-foreground/5">
+                      {s.name[0]}
+                    </span>
+                  )}
+                  {s.name}
+                </span>
+              ))}
+            </div>
+
+            {/* Screenshots */}
+            <div className="mt-8 space-y-8">
+              {project.screenshots.map((shot) => (
+                <div key={shot.label}>
+                  <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-border/50">
+                    <Image src={shot.src} alt={shot.label} fill className="object-cover object-top" />
+                  </div>
+                  <p className="mt-2 text-xs font-medium text-foreground/40 font-mono">{shot.label}</p>
                 </div>
-                <p className="mt-2 text-xs font-medium text-black/40 font-mono">{shot.label}</p>
+              ))}
+            </div>
+
+            {/* Details */}
+            <p className="mt-8 text-base leading-relaxed text-foreground/60 max-w-2xl">
+              {project.details}
+            </p>
+
+            {/* Prev / Next */}
+            <div className="mt-16 flex items-center justify-between border-t border-border pt-8">
+              <div>
+                {project.prev ? (
+                  <>
+                    <p className="text-[10px] font-mono text-foreground/30 mb-1">Previous</p>
+                    <Link
+                      href={project.prev.href}
+                      className="inline-flex items-center gap-1 text-sm font-medium text-foreground/60 hover:text-foreground transition-colors"
+                    >
+                      <span>{"<-"}</span>
+                      <span className="font-serif italic">{project.prev.title}</span>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-[10px] font-mono text-foreground/30 mb-1">Previous</p>
+                    <span className="font-serif italic text-sm text-foreground/30">&mdash; End &mdash;</span>
+                  </>
+                )}
               </div>
-            ))}
-          </div>
-
-          {/* Details */}
-          <p className="mt-8 text-base leading-relaxed text-black/60 max-w-2xl">
-            {project.details}
-          </p>
-
-          {/* Prev / Next */}
-          <div className="mt-16 flex items-center justify-between border-t border-border pt-8">
-            <div>
-              {project.prev && (
-                <>
-                  <p className="text-[10px] font-mono text-black/30 mb-1">Previous</p>
-                  <Link
-                    href={project.prev.href}
-                    className="text-sm font-medium text-black/60 hover:text-black transition-colors"
-                  >
-                    &mdash; End &mdash;
-                  </Link>
-                </>
-              )}
+              <div className="text-right">
+                {project.next ? (
+                  <>
+                    <p className="text-[10px] font-mono text-foreground/30 mb-1">Next</p>
+                    <Link
+                      href={project.next.href}
+                      className="inline-flex items-center gap-1 text-sm font-medium text-foreground/60 hover:text-foreground transition-colors"
+                    >
+                      <span className="font-serif italic">{project.next.title}</span>
+                      <span>{"->"}</span>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-[10px] font-mono text-foreground/30 mb-1">Next</p>
+                    <span className="font-serif italic text-sm text-foreground/30">&mdash; End &mdash;</span>
+                  </>
+                )}
+              </div>
             </div>
-            <div className="text-right">
-              {project.next && (
-                <>
-                  <p className="text-[10px] font-mono text-black/30 mb-1">Next</p>
-                  <Link
-                    href={project.next.href}
-                    className="text-sm font-medium text-black/60 hover:text-black transition-colors"
-                  >
-                    {project.next.title}
-                    <span className="ml-1 inline-block">→</span>
-                  </Link>
-                </>
-              )}
-            </div>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Footer */}
-        <div className="border-border ring-0.5 ring-border mx-auto max-w-3xl border-x py-4 w-full px-8 text-center">
-          <p className="text-xs text-black/20">&copy; 2026 All rights reserved.</p>
+        <Separator />
+
+        {/* Copyright */}
+        <div className="border-border ring-0.5 ring-border mx-auto max-w-3xl border-x py-4 w-full space-y-4">
+          <div className="relative flex flex-col items-center justify-between px-8 sm:flex-row">
+            <p className="font-mono text-xs text-foreground/40">&copy; 2026 All rights reserved.</p>
+          </div>
         </div>
       </div>
     </div>

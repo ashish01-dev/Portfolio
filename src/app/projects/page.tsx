@@ -9,28 +9,25 @@ import { House, MoveRight, Sun, Moon } from "lucide-react";
 
 const projects = [
   {
-    title: "Divine Canvas",
-    description: "An e-commerce platform offering premium, sacred vector paintings.",
-    href: "/projects/divine-canvas",
-    image: "/projects/divine-canvas/home.svg",
-    stack: [{ n: "N" }, { t: "T" }, { m: "M" }],
-    more: "+3",
+    title: "JEEIFY",
+    description: "JEEIFY is a JEE preparation assistant website.",
+    href: "/projects/jeeify",
+    image: "/projects/3.png",
+    badge: "100+ users!",
+    stack: ["Next.js", "Tailwind", "Supabase", "Drizzle"],
   },
   {
-    title: "rvyu.",
-    description: "A place for developers to share their side projects and get feedback from peers.",
-    href: "/projects/rvyu",
-    image: "/rvyu.svg",
-    stack: [{ n: "N" }, { t: "T" }, { m: "M" }],
-    more: "+3",
+    title: "INNOVISION",
+    description: "A platform for showcasing innovative projects and ideas.",
+    href: "/projects/innovision",
+    image: "/projects/4.png",
+    badge: "Live",
+    stack: ["Next.js", "TypeScript", "Tailwind"],
   },
   {
-    title: "The Leansuite",
-    description: "SaaS website and dashboard with a custom CMS to manage blogs and pages.",
-    href: "/projects/theleansuite",
-    image: "/projects/theleansuite/theleansuite.svg",
-    stack: [{ n: "N" }, { t: "T" }, { m: "M" }],
-    more: "+2",
+    title: "Coming Soon",
+    href: "#",
+    comingSoon: true,
   },
 ];
 
@@ -82,7 +79,7 @@ export default function ProjectsPage() {
 
         <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 flex-1 px-8">
           <div className="mb-8 space-y-2">
-            <h2 className="font-serif text-3xl text-foreground/80 italic">proof of work</h2>
+            <h2 className="font-serif text-3xl text-foreground/80 italic">Projects</h2>
             <p className="text-base tracking-wider text-foreground/40">
               A showcase of my work and side projects.
             </p>
@@ -96,45 +93,42 @@ export default function ProjectsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
               >
-                <Link
-                  href={project.href}
-                  className="group flex cursor-pointer flex-col gap-4 rounded-lg pb-4 transition-shadow duration-300 hover:shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] dark:hover:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)]"
-                >
-                  <div className="relative aspect-[3/2] overflow-hidden rounded-lg transition-all duration-300 group-hover:scale-[1.02]">
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      width={400}
-                      height={300}
-                      className="h-full w-full object-cover object-top"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1 transition-all duration-300 group-hover:translate-x-4">
-                    <h4 className="text-base font-semibold text-foreground">{project.title}</h4>
-                    <p className="w-[calc(100%-1.5rem)] text-sm text-foreground/50">{project.description}</p>
-                    <div className="mt-auto flex items-center pt-2">
-                      {project.stack.map((s: any, i: number) => (
-                        <div
-                          key={i}
-                          className="flex h-7 cursor-pointer items-center rounded-full border border-black/5 bg-white shadow-sm dark:border-white/5 dark:bg-white/5"
-                          style={{ marginLeft: i > 0 ? -8 : 0, zIndex: project.stack.length - i }}
-                        >
-                          <div className="flex h-7 w-7 shrink-0 items-center justify-center">
-                            <span className="text-[10px] font-semibold text-black/60">{s.n || s.t || s.m}</span>
-                          </div>
-                        </div>
-                      ))}
-                      <div
-                        className="flex h-7 cursor-pointer items-center rounded-full border border-black/5 bg-white shadow-sm dark:border-white/5 dark:bg-white/5"
-                        style={{ marginLeft: -8, zIndex: 0 }}
-                      >
-                        <div className="flex h-7 w-7 shrink-0 items-center justify-center">
-                          <span className="text-[10px] font-semibold text-black/60">{project.more}</span>
-                        </div>
+                {project.comingSoon ? (
+                  <div className="group flex flex-col gap-4 pb-4 pointer-events-none">
+                    <div className="relative aspect-[3/2] overflow-hidden rounded-lg border border-dashed border-foreground/20 bg-muted/30 flex items-center justify-center">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-lg font-serif italic text-foreground/20 -rotate-12">Coming Soon</span>
                       </div>
                     </div>
+                    <div className="flex flex-col gap-1">
+                      <h4 className="text-base font-semibold text-foreground/30">{project.title}</h4>
+                    </div>
                   </div>
-                </Link>
+                ) : (
+                  <Link
+                    href={project.href}
+                    className="group flex cursor-pointer flex-col gap-4 pb-4"
+                  >
+                    <div className="relative aspect-[3/2] overflow-hidden rounded-lg transition-all duration-300 group-hover:scale-[1.02]">
+                      <Image
+                        src={project.image!}
+                        alt={project.title}
+                        width={400}
+                        height={300}
+                        className="h-full w-full object-cover object-top"
+                      />
+                      {project.badge && (
+                        <span className={`absolute bottom-2 right-2 rounded-full px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm ${project.badge === "100+ users!" ? "bg-green-500/90" : "bg-red-500/90"}`}>
+                          {project.badge}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex flex-col gap-1 transition-all duration-300 group-hover:translate-x-4">
+                      <h4 className="text-base font-semibold text-foreground">{project.title}</h4>
+                      <p className="w-[calc(100%-1.5rem)] text-sm text-foreground/50">{project.description}</p>
+                    </div>
+                  </Link>
+                )}
               </motion.div>
             ))}
           </div>

@@ -17,10 +17,54 @@ const projectsData: Record<
     stack: { name: string; type: string; src?: string }[];
     screenshots: { src: string; label: string }[];
     details: string;
+    badge?: string;
     prev?: { title: string; href: string };
     next?: { title: string; href: string };
   }
 > = {
+  jeeify: {
+    title: "JEEIFY",
+    description: "JEEIFY is a JEE preparation assistant website.",
+    url: "https://jeeify.vercel.app/",
+    stack: [
+      { name: "Next.js", type: "next" },
+      { name: "Tailwind", type: "tailwind" },
+      { name: "Supabase", type: "supabase" },
+      { name: "Drizzle", type: "drizzle" },
+    ],
+    screenshots: [{ src: "/projects/3.png", label: "Homepage" }],
+    badge: "100+ users!",
+    details: [
+      "<p><strong>Track Your Syllabus</strong> &ndash; Mark chapters as done/in-progress/revision for Physics, Chemistry, and Maths. See your progress at a glance.</p>",
+      "<p><strong>Plan Your Time</strong> &ndash; A weekly timetable (hour-by-hour grid) and daily study planner to organize your routine.</p>",
+      "<p><strong>Analyze Progress</strong> &ndash; Dashboard with heatmaps, subject-wise completion %, study pace (on-track/behind), and gamification (streaks, XP, levels, 10 achievements).</p>",
+      "<p><strong>AI Tutor</strong> &ndash; Ask doubts, get summaries, formula sheets, or quiz generators. Powered by AI through OpenRouter.</p>",
+      "<p><strong>Practice PYQs</strong> &ndash; 900+ previous year JEE questions with answer feedback, bookmarks, mock tests with timers, and analytics (accuracy, weak chapters).</p>",
+      "<p><strong>Pomodoro Timer</strong> &ndash; Floating focus/break timer on every page that logs your study sessions.</p>",
+      "<p><strong>Backlog Tracker</strong> &ndash; Add tasks you&apos;ve fallen behind on (theory, PYQs, DPP, revision) with due dates and spaced repetition.</p>",
+      "<p><strong>Test Analyzer</strong> &ndash; Log test scores, view trends (bar charts), accuracy stats, and get confetti when you score 90%+.</p>",
+      "<p><strong>Gamification</strong> &ndash; Earn XP, level up, unlock 10 achievements (streaks, chapters completed, questions solved, etc.) to stay motivated.</p>",
+      "<p><strong>Formula Vault</strong> &ndash; Upload and organize formula sheets/photos per chapter, download anytime.</p>",
+      "<p><strong>Activity Journal</strong> &ndash; GitHub-style yearly heatmap + monthly calendar showing what you studied each day.</p>",
+      "<p><strong>Syncs Across Devices</strong> &ndash; All data saved locally (works offline) and synced to Supabase cloud when online.</p>",
+      '<p class="text-foreground/60" style="margin-top:0.5rem">It&apos;s an all-in-one JEE command center &mdash; replaces scattered notebooks, spreadsheets, and apps. You track everything in one place, see your weak areas, get AI help instantly, and stay motivated with streaks &amp; achievements.</p>',
+    ].join(""),
+    next: { title: "INNOVISION", href: "/projects/innovision" },
+  },
+  innovision: {
+    title: "INNOVISION",
+    description: "A platform for showcasing innovative projects and ideas.",
+    url: "https://innovison.vercel.app/",
+    stack: [
+      { name: "Next.js", type: "next" },
+      { name: "TypeScript", type: "ts" },
+      { name: "Tailwind", type: "tailwind" },
+    ],
+    screenshots: [{ src: "/projects/4.png", label: "Homepage" }],
+    badge: "Live",
+    details: "",
+    prev: { title: "JEEIFY", href: "/projects/jeeify" },
+  },
   "divine-canvas": {
     title: "Divine Canvas",
     description: "An e-commerce platform offering premium, sacred vector paintings.",
@@ -38,7 +82,8 @@ const projectsData: Record<
     screenshots: [{ src: "/projects/divine-canvas/home.svg", label: "Home" }],
     details:
       "Built an e-commerce store for Divine Canvas that sells sacred vector artwork. It's got a proper product catalog with filtering, a smooth cart and checkout flow, and a headless CMS running on Payload so they can manage inventory and orders on their own.",
-    next: { title: "rvyu.", href: "/projects/rvyu" },
+    prev: { title: "The Leansuite", href: "/projects/theleansuite" },
+    next: { title: "JEEIFY", href: "/projects/jeeify" },
   },
   rvyu: {
     title: "rvyu.",
@@ -71,6 +116,7 @@ const projectsData: Record<
     details:
       "Built a SaaS platform for The Leansuite with a public website, dashboard, and a custom headless CMS using Sanity to manage blogs, pages, and content seamlessly.",
     prev: { title: "rvyu.", href: "/projects/rvyu" },
+    next: { title: "Divine Canvas", href: "/projects/divine-canvas" },
   },
 };
 
@@ -192,6 +238,11 @@ export default function ProjectPage() {
                 <div key={shot.label}>
                   <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-border/50">
                     <Image src={shot.src} alt={shot.label} fill className="object-cover object-top" />
+                    {project.badge && (
+                      <span className={`absolute bottom-2 right-2 rounded-full px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm ${project.badge === "100+ users!" ? "bg-green-500/90" : "bg-red-500/90"}`}>
+                        {project.badge}
+                      </span>
+                    )}
                   </div>
                   <p className="mt-2 text-xs font-medium text-foreground/40 font-mono">{shot.label}</p>
                 </div>
@@ -199,9 +250,7 @@ export default function ProjectPage() {
             </div>
 
             {/* Details */}
-            <p className="mt-8 text-base leading-relaxed text-foreground/60 max-w-2xl">
-              {project.details}
-            </p>
+            <div className="mt-8 space-y-3 text-base leading-relaxed text-foreground/60 max-w-2xl" dangerouslySetInnerHTML={{ __html: project.details }} />
 
             {/* Prev / Next */}
             <div className="mt-16 flex items-center justify-between border-t border-border pt-8">

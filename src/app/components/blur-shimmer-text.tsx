@@ -16,7 +16,7 @@ export default function BlurShimmerText({
   className,
 }: BlurShimmerTextProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState(0.001);
   const animRef = useRef<number | null>(null);
   const startRef = useRef<number>(0);
 
@@ -40,11 +40,11 @@ export default function BlurShimmerText({
     };
   }, [texts, interval]);
 
-  const currentText = texts[currentIndex];
   const nextIndex = (currentIndex + 1) % texts.length;
+  const currentText = texts[currentIndex];
   const nextText = texts[nextIndex];
 
-  const chars = nextText.split("").map((char, i) => {
+  const incoming = nextText.split("").map((char, i) => {
     const charProgress = Math.max(0, Math.min(1, (progress * nextText.length - i) / 1.5));
     const blurVal = blur * (1 - charProgress);
     const opacity = charProgress;
@@ -59,20 +59,34 @@ export default function BlurShimmerText({
     );
   });
 
+  const outgoing = currentText.split("").map((char, i) => {
+    const charProgress = Math.max(0, Math.min(1, (progress * currentText.length - i) / 1.5));
+    const blurVal = blur * charProgress;
+    const opacity = 1 - charProgress;
+    return (
+      <span
+        key={i}
+        className="inline-block whitespace-pre"
+        style={{ filter: `blur(${blurVal}px)`, opacity }}
+      >
+        {char}
+      </span>
+    );
+  });
+
   return (
-    <div className={`inline-grid ${className || ""}`}>
+    <span className={`inline-grid ${className || ""}`}>
       {texts.map((text, i) => (
         <span
           key={i}
           className="invisible col-start-1 row-start-1 block whitespace-nowrap"
           aria-hidden="true"
         >
-          {text.split("").map((char, j) => (
-            <span key={j} className="inline-block whitespace-pre">{char}</span>
-          ))}
+          {text}
         </span>
       ))}
-      <p className="col-start-1 row-start-1 block whitespace-nowrap">{chars}</p>
-    </div>
+      <span className="col-start-1 row-start-1 block whitespace-nowrap">{outgoing}</span>
+      <span className="col-start-1 row-start-1 block whitespace-nowrap">{incoming}</span>
+    </span>
   );
 }

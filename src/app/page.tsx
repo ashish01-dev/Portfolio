@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
@@ -60,8 +60,9 @@ const socialLinks = [
 const projects = [
   {
     title: "JEEIFY",
-    description: "JEEIFY is a JEE preparation assistant website. Here's what it does in simple terms:",
-    href: "https://jeeify.vercel.app/",
+    description: "JEEIFY is a JEE preparation assistant website.",
+    href: "/projects/jeeify",
+    url: "https://jeeify.vercel.app/",
     image: "/projects/3.png",
     badge: "100+ users!",
     stack: [
@@ -70,29 +71,14 @@ const projects = [
       { name: "Supabase", type: "icon" },
       { name: "Drizzle", type: "icon" },
     ],
-    longDescription: (
-      <>
-        <p><strong>Track Your Syllabus</strong> – Mark chapters as done/in-progress/revision for Physics, Chemistry, and Maths. See your progress at a glance.</p>
-        <p><strong>Plan Your Time</strong> – A weekly timetable (hour-by-hour grid) and daily study planner to organize your routine.</p>
-        <p><strong>Analyze Progress</strong> – Dashboard with heatmaps, subject-wise completion %, study pace (on-track/behind), and gamification (streaks, XP, levels, 10 achievements).</p>
-        <p><strong>AI Tutor</strong> – Ask doubts, get summaries, formula sheets, or quiz generators. Powered by AI through OpenRouter.</p>
-        <p><strong>Practice PYQs</strong> – 900+ previous year JEE questions with answer feedback, bookmarks, mock tests with timers, and analytics (accuracy, weak chapters).</p>
-        <p><strong>Pomodoro Timer</strong> – Floating focus/break timer on every page that logs your study sessions.</p>
-        <p><strong>Backlog Tracker</strong> – Add tasks you&apos;ve fallen behind on (theory, PYQs, DPP, revision) with due dates and spaced repetition.</p>
-        <p><strong>Test Analyzer</strong> – Log test scores, view trends (bar charts), accuracy stats, and get confetti when you score 90%+.</p>
-        <p><strong>Gamification</strong> – Earn XP, level up, unlock 10 achievements (streaks, chapters completed, questions solved, etc.) to stay motivated.</p>
-        <p><strong>Formula Vault</strong> – Upload and organize formula sheets/photos per chapter, download anytime.</p>
-        <p><strong>Activity Journal</strong> – GitHub-style yearly heatmap + monthly calendar showing what you studied each day.</p>
-        <p><strong>Syncs Across Devices</strong> – All data saved locally (works offline) and synced to Supabase cloud when online.</p>
-        <p className="text-foreground/60 mt-2">It&apos;s an all-in-one JEE command center — replaces scattered notebooks, spreadsheets, and apps. You track everything in one place, see your weak areas, get AI help instantly, and stay motivated with streaks & achievements.</p>
-      </>
-    ),
   },
   {
     title: "INNOVISION",
     description: "A platform for showcasing innovative projects and ideas.",
-    href: "https://innovison.vercel.app/",
+    href: "/projects/innovision",
+    url: "https://innovison.vercel.app/",
     image: "/projects/4.png",
+    badge: "Live",
     stack: [
       { name: "Next.js", type: "icon" },
       { name: "TypeScript", type: "icon" },
@@ -440,7 +426,7 @@ function ForeignWordTooltip() {
   );
 }
 
-function Clock() {
+const Clock = /*@__PURE__*/ memo(function Clock() {
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
 
   useEffect(() => {
@@ -469,7 +455,7 @@ function Clock() {
     .replace(",", "  •");
 
   return <>{formatted} IST.</>;
-}
+});
 
 function ScrollIndicator() {
   const { scrollY } = useScroll();
@@ -506,23 +492,8 @@ function ScrollIndicator() {
 
 export default function Home() {
   const [expanded, setExpanded] = useState(false);
-  const [x, setX] = useState(100);
   const [showInstaPopup, setShowInstaPopup] = useState(false);
   const { theme } = useTheme();
-
-  const animateX = useCallback(() => {
-    let val = 100;
-    const interval = setInterval(() => {
-      val = 30 + Math.sin(Date.now() / 2000) * 30;
-      setX(val);
-    }, 50);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const cleanup = animateX();
-    return cleanup;
-  }, [animateX]);
 
   return (
     <div className="relative min-h-dvh w-full overflow-clip">
@@ -563,10 +534,11 @@ export default function Home() {
                 height={900}
                 className="h-[200px] w-full rounded-none object-cover sm:h-[270px]"
                 priority
+                fetchPriority="high"
               />
               <div className="absolute inset-0 flex items-center justify-center px-4">
                 <p className="text-center font-serif text-base text-white italic sm:text-xl">
-                  I am gonna be hokage one day.
+                  Trying to be better everyday.
                 </p>
               </div>
             </div>
@@ -617,7 +589,7 @@ export default function Home() {
                 <h1 className="mb-0 font-serif text-2xl font-medium tracking-[0.01em] italic sm:text-4xl text-foreground">
                   Ashish Kumar Singh
                 </h1>
-                <div className="font-manrope flex flex-wrap items-center gap-1 text-xs font-medium text-foreground/40 sm:text-sm">
+                <div className="flex flex-wrap items-center gap-1 text-xs font-medium text-foreground/40 sm:text-sm">
                   <p>Frontend Developer — <BlurShimmerText texts={["Designer", "Developer", "Creator", "Freelancer", "Problem Solver"]} blur={4} interval={2} className="text-foreground" /></p>
                 </div>
               </div>
@@ -676,7 +648,7 @@ export default function Home() {
 
         {/* EXPERIENCE */}
         <MotionSection delay={0.1}>
-          <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
+          <div className="section-contain border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
             <h2 className="mb-2 font-serif text-xl text-foreground/50">Professional Experience</h2>
             <div className="group mt-4 rounded-2xl transition-all duration-300">
               <div
@@ -723,7 +695,7 @@ export default function Home() {
 
         {/* PROJECTS */}
         <MotionSection delay={0.2}>
-          <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
+          <div className="section-contain border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="font-serif text-xl text-black/50 dark:text-white/40">Projects</h2>
               <Link href="/projects" className="inline-flex items-center gap-1 text-xs font-medium text-foreground/30 transition-colors duration-200 hover:text-foreground/90">
@@ -751,10 +723,8 @@ export default function Home() {
                       </div>
                     </div>
                   ) : (
-                    <a
+                    <Link
                       href={project.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
                       className="group flex cursor-pointer flex-col gap-4 pb-4"
                     >
                       <div className="relative perspective-[2000px]">
@@ -765,9 +735,9 @@ export default function Home() {
                           style={{ transformStyle: "preserve-3d" }}
                           className="relative aspect-[3/2] overflow-hidden rounded-lg"
                         >
-                          <Image src={project.image} alt={project.title} width={400} height={300} className="h-full w-full object-cover object-top" />
+                          <Image src={project.image} alt={project.title} width={400} height={300} loading="lazy" className="h-full w-full object-cover object-top" />
                           {project.badge && (
-                            <span className="absolute top-2 left-2 rounded-full bg-green-500/90 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm">
+                            <span className={`absolute bottom-2 right-2 rounded-full px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm ${project.badge === "100+ users!" ? "bg-green-500/90" : "bg-red-500/90"}`}>
                               {project.badge}
                             </span>
                           )}
@@ -779,7 +749,7 @@ export default function Home() {
                         <p className="w-[calc(100%-1.5rem)] text-sm text-foreground/50 line-clamp-2">{project.description}</p>
                         <ProjectStackBadge stack={project.stack} more={(project as any).more} />
                       </div>
-                    </a>
+                    </Link>
                   )}
                 </motion.div>
               ))}
@@ -794,7 +764,7 @@ export default function Home() {
 
         {/* STACK */}
         <MotionSection delay={0.3}>
-          <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
+          <div className="section-contain border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
               <h2 className="mb-6 font-serif text-xl text-black/50 dark:text-white/40">Stack I use</h2>
             <div className="relative grid grid-cols-4 justify-items-center gap-8 sm:grid-cols-6 md:grid-cols-8 md:justify-items-start lg:grid-cols-12">
               <span className="pointer-events-none absolute -top-12 right-0 size-12 -rotate-34 font-mono text-[10px] font-medium text-foreground/30">drag me :D</span>
@@ -811,7 +781,7 @@ export default function Home() {
 
         {/* MY THOUGHTS */}
         <MotionSection delay={0.4}>
-          <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
+          <div className="section-contain border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
             <div className="mb-4 flex items-baseline justify-between">
               <h2 className="font-serif text-xl text-foreground/50 italic">My Thoughts</h2>
               <Link href="/blogs" className="inline-flex cursor-pointer items-center gap-1 text-xs font-medium text-foreground/30 transition-colors duration-200 hover:text-foreground/90">
@@ -855,22 +825,17 @@ export default function Home() {
         {/* CTA + FOOTER SOCIALS + KAIZEN + QUOTE — exact original structure */}
         <MotionSection delay={0.5}>
           {/* CTA Section */}
-          <div className="border-border ring-0.5 ring-border mx-auto max-w-3xl border-x py-4 w-full flex-col px-6 sm:flex sm:items-center sm:justify-between sm:px-12">
+          <div className="section-contain border-border ring-0.5 ring-border mx-auto max-w-3xl border-x py-4 w-full flex-col px-6 sm:flex sm:items-center sm:justify-between sm:px-12">
             <p className="mb-4 text-center font-serif text-2xl text-pretty italic text-foreground/50 sm:mb-3 md:text-xl">
               If you&apos;ve read this far, you might be interested in what I do.
             </p>
             <div className="mt-4 flex w-full justify-center sm:mt-0 sm:w-auto sm:justify-end">
               <a href="https://cal.com/ashish/30min" target="_blank" rel="noopener noreferrer">
                 <button
-                  className="relative cursor-pointer rounded-lg border font-medium backdrop-blur-xl transition-shadow duration-300 ease-in-out hover:shadow dark:bg-[radial-gradient(circle_at_50%_0%,var(--primary)/10%_0%,transparent_60%)] dark:hover:shadow-[0_0_20px_var(--primary)/20%] group bg-background text-foreground border-border h-auto px-3 py-2"
+                  className="shimmer-btn relative cursor-pointer rounded-lg border font-medium backdrop-blur-xl transition-shadow duration-300 ease-in-out hover:shadow dark:bg-[radial-gradient(circle_at_50%_0%,var(--primary)/10%_0%,transparent_60%)] dark:hover:shadow-[0_0_20px_var(--primary)/20%] group bg-background text-foreground border-border h-auto px-3 py-2"
                   style={{ transform: "scale(0.8)" }}
                 >
-                  <span
-                    className="relative block size-full text-sm tracking-wide text-black uppercase dark:font-light dark:text-[rgb(255,255,255,90%)]"
-                    style={{
-                      maskImage: `linear-gradient(-75deg,var(--primary) ${x + 20}%,transparent ${x + 30}%,var(--primary) ${x + 100}%)`,
-                    }}
-                  >
+                  <span className="shimmer-text relative block size-full text-sm tracking-wide text-black uppercase dark:font-light dark:text-[rgb(255,255,255,90%)]">
                     <div className="relative z-20 flex items-center gap-2 transition-all duration-300 group-hover:gap-8">
                       <div className="h-5 w-5 shrink-0 overflow-hidden rounded-full">
                         <Image src="/me.png" alt="Ashish Kumar Singh" width={20} height={20} className="h-full w-full rounded-full bg-zinc-900 object-cover dark:bg-white" />
@@ -882,14 +847,7 @@ export default function Home() {
                       <span className="relative ml-0 block text-sm font-bold whitespace-nowrap normal-case transition-all duration-300 group-hover:ml-4">Book a call</span>
                     </div>
                   </span>
-                  <span
-                    className="absolute inset-0 z-10 block rounded-[inherit] p-px"
-                    style={{
-                      mask: "linear-gradient(rgb(0,0,0), rgb(0,0,0)) content-box exclude, linear-gradient(rgb(0,0,0), rgb(0,0,0))",
-                      WebkitMask: "linear-gradient(rgb(0,0,0), rgb(0,0,0)) content-box exclude, linear-gradient(rgb(0,0,0), rgb(0,0,0))",
-                      backgroundImage: `linear-gradient(-75deg,var(--primary)/10% ${x + 20}%,var(--primary)/50% ${x + 25}%,var(--primary)/10% ${x + 100}%)`,
-                    }}
-                  />
+                  <span className="shimmer-border absolute inset-0 z-10 block rounded-[inherit] p-px" />
                 </button>
               </a>
             </div>
@@ -952,7 +910,7 @@ export default function Home() {
           <div className="relative z-10 flex flex-col justify-center">
             <div className="flex flex-col">
               <p className="font-serif text-lg leading-relaxed text-foreground/40 italic dark:text-white/40">
-                &quot;karmaṇy evādhikāras te mā phaleṣu kadācana. mā karma-phala-hetur bhūr mā te saṅgo&apos;stv akarmaṇi&quot;
+                &quot;कर्मण्येवाधिकारस्ते मा फलेषु कदाचन। मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥&quot;
               </p>
               <div className="mt-4 flex items-center gap-3 self-end">
                 <div className="h-px w-8 bg-foreground/20" />

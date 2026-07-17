@@ -37,9 +37,9 @@
   --color-secondary-foreground: var(--secondary-foreground);
   --color-primary: var(--primary);
   --color-pattern-fg: var(--pattern-fg);
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
-  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-sans: var(--font-manrope);
+  --font-serif: var(--font-instrument-serif);
+  --font-mono: var(--font-geist-mono);
 }
 
 html {
@@ -79,11 +79,40 @@ body {
 
 .text-inner-shadow {
   text-shadow:
-    1px 1px 1px rgba(255, 255, 255, 0.5),
-    -1px -1px 1px rgba(0, 0, 0, 0.1);
+    1px 1px 1px color-mix(in oklch, white, transparent 50%),
+    -1px -1px 1px color-mix(in oklch, black, transparent 90%);
 }
 .dark .text-inner-shadow {
   text-shadow:
-    -1px -1px 1px rgba(0, 0, 0, 0.5),
-    1px 1px 1px rgba(255, 255, 255, 0.1);
+    -1px -1px 1px color-mix(in oklch, black, transparent 50%),
+    1px 1px 1px color-mix(in oklch, white, transparent 90%);
+}
+
+@keyframes shimmer-slide {
+  0%, 100% { mask-position: 100% 0; }
+  50% { mask-position: -100% 0; }
+}
+
+.shimmer-btn {
+  overflow: hidden;
+}
+
+.shimmer-text {
+  mask-image: linear-gradient(-75deg, var(--primary) 30%, transparent 45%, var(--primary) 70%);
+  mask-size: 300% 100%;
+  -webkit-mask-size: 300% 100%;
+  animation: shimmer-slide 4s ease-in-out infinite;
+}
+
+.shimmer-border {
+  mask: linear-gradient(rgb(0,0,0), rgb(0,0,0)) content-box exclude, linear-gradient(rgb(0,0,0), rgb(0,0,0));
+  -webkit-mask: linear-gradient(rgb(0,0,0), rgb(0,0,0)) content-box exclude, linear-gradient(rgb(0,0,0), rgb(0,0,0));
+  background-image: linear-gradient(-75deg, var(--primary)/10% 30%, var(--primary)/50% 45%, var(--primary)/10% 70%);
+  background-size: 300% 100%;
+  animation: shimmer-slide 4s ease-in-out infinite;
+}
+
+.section-contain {
+  content-visibility: auto;
+  contain-intrinsic-size: 200px;
 }

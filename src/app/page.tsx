@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { motion } from "framer-motion";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { Typewriter } from "react-simple-typewriter";
 import {
   House,
   MessageCircle,
@@ -155,28 +156,6 @@ function Separator() {
   );
 }
 
-function FadingWords({ words }: { words: string[] }) {
-  const [index, setIndex] = useState(0);
-  const [fadeIn, setFadeIn] = useState(true);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFadeIn(false);
-      setTimeout(() => {
-        setIndex((prev) => (prev + 1) % words.length);
-        setFadeIn(true);
-      }, 300);
-    }, 2200);
-    return () => clearInterval(interval);
-  }, [words.length]);
-
-  return (
-    <span className={`inline-block transition-opacity duration-300 ${fadeIn ? "opacity-100" : "opacity-0"}`}>
-      {words[index]}
-    </span>
-  );
-}
-
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -312,6 +291,39 @@ function MotionSection({ children, className, delay = 0 }: { children: React.Rea
   );
 }
 
+function ScrollIndicator() {
+  const { scrollY } = useScroll();
+  const [hidden, setHidden] = useState(false);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (latest > 60) setHidden(true);
+    else setHidden(false);
+  });
+
+  return (
+    <motion.div
+      className="fixed right-3 top-1/2 z-50 hidden flex-col items-center gap-4 md:flex"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: hidden ? 0 : 1, x: hidden ? 20 : 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      style={{ translateY: "-50%" }}
+    >
+      <span className="font-serif text-[10px] font-medium italic tracking-[0.15em] text-foreground/25 [writing-mode:vertical-rl]">
+        scroll
+      </span>
+      <svg viewBox="0 0 18 64" className="size-4 text-foreground/20" fill="none" stroke="currentColor" strokeWidth="1.2">
+        <path d="M9 0 Q 16 16, 9 32 Q 2 48, 9 64" />
+        <path d="M4 55 L9 64 L14 55" />
+      </svg>
+      <motion.div
+        className="mt-1 h-6 w-px bg-foreground/10"
+        animate={{ height: [6, 18, 6] }}
+        transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+      />
+    </motion.div>
+  );
+}
+
 export default function Home() {
   const [expanded, setExpanded] = useState(false);
   const [x, setX] = useState(100);
@@ -334,6 +346,7 @@ export default function Home() {
 
   return (
     <div className="relative min-h-dvh w-full overflow-clip">
+      <ScrollIndicator />
       <div className="relative mx-auto max-w-3xl">
         <Ruler />
       </div>
@@ -424,7 +437,7 @@ export default function Home() {
                   Ashish Kumar Singh
                 </h1>
                 <div className="font-manrope flex flex-wrap items-center gap-1 text-xs font-medium text-foreground/40 sm:text-sm">
-                  <p>Frontend Developer — <FadingWords words={["Designer", "Developer", "Creator"]} /></p>
+                  <p>Frontend Developer — <Typewriter words={["Designer", "Developer", "Creator"]} loop={0} cursor cursorStyle="|" typeSpeed={70} deleteSpeed={50} delaySpeed={1500} /></p>
                 </div>
               </div>
               <div className="mt-3 flex justify-start gap-1 px-0 sm:mt-0 sm:gap-2">
@@ -471,6 +484,23 @@ export default function Home() {
                 <PenLine className="size-4 opacity-40" />
                 Email
               </a>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* GITHUB CONTRIBUTION GRAPH — fully integrated into profile area */}
+        <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-3 px-4 sm:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
+          >
+            <div className="overflow-hidden rounded-lg border border-border/60 bg-muted/20 p-1 sm:p-2">
+              <img
+                src="https://ghchart.rshah.org/ashish01-dev"
+                alt="GitHub contribution graph for ashish01-dev"
+                className="w-full"
+              />
             </div>
           </motion.div>
         </div>
@@ -583,24 +613,6 @@ export default function Home() {
           </div>
         </MotionSection>
 
-        <Separator />
-
-        {/* GITHUB CONTRIBUTION GRAPH */}
-        <MotionSection delay={0.35}>
-          <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
-            <h2 className="mb-4 font-serif text-xl text-foreground/50">GitHub Activity</h2>
-            <div className="overflow-hidden rounded-lg border border-border bg-muted/30 p-2 sm:p-4">
-              <img
-                src="https://ghchart.rshah.org/ashish01-dev"
-                alt="GitHub contribution graph for ashish01-dev"
-                className="w-full"
-              />
-            </div>
-          </div>
-        </MotionSection>
-
-        <Separator />
-
         {/* MY THOUGHTS */}
         <MotionSection delay={0.4}>
           <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
@@ -685,21 +697,50 @@ export default function Home() {
 
             <p className="py-2 text-center text-sm font-medium text-foreground/30 uppercase">or</p>
 
-            {/* FOOTER SOCIAL CARDS — using CSS group-hover like original */}
-            <div className="group flex items-center justify-center flex-wrap">
-              {footerSocials.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`${s.z} bg-background -mr-1 flex w-13 cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-foreground/20 p-2 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition-all duration-300 group-hover:mr-2 group-hover:rotate-0 dark:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)] ${s.label === "Github" ? "-rotate-20" : s.label === "Instagram" ? "-rotate-10" : s.label === "Twitter" ? "-rotate-2" : s.label === "LinkedIn" ? "rotate-10" : "rotate-20"}`}
-                >
-                  <s.icon className="size-5" />
-                  <p className="text-[8px] font-bold text-foreground/50">{s.label}</p>
-                </a>
-              ))}
-            </div>
+            {/* FOOTER SOCIAL CARDS — framer-motion spring stagger */}
+            <motion.div
+              className="flex items-center justify-center flex-wrap"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } },
+              }}
+            >
+              {footerSocials.map((s, i) => {
+                const baseRotate = [-20, -10, -2, 10, 20][i] || 0;
+                return (
+                  <motion.a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${s.z} bg-background -mr-1 flex w-13 cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-foreground/20 p-2 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] dark:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)]`}
+                    variants={{
+                      hidden: { opacity: 0, scale: 0.6, rotate: baseRotate, x: -10 },
+                      visible: {
+                        opacity: 1,
+                        scale: 1,
+                        rotate: baseRotate,
+                        x: 0,
+                        transition: { type: "spring", stiffness: 200, damping: 15 },
+                      },
+                    }}
+                    whileHover={{
+                      rotate: 0,
+                      scale: 1.12,
+                      marginRight: "0.5rem",
+                      transition: { type: "spring", stiffness: 300, damping: 12 },
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <s.icon className="size-5" />
+                    <p className="text-[8px] font-bold text-foreground/50">{s.label}</p>
+                  </motion.a>
+                );
+              })}
+            </motion.div>
           </div>
         </MotionSection>
 

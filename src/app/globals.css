@@ -42,12 +42,20 @@
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
+html {
+  transition: color-scheme 0.3s ease;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-* {
+*, *::before, *::after {
   border-color: var(--border);
+  transition-property: border-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
 }

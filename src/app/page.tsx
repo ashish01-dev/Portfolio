@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
@@ -13,7 +13,6 @@ import {
   Sun,
   Moon,
   MoveRight,
-  Plus,
 } from "lucide-react";
 
 function GithubIcon({ className }: { className?: string }) {
@@ -40,15 +39,6 @@ function LinkedinIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={className || "size-4"} fill="currentColor">
       <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-    </svg>
-  );
-}
-
-function MailIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className || "size-5"} fill="none" stroke="currentColor" strokeWidth="2">
-      <rect x="2" y="4" width="20" height="16" rx="2" />
-      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
     </svg>
   );
 }
@@ -123,11 +113,16 @@ const skills = [
 ];
 
 const footerSocials = [
-  { href: "https://github.com/ashish-kumar-singh", icon: GithubIcon, label: "Github", rotate: -20 },
-  { href: "https://www.instagram.com/ashish.kumar.singh", icon: InstagramIcon, label: "Instagram", rotate: -10 },
-  { href: "https://x.com/ashish_k_singh", icon: XIcon, label: "Twitter", rotate: -2 },
-  { href: "https://www.linkedin.com/in/ashish-kumar-singh", icon: LinkedinIcon, label: "LinkedIn", rotate: 10 },
-  { href: "mailto:ashish@example.com", icon: MailIcon, label: "Mail", rotate: 20 },
+  { href: "https://github.com/ashish-kumar-singh", icon: GithubIcon, label: "Github", rotate: -20, z: "" },
+  { href: "https://www.instagram.com/ashish.kumar.singh", icon: InstagramIcon, label: "Instagram", rotate: -10, z: "" },
+  { href: "https://x.com/ashish_k_singh", icon: XIcon, label: "Twitter", rotate: -2, z: "z-5" },
+  { href: "https://www.linkedin.com/in/ashish-kumar-singh", icon: LinkedinIcon, label: "LinkedIn", rotate: 10, z: "z-2" },
+  { href: "mailto:ashish.jayshreeram@gmail.com", icon: (p: any) => (
+    <svg viewBox="0 0 24 24" className={(p?.className) || "size-5"} fill="none" stroke="currentColor" strokeWidth="2">
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+    </svg>
+  ), label: "Mail", rotate: 20, z: "z-1" },
 ];
 
 function Ruler() {
@@ -163,7 +158,6 @@ function Separator() {
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-
   useEffect(() => setMounted(true), []);
 
   if (!mounted) {
@@ -198,13 +192,7 @@ function StackIcon({ name, icon, src }: { name: string; icon: string; src?: stri
       title={name}
     >
       {src ? (
-        <Image
-          src={src}
-          alt={name}
-          width={40}
-          height={40}
-          className="h-8 w-8 md:h-10 md:w-10 dark:invert"
-        />
+        <Image src={src} alt={name} width={40} height={40} className="h-8 w-8 md:h-10 md:w-10 dark:invert" />
       ) : (
         <div className="h-8 w-8 md:h-10 md:w-10 flex items-center justify-center rounded-lg border border-black/10 dark:border-white/10 bg-muted text-[10px] font-bold text-foreground/60">
           {name.slice(0, 2)}
@@ -225,17 +213,9 @@ function ProjectStackBadge({ stack, more }: { stack: any[]; more?: string }) {
         >
           <div className="flex h-7 w-7 shrink-0 items-center justify-center">
             {s.type === "image" ? (
-              <Image
-                src={s.src}
-                alt={s.name}
-                width={16}
-                height={16}
-                className="h-4 w-4 rounded-full object-contain"
-              />
+              <Image src={s.src} alt={s.name} width={16} height={16} className="h-4 w-4 rounded-full object-contain" />
             ) : (
-              <span className="text-[10px] font-semibold text-black/60 dark:text-white/60">
-                {s.name.slice(0, 2)}
-              </span>
+              <span className="text-[10px] font-semibold text-black/60 dark:text-white/60">{s.name.slice(0, 2)}</span>
             )}
           </div>
         </div>
@@ -270,7 +250,23 @@ function MotionSection({ children, className, delay = 0 }: { children: React.Rea
 
 export default function Home() {
   const [expanded, setExpanded] = useState(false);
+  const [x, setX] = useState(100);
   const [kaizenHover, setKaizenHover] = useState(false);
+  const { theme } = useTheme();
+
+  const animateX = useCallback(() => {
+    let val = 100;
+    const interval = setInterval(() => {
+      val = 30 + Math.sin(Date.now() / 2000) * 30;
+      setX(val);
+    }, 50);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const cleanup = animateX();
+    return cleanup;
+  }, [animateX]);
 
   return (
     <div className="relative min-h-dvh w-full overflow-clip">
@@ -278,6 +274,8 @@ export default function Home() {
         <Ruler />
       </div>
       <div className="border-border ring-0.5 ring-border z-10 mx-auto min-h-screen w-full overflow-y-clip border-x bg-background">
+
+        {/* NAV */}
         <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4">
           <header className="w-full px-8">
             <nav className="flex justify-between">
@@ -292,7 +290,7 @@ export default function Home() {
           </header>
         </div>
 
-        {/* Banner */}
+        {/* BANNER */}
         <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-0">
           <motion.div
             className="relative mb-2 w-full"
@@ -318,7 +316,7 @@ export default function Home() {
           </motion.div>
         </div>
 
-        {/* Profile Header */}
+        {/* PROFILE HEADER */}
         <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 pt-0">
           <motion.div
             className="-mt-10 flex-col"
@@ -395,7 +393,7 @@ export default function Home() {
             <div className="mt-4 flex items-center px-4 sm:px-8">
               <a
                 className="inline-flex items-center cursor-pointer justify-center whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 h-8 rounded-md gap-1.5 px-3"
-                href="https://x.com/messages/compose?recipient_id=ashish"
+                href="https://x.com/messages/compose?recipient_id=ashish_k_singh"
                 target="_blank"
               >
                 <MessageCircle className="size-4 opacity-40" />
@@ -404,7 +402,7 @@ export default function Home() {
               <span className="mx-1 text-xs font-medium text-foreground/20">OR</span>
               <a
                 className="inline-flex items-center cursor-pointer justify-center whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 h-8 rounded-md gap-1.5 px-3"
-                href="mailto:ashish@example.com"
+                href="mailto:ashish.jayshreeram@gmail.com"
               >
                 <PenLine className="size-4 opacity-40" />
                 Email
@@ -415,7 +413,7 @@ export default function Home() {
 
         <Separator />
 
-        {/* Professional Experience */}
+        {/* EXPERIENCE */}
         <MotionSection delay={0.1}>
           <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
             <h2 className="mb-2 font-serif text-xl text-foreground/50">Professional Experience</h2>
@@ -430,18 +428,10 @@ export default function Home() {
                   </div>
                   <div className="flex min-w-0 flex-col">
                     <div className="flex items-center gap-2">
-                      <h3 className="truncate text-sm font-bold text-foreground sm:text-base">
-                        Angrio Technologies
-                      </h3>
-                      <ChevronDown
-                        className={`size-3.5 shrink-0 text-foreground/50 transition-all duration-300 sm:size-4 ${
-                          expanded ? "rotate-180" : ""
-                        }`}
-                      />
+                      <h3 className="truncate text-sm font-bold text-foreground sm:text-base">Angrio Technologies</h3>
+                      <ChevronDown className={`size-3.5 shrink-0 text-foreground/50 transition-all duration-300 sm:size-4 ${expanded ? "rotate-180" : ""}`} />
                     </div>
-                    <p className="text-xs font-medium whitespace-nowrap text-foreground/50 sm:text-sm">
-                      Full-Stack Developer
-                    </p>
+                    <p className="text-xs font-medium whitespace-nowrap text-foreground/50 sm:text-sm">Full-Stack Developer</p>
                   </div>
                 </div>
                 <div className="flex flex-row items-center justify-between gap-1 text-start sm:ml-auto sm:flex-col sm:items-end sm:justify-center sm:text-end">
@@ -449,49 +439,18 @@ export default function Home() {
                     <span className="hidden h-px w-12 bg-linear-to-l from-black/10 to-transparent sm:block md:w-20 dark:from-white/10" />
                     Jan 2025 - Dec 2025
                   </p>
-                  <p className="text-[10px] tracking-tight text-foreground/30 normal-case sm:text-xs">
-                    India, Remote
-                  </p>
+                  <p className="text-[10px] tracking-tight text-foreground/30 normal-case sm:text-xs">India, Remote</p>
                 </div>
               </div>
-              <div
-                className={`grid transition-all duration-500 ease-in-out ${
-                  expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                }`}
-              >
+              <div className={`grid transition-all duration-500 ease-in-out ${expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
                 <div className="overflow-hidden">
                   <div className="space-y-4 text-sm leading-relaxed text-foreground/70 pt-4 md:text-base">
-                    <p>
-                      Started as an <span className="font-semibold">Intern</span> on January 18, 2025,
-                      focused on crafting responsive and high-converting landing pages. Due to strong
-                      performance and technical growth, I was promoted to Full-Stack Developer in April
-                      2025.
-                    </p>
+                    <p>Started as an <span className="font-semibold">Intern</span> on January 18, 2025, focused on crafting responsive and high-converting landing pages. Due to strong performance and technical growth, I was promoted to Full-Stack Developer in April 2025.</p>
                     <ul className="space-y-3 pl-1">
-                      <li className="flex items-start gap-3">
-                        <span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" />
-                        <p className="text-base text-foreground/50">
-                          Developed high-performance landing pages and complex interactive dashboards with a focus on UX.
-                        </p>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" />
-                        <p className="text-base text-foreground/50">
-                          Implemented robust headless CMS architectures using Sanity for flexible content management.
-                        </p>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" />
-                        <p className="text-base text-foreground/50">
-                          Built scalable full-stack features with Supabase for real-time data persistence and authentication.
-                        </p>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" />
-                        <p className="text-base text-foreground/50">
-                          Engineered a core browser extension for &apos;Trakkar.in&apos; (Company SaaS) to handle automated time tracking and cross-browser screenshot capture.
-                        </p>
-                      </li>
+                      <li className="flex items-start gap-3"><span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" /><p className="text-base text-foreground/50">Developed high-performance landing pages and complex interactive dashboards with a focus on UX.</p></li>
+                      <li className="flex items-start gap-3"><span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" /><p className="text-base text-foreground/50">Implemented robust headless CMS architectures using Sanity for flexible content management.</p></li>
+                      <li className="flex items-start gap-3"><span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" /><p className="text-base text-foreground/50">Built scalable full-stack features with Supabase for real-time data persistence and authentication.</p></li>
+                      <li className="flex items-start gap-3"><span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" /><p className="text-base text-foreground/50">Engineered a core browser extension for &apos;Trakkar.in&apos; (Company SaaS) to handle automated time tracking and cross-browser screenshot capture.</p></li>
                     </ul>
                   </div>
                 </div>
@@ -502,17 +461,13 @@ export default function Home() {
 
         <Separator />
 
-        {/* Proof of Work */}
+        {/* PROOF OF WORK */}
         <MotionSection delay={0.2}>
           <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="font-serif text-xl text-foreground/50">Proof of work</h2>
-              <Link
-                href="/projects"
-                className="inline-flex items-center gap-1 text-xs font-medium text-foreground/30 transition-colors duration-200 hover:text-foreground/90"
-              >
-                ALL
-                <MoveRight className="size-3" />
+              <Link href="/projects" className="inline-flex items-center gap-1 text-xs font-medium text-foreground/30 transition-colors duration-200 hover:text-foreground/90">
+                ALL <MoveRight className="size-3" />
               </Link>
             </div>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -529,19 +484,11 @@ export default function Home() {
                     className="group flex cursor-pointer flex-col gap-4 rounded-lg pb-4 transition-shadow duration-300 hover:shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] dark:hover:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)]"
                   >
                     <div className="relative aspect-[3/2] overflow-hidden rounded-lg transition-all duration-300 group-hover:scale-[1.02]">
-                      <Image
-                        src={project.image}
-                        alt={project.title}
-                        width={400}
-                        height={300}
-                        className="h-full w-full object-cover object-top"
-                      />
+                      <Image src={project.image} alt={project.title} width={400} height={300} className="h-full w-full object-cover object-top" />
                     </div>
                     <div className="flex flex-col gap-1 transition-all duration-300 group-hover:translate-x-4">
                       <h4 className="text-base font-semibold text-foreground">{project.title}</h4>
-                      <p className="w-[calc(100%-1.5rem)] text-sm text-foreground/50">
-                        {project.description}
-                      </p>
+                      <p className="w-[calc(100%-1.5rem)] text-sm text-foreground/50">{project.description}</p>
                       <ProjectStackBadge stack={project.stack} more={project.more} />
                     </div>
                   </Link>
@@ -556,21 +503,13 @@ export default function Home() {
 
         <Separator />
 
-        {/* Stack I use */}
+        {/* STACK */}
         <MotionSection delay={0.3}>
           <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
             <h2 className="mb-6 font-serif text-xl text-foreground/50">Stack I use</h2>
             <div className="relative grid grid-cols-4 justify-items-center gap-8 sm:grid-cols-6 md:grid-cols-8 md:justify-items-start lg:grid-cols-12">
-              <span className="pointer-events-none absolute -top-12 right-0 size-12 -rotate-12 font-mono text-[10px] font-medium text-foreground/30">
-                drag me :D
-              </span>
-              <svg
-                className="pointer-events-none absolute -top-12 right-15 size-10 rotate-30 text-foreground/30"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              >
+              <span className="pointer-events-none absolute -top-12 right-0 size-12 -rotate-12 font-mono text-[10px] font-medium text-foreground/30">drag me :D</span>
+              <svg className="pointer-events-none absolute -top-12 right-15 size-10 rotate-30 text-foreground/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M5 15l7-7 7 7" />
               </svg>
               {skills.map((skill) => (
@@ -582,17 +521,13 @@ export default function Home() {
 
         <Separator />
 
-        {/* My Thoughts */}
+        {/* MY THOUGHTS */}
         <MotionSection delay={0.4}>
           <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
             <div className="mb-4 flex items-baseline justify-between">
               <h2 className="font-serif text-xl text-foreground/50 italic">My Thoughts</h2>
-              <Link
-                href="/blogs"
-                className="inline-flex cursor-pointer items-center gap-1 text-xs font-medium text-foreground/30 transition-colors duration-200 hover:text-foreground/90"
-              >
-                ALL
-                <MoveRight className="size-3" />
+              <Link href="/blogs" className="inline-flex cursor-pointer items-center gap-1 text-xs font-medium text-foreground/30 transition-colors duration-200 hover:text-foreground/90">
+                ALL <MoveRight className="size-3" />
               </Link>
             </div>
             <div className="grid grid-cols-1 gap-x-12 gap-y-16 md:grid-cols-2 lg:grid-cols-3">
@@ -602,10 +537,7 @@ export default function Home() {
                     <div className="relative perspective-[2000px]">
                       <div
                         className="border-border bg-muted/30 relative aspect-video w-full overflow-hidden rounded-sm border"
-                        style={{
-                          transformStyle: "preserve-3d",
-                          transform: "translateX(8px) translateY(-6px) rotateX(5deg) rotateY(-12deg)",
-                        }}
+                        style={{ transformStyle: "preserve-3d", transform: "translateX(8px) translateY(-6px) rotateX(5deg) rotateY(-12deg)" }}
                       >
                         <Image src={blog.image} alt={blog.title} fill className="rounded-sm object-cover" />
                       </div>
@@ -616,15 +548,8 @@ export default function Home() {
                         <span className="font-mono text-[10px] text-foreground/40">{blog.date}</span>
                       </div>
                       <h3 className="relative block overflow-visible">
-                        <span
-                          aria-hidden="true"
-                          className="pointer-events-none absolute inset-0 -z-10 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:4px_4px] bg-clip-text font-medium text-transparent italic select-none"
-                        >
-                          {blog.title}
-                        </span>
-                        <span className="block max-w-[90%] text-sm leading-tight font-medium text-foreground/60 italic transition-colors duration-200 group-hover:text-foreground">
-                          {blog.title}
-                        </span>
+                        <span aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:4px_4px] bg-clip-text font-medium text-transparent italic select-none">{blog.title}</span>
+                        <span className="block max-w-[90%] text-sm leading-tight font-medium text-foreground/60 italic transition-colors duration-200 group-hover:text-foreground">{blog.title}</span>
                       </h3>
                     </div>
                   </div>
@@ -636,62 +561,63 @@ export default function Home() {
 
         <Separator />
 
-        {/* CTA / Book a call */}
+        {/* CTA + FOOTER SOCIALS + KAIZEN + QUOTE — exact original structure */}
         <MotionSection delay={0.5}>
+          {/* CTA Section */}
           <div className="border-border ring-0.5 ring-border mx-auto max-w-3xl border-x py-4 w-full flex-col px-6 sm:flex sm:items-center sm:justify-between sm:px-12">
             <p className="mb-4 text-center font-serif text-2xl text-pretty italic text-foreground/50 sm:mb-3 md:text-xl">
               If you&apos;ve read this far, you might be interested in what I do.
             </p>
             <div className="mt-4 flex w-full justify-center sm:mt-0 sm:w-auto sm:justify-end">
-              <a
-                href="https://cal.com/ashish-kumar/30min"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group"
-              >
-                <button className="relative cursor-pointer rounded-lg border font-medium backdrop-blur-xl transition-shadow duration-300 ease-in-out hover:shadow dark:bg-[radial-gradient(circle_at_50%_0%,var(--primary)/10%_0%,transparent_60%)] dark:hover:shadow-[0_0_20px_var(--primary)/20%] bg-background text-foreground border-border h-auto px-3 py-2">
-                  <span className="relative block size-full text-sm tracking-wide text-foreground">
+              <a href="https://cal.com/ashish/30min" target="_blank" rel="noopener noreferrer">
+                <button
+                  className="relative cursor-pointer rounded-lg border font-medium backdrop-blur-xl transition-shadow duration-300 ease-in-out hover:shadow dark:bg-[radial-gradient(circle_at_50%_0%,var(--primary)/10%_0%,transparent_60%)] dark:hover:shadow-[0_0_20px_var(--primary)/20%] group bg-background text-foreground border-border h-auto px-3 py-2"
+                  style={{ transform: "scale(0.8)" }}
+                >
+                  <span
+                    className="relative block size-full text-sm tracking-wide text-black uppercase dark:font-light dark:text-[rgb(255,255,255,90%)]"
+                    style={{
+                      maskImage: `linear-gradient(-75deg,var(--primary) ${x + 20}%,transparent ${x + 30}%,var(--primary) ${x + 100}%)`,
+                    }}
+                  >
                     <div className="relative z-20 flex items-center gap-2 transition-all duration-300 group-hover:gap-8">
                       <div className="h-5 w-5 shrink-0 overflow-hidden rounded-full">
-                        <Image
-                          src="/me.svg"
-                          alt="Ashish Kumar Singh"
-                          width={20}
-                          height={20}
-                          className="h-full w-full rounded-full bg-zinc-900 object-cover"
-                        />
+                        <Image src="/me.svg" alt="Ashish Kumar Singh" width={20} height={20} className="h-full w-full rounded-full bg-zinc-900 object-cover dark:bg-white" />
                       </div>
                       <div className="absolute left-[24px] flex -translate-x-full transform items-center gap-0 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
-                        <Plus className="size-3" />
-                        <div className="mr-2 ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-foreground/10 text-[8px]">
-                          You
-                        </div>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-3"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
+                        <div className="mr-2 ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/10 text-[8px] dark:bg-white/10">You</div>
                       </div>
-                      <span className="relative ml-0 block text-sm font-bold whitespace-nowrap normal-case transition-all duration-300 group-hover:ml-4">
-                        Book a call
-                      </span>
+                      <span className="relative ml-0 block text-sm font-bold whitespace-nowrap normal-case transition-all duration-300 group-hover:ml-4">Book a call</span>
                     </div>
                   </span>
+                  <span
+                    className="absolute inset-0 z-10 block rounded-[inherit] p-px"
+                    style={{
+                      mask: "linear-gradient(rgb(0,0,0), rgb(0,0,0)) content-box exclude, linear-gradient(rgb(0,0,0), rgb(0,0,0))",
+                      WebkitMask: "linear-gradient(rgb(0,0,0), rgb(0,0,0)) content-box exclude, linear-gradient(rgb(0,0,0), rgb(0,0,0))",
+                      backgroundImage: `linear-gradient(-75deg,var(--primary)/10% ${x + 20}%,var(--primary)/50% ${x + 25}%,var(--primary)/10% ${x + 100}%)`,
+                    }}
+                  />
                 </button>
               </a>
             </div>
 
             <p className="py-2 text-center text-sm font-medium text-foreground/30 uppercase">or</p>
 
-            <div className="flex items-center justify-center flex-wrap gap-0">
+            {/* FOOTER SOCIAL CARDS — using CSS group-hover like original */}
+            <div className="group flex items-center justify-center flex-wrap">
               {footerSocials.map((s) => (
-                <motion.a
+                <a
                   key={s.label}
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex w-13 cursor-pointer flex-col items-center gap-1 rounded-lg border border-foreground/20 p-2 shadow-[0px_1px_2px_rgba(0,0,0,0.05)] transition-all duration-300 hover:mr-1 hover:ml-1 [&:hover]:[transform:rotate(0deg)]"
-                  style={{ transform: `rotate(${s.rotate}deg)`, marginRight: -4 }}
-                  whileHover={{ rotate: 0, marginRight: 0, marginLeft: 0 }}
+                  className={`${s.z} bg-background -mr-1 flex w-13 cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-foreground/20 p-2 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition-all duration-300 group-hover:mr-2 group-hover:rotate-0 dark:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)] ${s.label === "Github" ? "-rotate-20" : s.label === "Instagram" ? "-rotate-10" : s.label === "Twitter" ? "-rotate-2" : s.label === "LinkedIn" ? "rotate-10" : "rotate-20"}`}
                 >
                   <s.icon className="size-5" />
                   <p className="text-[8px] font-bold text-foreground/50">{s.label}</p>
-                </motion.a>
+                </a>
               ))}
             </div>
           </div>
@@ -699,70 +625,75 @@ export default function Home() {
 
         <Separator />
 
-        {/* Kaizen Block */}
-        <MotionSection delay={0.6}>
-          <div className="border-border ring-0.5 ring-border mx-auto max-w-3xl border-x py-4 w-full px-8">
-            <div className="relative flex flex-col items-center">
-              <div
-                className="relative cursor-pointer"
-                onMouseEnter={() => setKaizenHover(true)}
-                onMouseLeave={() => setKaizenHover(false)}
-              >
-                <p className="text-2xl font-serif text-foreground/10 select-none">改善</p>
-                <motion.div
-                  className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-56 p-3 rounded-lg border bg-background shadow-lg"
-                  initial={{ opacity: 0, y: 10, pointerEvents: "none" }}
-                  animate={
-                    kaizenHover
-                      ? { opacity: 1, y: 0, pointerEvents: "auto" }
-                      : { opacity: 0, y: 10, pointerEvents: "none" }
-                  }
-                  transition={{ duration: 0.2 }}
-                >
-                  <p className="text-xs font-medium text-foreground/80 text-center">
-                    <span className="font-serif italic text-base">Kaizen</span>
-                    <br />
-                    <span className="text-foreground/60">(かいぜん)</span>
-                    <br />
-                    <span className="text-foreground/50 mt-1 block">
-                      Japanese philosophy of continuous improvement — the practice of constantly
-                      making small, incremental improvements for greater efficiency and quality.
-                    </span>
-                  </p>
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-background" />
-                </motion.div>
-              </div>
-
-              {/* Background quote pattern */}
-              <div className="pointer-events-none absolute bottom-1 left-8 opacity-[0.05]">
-                <svg width="60" height="40" viewBox="0 0 120 100" fill="currentColor" className="text-foreground">
-                  <path d="M0 100V50c0-27.614 22.386-50 50-50h10v20H50c-16.569 0-30 13.431-30 30v10h30v40H0zm60 0V50c0-27.614 22.386-50 50-50h10v20h-10c-16.569 0-30 13.431-30 30v10h30v40H60z" />
-                </svg>
-              </div>
-
-              <div className="relative z-10 flex flex-col justify-center mt-4">
-                <div className="flex flex-col items-center">
-                  <p className="font-serif text-lg leading-relaxed text-foreground/40 italic text-center max-w-lg">
-                    &quot;You have a right to perform your prescribed duty, but you are not entitled to the fruits of actions.&quot;
-                  </p>
-                  <div className="mt-4 flex items-center gap-3 self-end">
-                    <div className="h-px w-8 bg-foreground/20" />
-                    <span className="text-sm font-medium text-foreground italic">Bhagavad Gita</span>
-                  </div>
-                </div>
-              </div>
+        {/* KAIZEN DECORATIVE SECTION */}
+        <div className="border-border ring-0.5 ring-border mx-auto max-w-3xl border-x relative flex w-full flex-col items-center overflow-visible py-0 select-none">
+          <div className="relative h-8 w-full">
+            <div className="absolute inset-0 opacity-15" style={{ backgroundImage: "repeating-linear-gradient(-45deg, transparent, transparent 10px, var(--color-foreground) 10px, var(--color-foreground) 11px)" }} />
+          </div>
+          <div
+            className="relative inline-block cursor-help py-8"
+            onMouseEnter={() => setKaizenHover(true)}
+            onMouseLeave={() => setKaizenHover(false)}
+          >
+            <div className="group relative">
+              <span className="pointer-events-none absolute inset-0 -z-10 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px] bg-clip-text text-center text-9xl font-bold whitespace-nowrap text-transparent italic select-none">
+                改善
+              </span>
+              <span className="z-10 block -translate-x-4 -translate-y-4 text-center text-9xl font-bold whitespace-nowrap text-[#808080] italic transition-all duration-200 group-hover:translate-x-0 group-hover:translate-y-0 hover:text-black dark:hover:text-white">
+                改善
+              </span>
+            </div>
+            {/* Tooltip */}
+            <div
+              className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-64 p-4 rounded-lg border bg-background shadow-lg transition-all duration-200 ${
+                kaizenHover ? "opacity-100 visible translate-y-0" : "opacity-0 invisible translate-y-2"
+              }`}
+            >
+              <p className="text-xs text-foreground/80 text-center leading-relaxed">
+                <span className="font-serif italic text-lg">Kaizen</span>
+                <br />
+                <span className="text-foreground/60">(かいぜん)</span>
+                <br />
+                <span className="text-foreground/50 mt-2 block">
+                  Japanese philosophy of continuous improvement — the practice of constantly making small, incremental improvements for greater efficiency and quality.
+                </span>
+              </p>
+              <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-background" />
             </div>
           </div>
-        </MotionSection>
+          <div className="relative h-8 w-full overflow-hidden">
+            <div className="absolute inset-0 opacity-15" style={{ backgroundImage: "repeating-linear-gradient(-45deg, transparent, transparent 10px, currentColor 10px, currentColor 11px)" }} />
+          </div>
+        </div>
 
         <Separator />
 
-        {/* Copyright */}
+        {/* QUOTE SECTION */}
+        <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 relative z-0 px-8">
+          <div className="pointer-events-none absolute bottom-1 left-8 opacity-[0.05] dark:opacity-[0.05]">
+            <svg width="60" height="40" viewBox="0 0 120 100" fill="currentColor" className="text-foreground">
+              <path d="M0 100V50c0-27.614 22.386-50 50-50h10v20H50c-16.569 0-30 13.431-30 30v10h30v40H0zm60 0V50c0-27.614 22.386-50 50-50h10v20h-10c-16.569 0-30 13.431-30 30v10h30v40H60z" />
+            </svg>
+          </div>
+          <div className="relative z-10 flex flex-col justify-center">
+            <div className="flex flex-col">
+              <p className="font-serif text-lg leading-relaxed text-foreground/40 italic dark:text-white/40">
+                &quot;You have a right to perform your prescribed duty, but you are not entitled to the fruits of actions.&quot;
+              </p>
+              <div className="mt-4 flex items-center gap-3 self-end">
+                <div className="h-px w-8 bg-foreground/20" />
+                <span className="text-sm font-medium text-foreground italic">Bhagavad Gita</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <Separator />
+
+        {/* FOOTER */}
         <div className="border-border ring-0.5 ring-border mx-auto max-w-3xl border-x py-4 w-full relative space-y-4">
           <div className="relative flex flex-col items-center justify-between px-8 sm:flex-row">
-            <p className="font-mono text-xs text-foreground/40">
-              &copy; 2026 All rights reserved.
-            </p>
+            <p className="font-mono text-xs text-foreground/40">&copy; 2026 All rights reserved.</p>
           </div>
         </div>
       </div>

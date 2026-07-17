@@ -1,0 +1,100 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { House, Sun } from "lucide-react";
+
+const beliefs = [
+  "how smart a person is just how fast he can learn something new",
+  "it is not hard, it is just new",
+  "iteration in the right direction x consistency = freedom",
+  "how capable you are depends on where your fav dopamine hit comes from",
+  "you can just do things",
+  "preserving time and energy is what matters, rest can come back",
+  "the greatest of all time have things written down in a book but you choose not to read",
+  '"nothing helps; i must help myself, or i am finished" - neitzsche',
+  "code and media are the best forms of leverage",
+  "you are the average of five people rule stands true everywhere in all spheres of life",
+  "the opinions you think are your own are almost never really your own, it's always conditioned unless it's a fact",
+  "everything in your life today is a result of the butterfly effect",
+  "being fast with what you do is always better - high agency above all",
+  "reading, writing, meditating, exercising has resulted in great things for whoever tried",
+  "you are dying daily, today is the last today",
+];
+
+export default function BlogPost({ params }: { params: { slug: string } }) {
+  const { slug } = params;
+
+  if (slug !== "things-i-believe-in") {
+    notFound();
+  }
+
+  return (
+    <div className="relative min-h-dvh w-full overflow-clip">
+      <div className="border-border ring-0.5 ring-border z-10 mx-auto min-h-screen w-full overflow-y-clip border-x bg-background">
+        {/* Nav */}
+        <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4">
+          <header className="w-full px-8">
+            <nav className="flex justify-between">
+              <Link
+                href="/"
+                className="group bg-muted flex size-8 cursor-pointer items-center justify-center rounded-full transition-colors"
+              >
+                <House className="size-4 opacity-60 transition-opacity group-hover:opacity-80" />
+              </Link>
+              <button
+                className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full"
+                aria-label="Toggle theme"
+              >
+                <Sun className="size-5" />
+              </button>
+            </nav>
+          </header>
+        </div>
+
+        {/* Breadcrumb */}
+        <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
+          <div className="mb-6 flex items-center gap-2 font-mono text-xs text-black/40">
+            <Link href="/" className="hover:text-black transition-colors">/</Link>
+            <span>/</span>
+            <Link href="/blogs" className="hover:text-black transition-colors">blogs</Link>
+            <span className="text-black/20">/</span>
+            <span className="text-black/60">things-i-believe-in</span>
+          </div>
+
+          {/* Featured Image */}
+          <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-black/5 mb-8">
+            <Image
+              src="/placeholder-banner.svg"
+              alt="Things I Believe In"
+              fill
+              className="object-cover"
+            />
+          </div>
+
+          {/* Title */}
+          <h1 className="font-serif text-3xl text-black/80 italic mb-2">things i believe in</h1>
+          <p className="font-mono text-xs text-black/40 mb-8">July 17, 2026</p>
+
+          {/* Content */}
+          <ul className="space-y-4">
+            {beliefs.map((belief, i) => (
+              <li key={i} className="flex items-start gap-3 text-base leading-relaxed text-black/60">
+                <span className="size-1.5 shrink-0 rounded-full bg-black/30 mt-2" />
+                {belief}
+              </li>
+            ))}
+          </ul>
+
+          <p className="mt-8 text-sm font-medium text-black/30 italic">more on the way..</p>
+        </div>
+
+        {/* Footer */}
+        <div className="border-border ring-0.5 ring-border mx-auto max-w-3xl border-x py-4 w-full px-8 text-center">
+          <p className="text-xs text-black/20">&copy; 2026 All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  );
+}

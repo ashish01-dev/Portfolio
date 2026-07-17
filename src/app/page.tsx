@@ -392,7 +392,7 @@ function ForeignWordTooltip() {
         <span className="text-inner-shadow pointer-events-none absolute inset-0 -z-10 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px] bg-clip-text text-center text-9xl font-bold whitespace-nowrap text-transparent italic select-none">
           अध्यात्म
         </span>
-        <span className="text-inner-shadow z-10 block -translate-x-4 -translate-y-4 text-center text-9xl font-bold whitespace-nowrap text-[#808080] italic transition-all duration-200 group-hover:translate-x-0 group-hover:translate-y-0 hover:text-black dark:hover:text-white">
+        <span className="text-inner-shadow z-10 block -translate-x-6 -translate-y-6 rotate-[-3deg] scale-95 text-center text-9xl font-bold whitespace-nowrap text-foreground/30 italic transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:translate-x-0 group-hover:translate-y-0 group-hover:rotate-0 group-hover:scale-100 group-hover:text-foreground">
           अध्यात्म
         </span>
       </div>
@@ -569,7 +569,7 @@ export default function Home() {
                   style={{ backgroundImage: "url(/me.png)" }}
                 />
               </div>
-              <div className="mt-1 flex shrink-0 flex-col items-end gap-1">
+              <div className="mt-1 flex shrink-0 flex-col items-end gap-1.5">
                 <p className="flex items-center gap-1.5 font-mono text-[10px] font-medium whitespace-nowrap text-foreground/70 sm:text-xs">
                   <span className="relative flex h-2 w-2">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75" />
@@ -577,9 +577,10 @@ export default function Home() {
                   </span>
                   Available for work
                 </p>
-                <div suppressHydrationWarning className="flex flex-col items-end font-mono text-[10px] text-foreground/40 sm:text-xs">
+                <div suppressHydrationWarning className="flex items-center gap-2 font-mono text-[10px] text-foreground/40 sm:text-xs">
                   <span className="font-medium" suppressHydrationWarning><Clock /></span>
-                  <span className="text-[9px] text-foreground/20 sm:text-[10px]" suppressHydrationWarning>// 5.5h ahead</span>
+                  <span className="text-foreground/20">&middot;</span>
+                  <span className="text-foreground/30" suppressHydrationWarning>5.5h ahead</span>
                 </div>
               </div>
             </div>
@@ -670,7 +671,7 @@ export default function Home() {
                 <div className="flex flex-row items-center justify-between gap-1 text-start sm:ml-auto sm:flex-col sm:items-end sm:justify-center sm:text-end">
                   <p className="inline-flex items-center gap-2 text-[10px] font-medium text-foreground/50 sm:justify-end sm:text-sm">
                     <span className="hidden h-px w-12 bg-linear-to-l from-black/10 to-transparent sm:block md:w-20 dark:from-white/10" />
-                    Jan 2025 - Dec 2025
+                    June 2026 - Aug 2026
                   </p>
                   <p className="text-[10px] tracking-tight text-foreground/30 normal-case sm:text-xs">Delhi, India</p>
                 </div>

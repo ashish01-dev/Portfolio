@@ -49,16 +49,17 @@ export default function GithubContributions() {
   if (!isMounted) return null;
 
   return (
-    <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
-      <div className="px-0 font-medium text-foreground/40">
+    <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-0">
+      <div className="font-medium text-foreground/40 overflow-x-hidden [&>div]:!overflow-visible">
         <GitHubCalendar
           key={resolvedTheme}
           username="ashish01-dev"
           colorScheme={resolvedTheme as "light" | "dark"}
           fontSize={12}
-          blockSize={12}
+          blockSize={10}
+          blockMargin={3}
           year={2026}
-          blockRadius={4}
+          blockRadius={3}
           theme={theme}
           labels={{
             totalCount: contribution

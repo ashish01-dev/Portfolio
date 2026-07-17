@@ -53,7 +53,7 @@ const projectsData: Record<
   },
   innovision: {
     title: "INNOVISION",
-    description: "A platform for showcasing innovative projects and ideas.",
+    description: "A platform that helps students choose the right stream after 10th & 12th.",
     url: "https://innovison.vercel.app/",
     stack: [
       { name: "Next.js", type: "next" },
@@ -61,8 +61,21 @@ const projectsData: Record<
       { name: "Tailwind", type: "tailwind" },
     ],
     screenshots: [{ src: "/projects/4.png", label: "Homepage" }],
-    badge: "Live",
-    details: "",
+    badge: "Down!",
+    details: [
+      "<p>Choosing the right stream after 10th or 12th is one of the most confusing decisions a student faces. INNOVISION is built to solve exactly that — it helps students explore career paths, understand stream options, and make an informed choice based on their interests and strengths.</p>",
+      "<p class='mt-4 font-semibold text-foreground/80'>Key Features:</p>",
+      "<ul class='mt-2 space-y-2 list-disc pl-5'>",
+      "<li><strong>Stream Explorer</strong> &ndash; Browse all available streams (Science, Commerce, Arts, Vocational) with detailed descriptions of subjects, career prospects, and skill requirements.</li>",
+      "<li><strong>Interest Assessment</strong> &ndash; A simple quiz that asks about your interests, strengths, and preferences, then suggests the best-fit streams.</li>",
+      "<li><strong>Career Path Visualizer</strong> &ndash; See a visual map of how each stream connects to different careers, colleges, and entrance exams.</li>",
+      "<li><strong>College &amp; Exam Guide</strong> &ndash; Find colleges and entrance exams relevant to each stream, with cutoff info, application dates, and preparation tips.</li>",
+      "<li><strong>Comparison Tool</strong> &ndash; Compare two or more streams side-by-side on factors like difficulty, career options, salary potential, and further study paths.</li>",
+      "<li><strong>Success Stories</strong> &ndash; Real stories from students who chose different streams, showing where they are now and what they wish they had known.</li>",
+      "<li><strong>Resource Library</strong> &ndash; Curated articles, videos, and guides on making stream decisions, written by career counselors and educators.</li>",
+      "</ul>",
+      "<p class='mt-4 text-foreground/60'>It&apos;s a one-stop platform that replaces the confusion, peer pressure, and guesswork with clear, structured guidance — helping students take their first big career step with confidence.</p>",
+    ].join(""),
     prev: { title: "JEEIFY", href: "/projects/jeeify" },
   },
   "divine-canvas": {

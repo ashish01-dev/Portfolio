@@ -18,10 +18,10 @@ const projects = [
   },
   {
     title: "INNOVISION",
-    description: "A platform for showcasing innovative projects and ideas.",
+    description: "A platform that helps students choose the right stream after 10th & 12th.",
     href: "/projects/innovision",
     image: "/projects/4.png",
-    badge: "Live",
+    badge: "Down!",
     stack: ["Next.js", "TypeScript", "Tailwind"],
   },
   {

@@ -50,16 +50,16 @@ export default function GithubContributions() {
 
   return (
     <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-0">
-      <div className="font-medium text-foreground/40 overflow-x-hidden [&>div]:!overflow-visible">
+      <div className="hide-scrollbar overflow-x-auto [&>div]:!overflow-visible">
         <GitHubCalendar
           key={resolvedTheme}
           username="ashish01-dev"
           colorScheme={resolvedTheme as "light" | "dark"}
           fontSize={12}
-          blockSize={10}
-          blockMargin={3}
+          blockSize={12}
+          blockMargin={2}
           year={2026}
-          blockRadius={3}
+          blockRadius={4}
           theme={theme}
           labels={{
             totalCount: contribution

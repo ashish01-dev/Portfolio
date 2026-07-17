@@ -74,11 +74,11 @@ const projects = [
   },
   {
     title: "INNOVISION",
-    description: "A platform for showcasing innovative projects and ideas.",
+    description: "A platform that helps students choose the right stream after 10th & 12th.",
     href: "/projects/innovision",
     url: "https://innovison.vercel.app/",
     image: "/projects/4.png",
-    badge: "Live",
+    badge: "Down!",
     stack: [
       { name: "Next.js", type: "icon" },
       { name: "TypeScript", type: "icon" },
@@ -392,7 +392,7 @@ function ForeignWordTooltip() {
         <span className="text-inner-shadow pointer-events-none absolute inset-0 -z-10 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px] bg-clip-text text-center text-9xl font-bold whitespace-nowrap text-transparent italic select-none">
           अध्यात्म
         </span>
-        <span className="text-inner-shadow z-10 block -translate-x-6 -translate-y-6 rotate-[-3deg] scale-95 text-center text-9xl font-bold whitespace-nowrap text-foreground/30 italic transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:translate-x-0 group-hover:translate-y-0 group-hover:rotate-0 group-hover:scale-100 group-hover:text-foreground">
+        <span className="text-inner-shadow z-10 block -translate-x-4 -translate-y-4 text-center text-9xl font-bold whitespace-nowrap text-[#808080] italic transition-all duration-200 group-hover:translate-x-0 group-hover:translate-y-0 hover:text-black dark:hover:text-white">
           अध्यात्म
         </span>
       </div>
@@ -926,6 +926,7 @@ export default function Home() {
         {/* FOOTER */}
         <div className="border-border ring-0.5 ring-border mx-auto max-w-3xl border-x py-4 w-full relative space-y-4">
           <div className="relative flex flex-col items-center justify-between px-8 sm:flex-row">
+            <p className="font-mono text-xs text-foreground/40">Ashish<sup className="text-[8px]">®</sup></p>
             <p className="font-mono text-xs text-foreground/40">&copy; 2026 All rights reserved.</p>
           </div>
         </div>

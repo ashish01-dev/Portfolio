@@ -79,13 +79,13 @@ body {
 
 .text-inner-shadow {
   text-shadow:
-    1px 1px 1px color-mix(in oklch, white, transparent 50%),
-    -1px -1px 1px color-mix(in oklch, black, transparent 90%);
+    1px 1px 1px rgba(255, 255, 255, 0.5),
+    -1px -1px 1px rgba(0, 0, 0, 0.1);
 }
 .dark .text-inner-shadow {
   text-shadow:
-    -1px -1px 1px color-mix(in oklch, black, transparent 50%),
-    1px 1px 1px color-mix(in oklch, white, transparent 90%);
+    -1px -1px 1px rgba(0, 0, 0, 0.5),
+    1px 1px 1px rgba(255, 255, 255, 0.1);
 }
 
 @keyframes shimmer-slide {
@@ -116,3 +116,6 @@ body {
   content-visibility: auto;
   contain-intrinsic-size: 200px;
 }
+
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

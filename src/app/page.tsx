@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
@@ -155,10 +155,59 @@ function Separator() {
   );
 }
 
+function FadingWords({ words }: { words: string[] }) {
+  const [index, setIndex] = useState(0);
+  const [fadeIn, setFadeIn] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFadeIn(false);
+      setTimeout(() => {
+        setIndex((prev) => (prev + 1) % words.length);
+        setFadeIn(true);
+      }, 300);
+    }, 2200);
+    return () => clearInterval(interval);
+  }, [words.length]);
+
+  return (
+    <span className={`inline-block transition-opacity duration-300 ${fadeIn ? "opacity-100" : "opacity-0"}`}>
+      {words[index]}
+    </span>
+  );
+}
+
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [overlay, setOverlay] = useState<{ x: number; y: number; expanding: boolean; target: string } | null>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const isAnimating = useRef(false);
+
   useEffect(() => setMounted(true), []);
+
+  const handleToggle = () => {
+    if (isAnimating.current || !buttonRef.current || !mounted) return;
+    isAnimating.current = true;
+    const rect = buttonRef.current.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const target = theme === "dark" ? "light" : "dark";
+
+    setOverlay({ x, y, expanding: false, target });
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setOverlay((prev) => (prev ? { ...prev, expanding: true } : null));
+      });
+    });
+
+    setTimeout(() => setTheme(target), 350);
+    setTimeout(() => {
+      setOverlay(null);
+      isAnimating.current = false;
+    }, 800);
+  };
 
   if (!mounted) {
     return (
@@ -172,13 +221,28 @@ function ThemeToggle() {
   }
 
   return (
-    <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full"
-      aria-label="Toggle theme"
-    >
-      {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
-    </button>
+    <>
+      {overlay && (
+        <div
+          className="fixed inset-0 z-[9999] pointer-events-none"
+          style={{
+            clipPath: overlay.expanding
+              ? `circle(150vw at ${overlay.x}px ${overlay.y}px)`
+              : `circle(0px at ${overlay.x}px ${overlay.y}px)`,
+            background: overlay.target === "dark" ? "#0a0a0a" : "#ffffff",
+            transition: overlay.expanding ? "clip-path 0.7s ease-in-out" : "none",
+          }}
+        />
+      )}
+      <button
+        ref={buttonRef}
+        onClick={handleToggle}
+        className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full"
+        aria-label="Toggle theme"
+      >
+        {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+      </button>
+    </>
   );
 }
 
@@ -360,7 +424,7 @@ export default function Home() {
                   Ashish Kumar Singh
                 </h1>
                 <div className="font-manrope flex flex-wrap items-center gap-1 text-xs font-medium text-foreground/40 sm:text-sm">
-                  <p>Designer &amp; developer &amp; Developer — I</p>
+                  <p>Frontend Developer — <FadingWords words={["Designer", "Developer", "Creator"]} /></p>
                 </div>
               </div>
               <div className="mt-3 flex justify-start gap-1 px-0 sm:mt-0 sm:gap-2">
@@ -515,6 +579,22 @@ export default function Home() {
               {skills.map((skill) => (
                 <StackIcon key={skill.name} name={skill.name} icon={skill.icon} src={skill.src} />
               ))}
+            </div>
+          </div>
+        </MotionSection>
+
+        <Separator />
+
+        {/* GITHUB CONTRIBUTION GRAPH */}
+        <MotionSection delay={0.35}>
+          <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
+            <h2 className="mb-4 font-serif text-xl text-foreground/50">GitHub Activity</h2>
+            <div className="overflow-hidden rounded-lg border border-border bg-muted/30 p-2 sm:p-4">
+              <img
+                src="https://ghchart.rshah.org/ashish01-dev"
+                alt="GitHub contribution graph for ashish01-dev"
+                className="w-full"
+              />
             </div>
           </div>
         </MotionSection>

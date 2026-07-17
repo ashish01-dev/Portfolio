@@ -49,34 +49,36 @@ export default function GithubContributions() {
   if (!isMounted) return null;
 
   return (
-    <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-0">
-      <div className="hide-scrollbar overflow-x-auto [&>div]:!overflow-visible">
-        <GitHubCalendar
-          key={resolvedTheme}
-          username="ashish01-dev"
-          colorScheme={resolvedTheme as "light" | "dark"}
-          fontSize={12}
-          blockSize={12}
-          blockMargin={2}
-          year={2026}
-          blockRadius={4}
-          theme={theme}
-          labels={{
-            totalCount: contribution
-              ? `${contribution.count} contribution${contribution.count !== 1 ? "s" : ""} in ${formateContributionDate(contribution.date)}`
-              : "Total {{count}} contributions in {{year}}",
-          }}
-          renderBlock={(block, activity) =>
-            cloneElement(block, {
-              onPointerEnter: () => {
-                setContribution({ date: activity.date, count: activity.count });
-              },
-              onPointerLeave: () => {
-                setContribution(null);
-              },
-            })
-          }
-        />
+    <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-0 overflow-hidden">
+      <div className="flex justify-center">
+        <div className="overflow-visible">
+          <GitHubCalendar
+            key={resolvedTheme}
+            username="ashish01-dev"
+            colorScheme={resolvedTheme as "light" | "dark"}
+            fontSize={12}
+            blockSize={12}
+            blockMargin={2}
+            year={2026}
+            blockRadius={4}
+            theme={theme}
+            labels={{
+              totalCount: contribution
+                ? `${contribution.count} contribution${contribution.count !== 1 ? "s" : ""} in ${formateContributionDate(contribution.date)}`
+                : "Total {{count}} contributions in {{year}}",
+            }}
+            renderBlock={(block, activity) =>
+              cloneElement(block, {
+                onPointerEnter: () => {
+                  setContribution({ date: activity.date, count: activity.count });
+                },
+                onPointerLeave: () => {
+                  setContribution(null);
+                },
+              })
+            }
+          />
+        </div>
       </div>
     </div>
   );

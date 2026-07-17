@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { motion, useScroll, useMotionValueEvent, useMotionValue, animate, AnimatePresence } from "framer-motion";
-import { Typewriter } from "react-simple-typewriter";
+import BlurShimmerText from "./components/blur-shimmer-text";
 import GithubContributions from "./components/github-contributions";
 import {
   House,
@@ -59,41 +59,53 @@ const socialLinks = [
 
 const projects = [
   {
-    title: "Divine Canvas",
-    description: "An e-commerce platform offering premium, sacred vector paintings.",
-    href: "/projects/divine-canvas",
-    image: "/placeholder-banner.svg",
+    title: "JEEIFY",
+    description: "JEEIFY is a JEE preparation assistant website. Here's what it does in simple terms:",
+    href: "https://jeeify.vercel.app/",
+    image: "/projects/3.png",
+    badge: "100+ users!",
     stack: [
       { name: "Next.js", type: "icon" },
       { name: "Tailwind", type: "icon" },
-      { name: "Motion", type: "image", src: "/skills/motion.png" },
       { name: "Supabase", type: "icon" },
-    ],
-  },
-  {
-    title: "rvyu.",
-    description: "A place for developers to share their side projects and get feedback from peers.",
-    href: "/projects/rvyu",
-    image: "/placeholder-banner.svg",
-    stack: [
-      { name: "Next.js", type: "icon" },
-      { name: "Tailwind", type: "icon" },
-      { name: "Motion", type: "image", src: "/skills/motion.png" },
       { name: "Drizzle", type: "icon" },
     ],
-    more: "+3",
+    longDescription: (
+      <>
+        <p><strong>Track Your Syllabus</strong> – Mark chapters as done/in-progress/revision for Physics, Chemistry, and Maths. See your progress at a glance.</p>
+        <p><strong>Plan Your Time</strong> – A weekly timetable (hour-by-hour grid) and daily study planner to organize your routine.</p>
+        <p><strong>Analyze Progress</strong> – Dashboard with heatmaps, subject-wise completion %, study pace (on-track/behind), and gamification (streaks, XP, levels, 10 achievements).</p>
+        <p><strong>AI Tutor</strong> – Ask doubts, get summaries, formula sheets, or quiz generators. Powered by AI through OpenRouter.</p>
+        <p><strong>Practice PYQs</strong> – 900+ previous year JEE questions with answer feedback, bookmarks, mock tests with timers, and analytics (accuracy, weak chapters).</p>
+        <p><strong>Pomodoro Timer</strong> – Floating focus/break timer on every page that logs your study sessions.</p>
+        <p><strong>Backlog Tracker</strong> – Add tasks you&apos;ve fallen behind on (theory, PYQs, DPP, revision) with due dates and spaced repetition.</p>
+        <p><strong>Test Analyzer</strong> – Log test scores, view trends (bar charts), accuracy stats, and get confetti when you score 90%+.</p>
+        <p><strong>Gamification</strong> – Earn XP, level up, unlock 10 achievements (streaks, chapters completed, questions solved, etc.) to stay motivated.</p>
+        <p><strong>Formula Vault</strong> – Upload and organize formula sheets/photos per chapter, download anytime.</p>
+        <p><strong>Activity Journal</strong> – GitHub-style yearly heatmap + monthly calendar showing what you studied each day.</p>
+        <p><strong>Syncs Across Devices</strong> – All data saved locally (works offline) and synced to Supabase cloud when online.</p>
+        <p className="text-foreground/60 mt-2">It&apos;s an all-in-one JEE command center — replaces scattered notebooks, spreadsheets, and apps. You track everything in one place, see your weak areas, get AI help instantly, and stay motivated with streaks & achievements.</p>
+      </>
+    ),
   },
   {
-    title: "The Leansuite",
-    description: "SaaS website and dashboard with a custom CMS to manage blogs and pages.",
-    href: "/projects/theleansuite",
-    image: "/placeholder-banner.svg",
+    title: "INNOVISION",
+    description: "A platform for showcasing innovative projects and ideas.",
+    href: "https://innovison.vercel.app/",
+    image: "/projects/4.png",
     stack: [
       { name: "Next.js", type: "icon" },
+      { name: "TypeScript", type: "icon" },
       { name: "Tailwind", type: "icon" },
-      { name: "Motion", type: "image", src: "/skills/motion.png" },
-      { name: "Supabase", type: "icon" },
     ],
+  },
+  {
+    title: "Coming Soon",
+    description: "",
+    href: "#",
+    image: "",
+    comingSoon: true,
+    stack: [],
   },
 ];
 
@@ -155,8 +167,8 @@ function Separator() {
       <div className="relative z-0 mx-auto h-px max-w-3xl overflow-visible">
         <div className="bg-border absolute left-full h-px w-full" />
         <div className="bg-border h-px w-full" />
-        <span className="ring-foreground/10 absolute -top-0.5 -left-0.5 size-1.5 rounded-full bg-background ring-1" />
-        <span className="ring-foreground/10 absolute -top-0.5 -right-0.5 size-1.5 rounded-full bg-background ring-1" />
+        <span className="ring-foreground/10 absolute -top-0.5 -left-0.5 size-1.5 rounded-full bg-[#f9f9f9] ring-1 dark:bg-zinc-800" />
+        <span className="ring-foreground/10 absolute -top-0.5 -right-0.5 size-1.5 rounded-full bg-[#f9f9f9] ring-1 dark:bg-zinc-800" />
       </div>
     </div>
   );
@@ -428,6 +440,37 @@ function ForeignWordTooltip() {
   );
 }
 
+function Clock() {
+  const [currentTime, setCurrentTime] = useState<Date | null>(null);
+
+  useEffect(() => {
+    setCurrentTime(new Date());
+    const timerId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(timerId);
+  }, []);
+
+  if (!currentTime) return null;
+
+  const formatted = currentTime
+    .toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      weekday: "short",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+    })
+    .toUpperCase()
+    .replace(",", "  •");
+
+  return <>{formatted} IST.</>;
+}
+
 function ScrollIndicator() {
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
@@ -562,8 +605,9 @@ export default function Home() {
                   </span>
                   Available for work
                 </p>
-                <div className="flex flex-col items-end font-mono text-[10px] text-foreground/40 sm:text-xs">
-                  <span className="text-[9px] text-foreground/20 sm:text-[10px]">// 5.5h ahead</span>
+                <div suppressHydrationWarning className="flex flex-col items-end font-mono text-[10px] text-foreground/40 sm:text-xs">
+                  <span className="font-medium" suppressHydrationWarning><Clock /></span>
+                  <span className="text-[9px] text-foreground/20 sm:text-[10px]" suppressHydrationWarning>// 5.5h ahead</span>
                 </div>
               </div>
             </div>
@@ -574,7 +618,7 @@ export default function Home() {
                   Ashish Kumar Singh
                 </h1>
                 <div className="font-manrope flex flex-wrap items-center gap-1 text-xs font-medium text-foreground/40 sm:text-sm">
-                  <p>Frontend Developer — <Typewriter words={["Designer", "Developer", "Creator", "Freelancer", "Problem Solver"]} loop={0} cursor cursorStyle="|" typeSpeed={50} deleteSpeed={30} delaySpeed={1200} /></p>
+                  <p>Frontend Developer — <BlurShimmerText texts={["Designer", "Developer", "Creator", "Freelancer", "Problem Solver"]} blur={4} interval={2} className="text-foreground" /></p>
                 </div>
               </div>
               <div className="mt-3 flex justify-start gap-1 px-0 sm:mt-0 sm:gap-2">
@@ -607,7 +651,7 @@ export default function Home() {
             <div className="mt-4 flex items-center px-4 sm:px-8">
               <a
                 className="inline-flex items-center cursor-pointer justify-center whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 h-8 rounded-md gap-1.5 px-3"
-                href="https://x.com/messages/compose?recipient_id=ashish_k_singh"
+                href="https://x.com/messages/compose?recipient_id=TechMaster54321"
                 target="_blank"
               >
                 <MessageCircle className="size-4 opacity-40" />
@@ -641,14 +685,14 @@ export default function Home() {
               >
                 <div className="flex items-center gap-4">
                   <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full border border-black/10 dark:border-white/10 sm:h-14 sm:w-14 flex items-center justify-center bg-muted">
-                    <span className="text-xs font-bold text-foreground/40">A</span>
+                    <span className="text-xs font-bold text-foreground/40">J</span>
                   </div>
                   <div className="flex min-w-0 flex-col">
                     <div className="flex items-center gap-2">
-                      <h3 className="truncate text-sm font-bold text-foreground sm:text-base">Angrio Technologies</h3>
+                      <h3 className="truncate text-sm font-bold text-foreground sm:text-base">JSPL</h3>
                       <ChevronDown className={`size-3.5 shrink-0 text-foreground/50 transition-all duration-300 sm:size-4 ${expanded ? "rotate-180" : ""}`} />
                     </div>
-                    <p className="text-xs font-medium whitespace-nowrap text-foreground/50 sm:text-sm">Full-Stack Developer</p>
+                    <p className="text-xs font-medium whitespace-nowrap text-foreground/50 sm:text-sm">Software Intern</p>
                   </div>
                 </div>
                 <div className="flex flex-row items-center justify-between gap-1 text-start sm:ml-auto sm:flex-col sm:items-end sm:justify-center sm:text-end">
@@ -656,18 +700,17 @@ export default function Home() {
                     <span className="hidden h-px w-12 bg-linear-to-l from-black/10 to-transparent sm:block md:w-20 dark:from-white/10" />
                     Jan 2025 - Dec 2025
                   </p>
-                  <p className="text-[10px] tracking-tight text-foreground/30 normal-case sm:text-xs">India, Remote</p>
+                  <p className="text-[10px] tracking-tight text-foreground/30 normal-case sm:text-xs">Delhi, India</p>
                 </div>
               </div>
               <div className={`grid transition-all duration-500 ease-in-out ${expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
                 <div className="overflow-hidden">
                   <div className="space-y-4 text-sm leading-relaxed text-foreground/70 pt-4 md:text-base">
-                    <p>Started as an <span className="font-semibold">Intern</span> on January 18, 2025, focused on crafting responsive and high-converting landing pages. Due to strong performance and technical growth, I was promoted to Full-Stack Developer in April 2025.</p>
+                    <p>Worked as a <span className="font-semibold">Software Intern</span> at JSPL, where I helped manage and maintain internal databases — organizing records, writing queries, and ensuring data consistency across systems.</p>
                     <ul className="space-y-3 pl-1">
-                      <li className="flex items-start gap-3"><span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" /><p className="text-base text-foreground/50">Developed high-performance landing pages and complex interactive dashboards with a focus on UX.</p></li>
-                      <li className="flex items-start gap-3"><span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" /><p className="text-base text-foreground/50">Implemented robust headless CMS architectures using Sanity for flexible content management.</p></li>
-                      <li className="flex items-start gap-3"><span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" /><p className="text-base text-foreground/50">Built scalable full-stack features with Supabase for real-time data persistence and authentication.</p></li>
-                      <li className="flex items-start gap-3"><span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" /><p className="text-base text-foreground/50">Engineered a core browser extension for &apos;Trakkar.in&apos; (Company SaaS) to handle automated time tracking and cross-browser screenshot capture.</p></li>
+                      <li className="flex items-start gap-3"><span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" /><p className="text-base text-foreground/50">Assisted in managing relational databases — writing SQL queries, updating records, and maintaining data integrity.</p></li>
+                      <li className="flex items-start gap-3"><span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" /><p className="text-base text-foreground/50">Collaborated with the team to organize database schemas and optimize query performance.</p></li>
+                      <li className="flex items-start gap-3"><span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" /><p className="text-base text-foreground/50">Documented database processes and assisted in migrating legacy data to newer systems.</p></li>
                     </ul>
                   </div>
                 </div>
@@ -678,11 +721,11 @@ export default function Home() {
 
         <Separator />
 
-        {/* PROOF OF WORK */}
+        {/* PROJECTS */}
         <MotionSection delay={0.2}>
           <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="font-serif text-xl text-black/50 dark:text-white/40">Proof of work</h2>
+              <h2 className="font-serif text-xl text-black/50 dark:text-white/40">Projects</h2>
               <Link href="/projects" className="inline-flex items-center gap-1 text-xs font-medium text-foreground/30 transition-colors duration-200 hover:text-foreground/90">
                 ALL <MoveRight className="size-3" />
               </Link>
@@ -696,24 +739,53 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.1 }}
                 >
-                  <Link
-                    href={project.href}
-                    className="group flex cursor-pointer flex-col gap-4 rounded-lg pb-4"
-                  >
-                    <div className="relative aspect-[3/2] overflow-hidden rounded-lg transition-all duration-500 group-hover:scale-[1.05]">
-                      <Image src={project.image} alt={project.title} width={400} height={300} className="h-full w-full object-cover object-top" />
+                  {project.comingSoon ? (
+                    <div className="group flex flex-col gap-4 pb-4 pointer-events-none">
+                      <div className="relative aspect-[3/2] overflow-hidden rounded-lg border border-dashed border-foreground/20 bg-muted/30 flex items-center justify-center">
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-lg font-serif italic text-foreground/20 -rotate-12">Coming Soon</span>
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <h4 className="text-base font-semibold text-foreground/30">{project.title}</h4>
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-1 transition-all duration-300 group-hover:translate-x-4">
-                      <h4 className="text-base font-semibold text-foreground">{project.title}</h4>
-                      <p className="w-[calc(100%-1.5rem)] text-sm text-foreground/50">{project.description}</p>
-                      <ProjectStackBadge stack={project.stack} more={project.more} />
-                    </div>
-                  </Link>
+                  ) : (
+                    <a
+                      href={project.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex cursor-pointer flex-col gap-4 pb-4"
+                    >
+                      <div className="relative perspective-[2000px]">
+                        <motion.div
+                          initial={{ rotateY: -12, rotateX: 5, x: 8, y: -6 }}
+                          whileHover={{ rotateY: 0, rotateX: 0, x: 0, y: 0 }}
+                          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                          style={{ transformStyle: "preserve-3d" }}
+                          className="relative aspect-[3/2] overflow-hidden rounded-lg"
+                        >
+                          <Image src={project.image} alt={project.title} width={400} height={300} className="h-full w-full object-cover object-top" />
+                          {project.badge && (
+                            <span className="absolute top-2 left-2 rounded-full bg-green-500/90 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm">
+                              {project.badge}
+                            </span>
+                          )}
+                        </motion.div>
+                        <div className="pointer-events-none absolute inset-0 -z-10 rounded-lg border-x border-(--pattern-fg) bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px]" />
+                      </div>
+                      <div className="flex flex-col gap-1 transition-all duration-300 group-hover:translate-x-4">
+                        <h4 className="text-base font-semibold text-foreground">{project.title}</h4>
+                        <p className="w-[calc(100%-1.5rem)] text-sm text-foreground/50 line-clamp-2">{project.description}</p>
+                        <ProjectStackBadge stack={project.stack} more={(project as any).more} />
+                      </div>
+                    </a>
+                  )}
                 </motion.div>
               ))}
             </div>
             <h5 className="font-serif mt-4 bg-linear-to-r from-gray-200 via-gray-400 to-gray-600 bg-clip-text py-1 text-center text-3xl font-bold whitespace-nowrap text-transparent opacity-30 md:text-6xl">
-              Shipping More Soon . . .
+              More Projects Soon . . .
             </h5>
           </div>
         </MotionSection>

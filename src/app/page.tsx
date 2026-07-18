@@ -66,7 +66,7 @@ const homeProjects = [
   },
   {
     id: 2,
-    img: "/projects/4.png",
+    img: "/projects/7.png",
     title: "INNOVISION",
     status: true,
     content: "A platform that helps students choose the right stream after 10th & 12th.",
@@ -85,17 +85,6 @@ const homeProjects = [
     href: "/projects/wallx",
     skill: ["Next.js", "TypeScript", "Tailwind", "Supabase"],
     shader: { variant: "warp" as const, props: { colors: ["#121212", "#9470ff", "#121212", "#8838ff"], speed: 0.4 } },
-  },
-  {
-    id: 4,
-    img: "/placeholder-banner.svg",
-    title: "DevBlog",
-    status: false,
-    content: "A technical blogging platform with MDX support, syntax highlighting, and RSS feeds.",
-    url: "#",
-    href: "/projects/devblog",
-    skill: ["Next.js", "MDX", "Tailwind", "Vercel"],
-    shader: { variant: "metaballs" as const, props: { colors: ["#ff5cf4", "#4d9eff", "#000000"], colorBack: "#000000", speed: 0.5 } },
   },
 ];
 
@@ -523,7 +512,7 @@ export default function Home() {
           </motion.div>
         </div>
 
-        {/* SOCIAL PILLS */}
+        {/* SOCIAL PILLS with InfoTip tooltips */}
         <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-3 px-8">
           <div className="flex flex-wrap items-center gap-2">
             {[
@@ -538,16 +527,23 @@ export default function Home() {
                 </svg>
               ), href: "mailto:ashish.jayshreeram@gmail.com", label: "Email" },
             ].map((s) => (
-              <a
-                key={s.label}
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-full border border-black/5 dark:border-white/5 bg-background px-3 py-1.5 text-[10px] font-medium text-foreground/60 shadow-sm transition-all duration-200 hover:scale-105 hover:border-foreground/20 hover:text-foreground/90 hover:shadow-md"
-              >
-                <s.icon className="size-3" />
-                {s.label}
-              </a>
+              <div key={s.label} className="relative flex items-center select-none">
+                <div className="group relative flex">
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-black/5 dark:border-white/5 bg-background px-3 py-1.5 text-[10px] font-medium text-foreground/60 shadow-sm transition-all duration-200 hover:scale-105 hover:border-foreground/20 hover:text-foreground/90 hover:shadow-md"
+                  >
+                    <s.icon className="size-3" />
+                    {s.label}
+                  </a>
+                  <span className="absolute bottom-8 left-1/2 transform transition-all -translate-x-1/2 mb-2 w-max bg-white text-black font-medium text-xs rounded-md py-1 px-1.5 scale-0 group-hover:scale-100 duration-100 pointer-events-none whitespace-nowrap">
+                    {s.label}
+                    <span className="absolute top-full left-1/2 transform -translate-x-1/2 border-8 border-transparent border-t-white" />
+                  </span>
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -637,7 +633,7 @@ export default function Home() {
                   >
                     <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
                       {project.shader && (
-                        <div className="absolute inset-0 grayscale transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105">
+                        <div className="absolute inset-0">
                           <ShaderBackground variant={project.shader.variant} {...project.shader.props} className="h-full w-full" />
                         </div>
                       )}
@@ -646,7 +642,7 @@ export default function Home() {
                         alt={project.title}
                         width={600}
                         height={450}
-                        className="relative h-full w-full object-cover transition-all duration-500 group-hover:scale-[1.03]"
+                        className="relative h-full w-full object-contain object-left-bottom transition-all duration-500 group-hover:scale-[1.02]"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
                       {project.status ? (
@@ -660,7 +656,7 @@ export default function Home() {
                       )}
                     </div>
                     <div className="flex flex-col gap-0.5 px-0.5">
-                      <h4 className="text-sm font-semibold text-foreground">{project.title}</h4>
+                      <h4 className="font-serif text-base italic font-medium text-foreground">{project.title}</h4>
                       <p className="text-xs text-foreground/45">{project.content}</p>
                     </div>
                   </Link>

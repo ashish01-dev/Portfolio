@@ -57,7 +57,7 @@ const homeProjects = [
     id: 1,
     img: "/projects/3.png",
     title: "JEEIFY",
-    status: true,
+    status: "running",
     content: "A full-stack JEE prep platform serving 100+ users with AI tutor, syllabus tracker, and more.",
     url: "https://jeeify.vercel.app/",
     href: "/projects/jeeify",
@@ -68,7 +68,7 @@ const homeProjects = [
     id: 2,
     img: "/projects/7.png",
     title: "INNOVISION",
-    status: true,
+    status: "down",
     content: "A platform that helps students choose the right stream after 10th & 12th.",
     url: "https://innovison.vercel.app/",
     href: "/projects/innovision",
@@ -79,7 +79,7 @@ const homeProjects = [
     id: 3,
     img: "/placeholder-banner.svg",
     title: "WallX",
-    status: false,
+    status: "building",
     content: "A curated wallpaper platform with dynamic collections and smart categorization.",
     url: "#",
     href: "/projects/wallx",
@@ -625,13 +625,12 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.35, delay: (project.id - 1) * 0.05 }}
-                  className={project.id === homeProjects.length && homeProjects.length % 2 === 1 ? "md:col-span-2 md:max-w-[calc(50%-1rem)] md:justify-self-center" : ""}
                 >
                   <Link
                     href={project.href}
-                    className="group flex cursor-pointer flex-col gap-3 rounded-xl border border-border/20 bg-background/50 p-3 transition-all duration-500 hover:border-foreground/10 hover:shadow-[0_0_30px_-10px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_0_30px_-10px_rgba(255,255,255,0.05)]"
+                    className="group flex cursor-pointer flex-col gap-2 rounded-lg border border-border/20 bg-background/50 p-2 transition-all duration-500 hover:border-foreground/10 hover:shadow-[0_0_30px_-10px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_0_30px_-10px_rgba(255,255,255,0.05)]"
                   >
-                    <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-md">
                       {project.shader && (
                         <div className="absolute inset-0">
                           <ShaderBackground variant={project.shader.variant} {...project.shader.props} className="h-full w-full" />
@@ -645,19 +644,43 @@ export default function Home() {
                         className="relative h-full w-full object-contain object-left-bottom transition-all duration-500 group-hover:scale-[1.02]"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
-                      {project.status ? (
-                        <span className="absolute bottom-2 right-2 rounded-full bg-green-500/90 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm">
-                          Running
-                        </span>
-                      ) : (
-                        <span className="absolute bottom-2 right-2 rounded-full bg-red-500/90 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm">
-                          Down
-                        </span>
+                      {/* Diagonal "100+ users!" banner on JEEIFY */}
+                      {project.title === "JEEIFY" && (
+                        <div className="absolute top-0 right-0 overflow-hidden pointer-events-none">
+                          <div className="relative">
+                            <span className="block w-32 translate-x-8 translate-y-3 rotate-45 bg-amber-500/90 py-0.5 text-center text-[9px] font-bold text-white shadow-sm transition-all duration-500 group-hover:brightness-110 group-hover:shadow-md">
+                              100+ users!
+                            </span>
+                            <span className="absolute inset-0 block w-32 translate-x-8 translate-y-3 rotate-45 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100 -translate-x-full group-hover:translate-x-full" />
+                          </div>
+                        </div>
                       )}
                     </div>
-                    <div className="flex flex-col gap-0.5 px-0.5">
-                      <h4 className="font-serif text-base italic font-medium text-foreground">{project.title}</h4>
-                      <p className="text-xs text-foreground/45">{project.content}</p>
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-serif text-sm italic font-medium text-foreground">{project.title}</h4>
+                        {(() => {
+                          if (project.status === "running") return (
+                            <span className="inline-flex items-center gap-1 rounded-md bg-green-500/10 px-1.5 py-0.5 text-[10px] font-medium text-green-500 select-none whitespace-nowrap">
+                              <span className="inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-green-500" />
+                              Running
+                            </span>
+                          );
+                          if (project.status === "down") return (
+                            <span className="inline-flex items-center gap-1 rounded-md bg-red-500/10 px-1.5 py-0.5 text-[10px] font-medium text-red-500 select-none whitespace-nowrap">
+                              <span className="inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-red-500" />
+                              Down
+                            </span>
+                          );
+                          return (
+                            <span className="inline-flex items-center gap-1 rounded-md bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-500 select-none whitespace-nowrap">
+                              <span className="inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-amber-600 dark:bg-amber-500" />
+                              Building
+                            </span>
+                          );
+                        })()}
+                      </div>
+                      <p className="text-[11px] text-foreground/45">{project.content}</p>
                     </div>
                   </Link>
                 </motion.div>

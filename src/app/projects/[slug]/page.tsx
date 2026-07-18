@@ -220,14 +220,21 @@ export default function ProjectPage() {
               <h1 className="font-serif text-4xl text-foreground/80 italic">{project.title}</h1>
               <div className="flex shrink-0 items-center gap-2">
                 {project.badge === "Down!" ? (
-                  <span className="rounded-full bg-red-500/90 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-red-500/90 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm">
+                    <span className="inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
                     Down
                   </span>
                 ) : project.badge === "100+ users!" ? (
-                  <span className="rounded-full bg-green-500/90 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-green-500/90 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm">
+                    <span className="inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
                     Running
                   </span>
-                ) : null}
+                ) : (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/90 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm">
+                    <span className="inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
+                    Building
+                  </span>
+                )}
                 <a
                   href={project.url}
                   target="_blank"

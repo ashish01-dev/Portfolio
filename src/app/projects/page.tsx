@@ -17,7 +17,7 @@ const projects: ({
   image?: string;
   url?: string;
   github?: string;
-  live?: boolean;
+  status: "running" | "down" | "building";
   stack?: string[];
   shader?: { variant: ShaderVariant; props: Record<string, unknown> };
 })[] = [
@@ -28,7 +28,7 @@ const projects: ({
     image: "/projects/3.png",
     url: "https://jeeify.vercel.app/",
     github: "https://github.com/ashish01-dev/jeeify",
-    live: true,
+    status: "running",
     stack: ["Next.js", "Tailwind", "Supabase", "Drizzle"],
     shader: { variant: "mesh-gradient", props: { colors: ["#e0eaff", "#241d9a", "#f75092", "#9f50d3"], distortion: 0.8, swirl: 0.3, speed: 0.4 } },
   },
@@ -38,7 +38,7 @@ const projects: ({
     href: "/projects/innovision",
     image: "/projects/7.png",
     url: "https://innovison.vercel.app/",
-    live: false,
+    status: "down",
     stack: ["Next.js", "TypeScript", "Tailwind"],
     shader: { variant: "grain-gradient", props: { colors: ["#7300ff", "#eba8ff", "#00bfff", "#2a00ff"], colorBack: "#000000", softness: 0.6, speed: 0.5 } },
   },
@@ -48,7 +48,7 @@ const projects: ({
     href: "/projects/wallx",
     image: "/placeholder-banner.svg",
     url: "#",
-    live: false,
+    status: "building",
     stack: ["Next.js", "TypeScript", "Tailwind", "Supabase"],
     shader: { variant: "warp", props: { colors: ["#121212", "#9470ff", "#121212", "#8838ff"], speed: 0.4 } },
   },
@@ -172,27 +172,48 @@ export default function ProjectsPage() {
                         <h3 className="font-serif text-lg italic font-medium text-foreground truncate">
                           {project.title}
                         </h3>
-                        {project.live ? (
-                          <span className="inline-flex items-center gap-0.5 rounded-md bg-green-500/10 px-1.5 py-0.5 text-xs font-medium text-green-500 select-none">
+                        {project.status === "running" ? (
+                          <span className="inline-flex items-center gap-1 rounded-md bg-green-500/10 px-1.5 py-0.5 text-[10px] font-medium text-green-500 select-none">
                             <span className="inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-green-500" />
                             Running
                           </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-0.5 rounded-md bg-red-500/10 px-1.5 py-0.5 text-xs font-medium text-red-500 select-none">
+                        ) : project.status === "down" ? (
+                          <span className="inline-flex items-center gap-1 rounded-md bg-red-500/10 px-1.5 py-0.5 text-[10px] font-medium text-red-500 select-none">
                             <span className="inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-red-500" />
                             Down
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 rounded-md bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-500 select-none">
+                            <span className="inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-amber-600 dark:bg-amber-500" />
+                            Building
                           </span>
                         )}
                       </div>
                       <div className="flex shrink-0 items-center gap-1.5 px-1 text-base">
                         {project.url && project.url !== "#" && (
                           <InfoTip text="Live">
-                            <ArrowUpRight className="size-4 cursor-pointer text-foreground/50 transition-colors duration-100 hover:text-foreground/80" />
+                            <a
+                              href={project.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              className="cursor-pointer text-foreground/50 transition-colors duration-100 hover:text-foreground/80"
+                            >
+                              <ArrowUpRight className="size-4" />
+                            </a>
                           </InfoTip>
                         )}
                         {project.github && (
                           <InfoTip text="GitHub">
-                            <GithubIcon className="size-4 cursor-pointer text-foreground/50 transition-colors duration-100 hover:text-foreground/80" />
+                            <a
+                              href={project.github}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              className="cursor-pointer text-foreground/50 transition-colors duration-100 hover:text-foreground/80"
+                            >
+                              <GithubIcon className="size-4" />
+                            </a>
                           </InfoTip>
                         )}
                       </div>

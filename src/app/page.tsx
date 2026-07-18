@@ -176,19 +176,7 @@ const Separator = memo(function Separator() {
   );
 });
 
-function SocialTip({ text, children }: { text: string; children: React.ReactNode }) {
-  return (
-    <div className="relative flex items-center select-none">
-      <div className="group relative flex">
-        {children}
-        <span className="absolute bottom-9 left-1/2 transform transition-all -translate-x-1/2 mb-2 w-max bg-white text-black font-medium text-sm rounded-md py-1 px-1.5 scale-0 group-hover:scale-100 duration-100 pointer-events-none whitespace-nowrap">
-          {text}
-          <span className="absolute top-full left-1/2 transform -translate-x-1/2 border-8 border-transparent border-t-white" />
-        </span>
-      </div>
-    </div>
-  );
-}
+
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -572,34 +560,36 @@ export default function Home() {
                     <p>Frontend Developer — <BlurShimmerText texts={["Designer", "Developer", "Creator", "Freelancer", "Problem Solver"]} blur={4} interval={4} className="text-foreground" /></p>
                   </div>
                 </div>
-                <div className="mt-3 flex justify-start gap-1.5 px-0 sm:mt-0 sm:gap-2">
+                <div className="mt-3 flex justify-start gap-1.5 px-0 sm:mt-0 sm:gap-2 flex-wrap">
                   {socialLinks.map((link) => {
                     const isInsta = link.label === "Instagram";
                     return (
-                      <SocialTip key={link.label} text={link.label}>
+                      <div key={link.label} className="relative inline-block">
                         {isInsta ? (
                           <button
                             type="button"
                             onClick={() => setShowInstaPopup(true)}
-                            className="select-none bg-background border border-border rounded-md p-1.5 text-[1.35rem] hover:bg-muted transition-all duration-100 cursor-pointer flex items-center justify-center"
+                            className="flex items-center group px-2 py-1 bg-muted hover:bg-accent/5 transition-colors duration-200 select-none rounded-[6px]"
                           >
-                            <span style={{ '--brand': link.color } as React.CSSProperties} className="group-hover:text-[var(--brand)] transition-colors duration-100 flex">
+                            <span style={{ '--brand': link.color } as React.CSSProperties} className="group-hover:text-[var(--brand)] transition-colors duration-200 flex">
                               <link.icon className="size-4" />
                             </span>
+                            <span className="ml-1.5 text-sm font-medium text-foreground">{link.label}</span>
                           </button>
                         ) : (
                           <a
-                            className="select-none bg-background border border-border rounded-md p-1.5 text-[1.35rem] hover:bg-muted transition-all duration-100 cursor-pointer flex items-center justify-center"
+                            className="flex items-center group px-2 py-1 bg-muted hover:bg-accent/5 transition-colors duration-200 select-none rounded-[6px]"
                             href={link.href}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            <span style={{ '--brand': link.color } as React.CSSProperties} className="group-hover:text-[var(--brand)] transition-colors duration-100 flex">
+                            <span style={{ '--brand': link.color } as React.CSSProperties} className="group-hover:text-[var(--brand)] transition-colors duration-200 flex">
                               <link.icon className="size-4" />
                             </span>
+                            <span className="ml-1.5 text-sm font-medium text-foreground">{link.label}</span>
                           </a>
                         )}
-                      </SocialTip>
+                      </div>
                     );
                   })}
                 </div>

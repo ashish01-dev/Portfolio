@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { House, MoveRight, Sun, Moon } from "lucide-react";
+import { House, Sun, Moon } from "lucide-react";
 
 const projects = [
   {
@@ -14,6 +14,7 @@ const projects = [
     href: "/projects/jeeify",
     image: "/projects/3.png",
     badge: "100+ users!",
+    badgeColor: "green",
     stack: ["Next.js", "Tailwind", "Supabase", "Drizzle"],
   },
   {
@@ -22,6 +23,7 @@ const projects = [
     href: "/projects/innovision",
     image: "/projects/4.png",
     badge: "Down!",
+    badgeColor: "red",
     stack: ["Next.js", "TypeScript", "Tailwind"],
   },
   {
@@ -107,9 +109,9 @@ export default function ProjectsPage() {
                 ) : (
                   <Link
                     href={project.href}
-                    className="group flex cursor-pointer flex-col gap-4 pb-4"
+                    className="group flex cursor-pointer flex-col gap-4 rounded-lg pb-4 transition-shadow duration-300 hover:shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] dark:hover:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)]"
                   >
-                    <div className="relative aspect-[3/2] overflow-hidden rounded-lg transition-all duration-300 group-hover:scale-[1.02]">
+                    <div className="relative aspect-[3/2] overflow-hidden rounded-lg transition-all duration-300 group-hover:scale-[1.05]">
                       <Image
                         src={project.image!}
                         alt={project.title}
@@ -118,7 +120,7 @@ export default function ProjectsPage() {
                         className="h-full w-full object-cover object-top"
                       />
                       {project.badge && (
-                        <span className={`absolute bottom-2 right-2 rounded-full px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm ${project.badge === "100+ users!" ? "bg-green-500/90" : "bg-red-500/90"}`}>
+                        <span className={`absolute bottom-2 right-2 rounded-full px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm ${project.badgeColor === "green" ? "bg-green-500/90" : "bg-red-500/90"}`}>
                           {project.badge}
                         </span>
                       )}
@@ -126,6 +128,30 @@ export default function ProjectsPage() {
                     <div className="flex flex-col gap-1 transition-all duration-300 group-hover:translate-x-4">
                       <h4 className="text-base font-semibold text-foreground">{project.title}</h4>
                       <p className="w-[calc(100%-1.5rem)] text-sm text-foreground/50">{project.description}</p>
+                      {project.stack && (
+                        <div className="mt-auto flex items-center pt-2">
+                          {project.stack.slice(0, 4).map((tech, idx) => (
+                            <div
+                              key={tech}
+                              className="group/pill flex h-7 cursor-default items-center rounded-full border border-black/5 bg-background shadow-sm transition-all duration-200 max-w-7 hover:max-w-[200px] overflow-hidden dark:border-white/5"
+                              style={{ marginLeft: idx > 0 ? -8 : 0, zIndex: 4 - idx }}
+                            >
+                              <div className="flex h-7 w-7 shrink-0 items-center justify-center">
+                                <span className="text-[10px] font-bold text-foreground/60">{tech.slice(0, 2)}</span>
+                              </div>
+                              <span className="pr-2 text-[11px] font-medium whitespace-nowrap text-foreground/70">{tech}</span>
+                            </div>
+                          ))}
+                          {project.stack.length > 4 && (
+                            <div
+                              className="flex h-7 items-center rounded-full border border-black/5 bg-background shadow-sm px-2.5 dark:border-white/5"
+                              style={{ marginLeft: -8 }}
+                            >
+                              <span className="text-[11px] font-medium text-foreground/60">+{project.stack.length - 4}</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </Link>
                 )}

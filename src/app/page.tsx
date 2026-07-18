@@ -7,10 +7,10 @@ import { useTheme } from "next-themes";
 import { motion, useScroll, useMotionValueEvent, useMotionValue, animate, AnimatePresence } from "framer-motion";
 import BlurShimmerText from "./components/blur-shimmer-text";
 import GithubContributions from "./components/github-contributions";
-import ProjectCard from "./components/project-card";
 import { TextReveal } from "./components/text-reveal";
 import { PreviewRail } from "./components/preview-rail";
 import type { PreviewRailItem } from "./components/preview-rail";
+import { ShaderBackground } from "./components/shader-background";
 import {
   House,
   ChevronDown,
@@ -52,13 +52,6 @@ function LinkedinIcon({ className }: { className?: string }) {
   );
 }
 
-const socialLinks = [
-  { href: "https://github.com/ashish01-dev", icon: GithubIcon, label: "GitHub", color: "#333" },
-  { href: "https://x.com/TechMaster54321", icon: XIcon, label: "X", color: "#000" },
-  { href: "https://www.instagram.com/ashish.kumar.singh", icon: InstagramIcon, label: "Instagram", color: "#E1306C" },
-  { href: "https://www.linkedin.com/in/ashish-kumar0406", icon: LinkedinIcon, label: "LinkedIn", color: "#0077B5" },
-];
-
 const homeProjects = [
   {
     id: 1,
@@ -93,6 +86,17 @@ const homeProjects = [
     skill: ["Next.js", "TypeScript", "Tailwind", "Supabase"],
     shader: { variant: "warp" as const, props: { colors: ["#121212", "#9470ff", "#121212", "#8838ff"], speed: 0.4 } },
   },
+  {
+    id: 4,
+    img: "/placeholder-banner.svg",
+    title: "DevBlog",
+    status: false,
+    content: "A technical blogging platform with MDX support, syntax highlighting, and RSS feeds.",
+    url: "#",
+    href: "/projects/devblog",
+    skill: ["Next.js", "MDX", "Tailwind", "Vercel"],
+    shader: { variant: "metaballs" as const, props: { colors: ["#ff5cf4", "#4d9eff", "#000000"], colorBack: "#000000", speed: 0.5 } },
+  },
 ];
 
 const railItems: PreviewRailItem[] = [
@@ -101,28 +105,6 @@ const railItems: PreviewRailItem[] = [
   { id: "stack", label: "Stack", description: "Technologies and tools I use daily.", href: "#stack" },
   { id: "thoughts", label: "Thoughts", description: "Occasional writings on tech and life.", href: "#thoughts" },
   { id: "cta", label: "Contact", description: "Book a call or reach out via socials.", href: "#cta" },
-];
-
-const contactLinks = [
-  { name: "GitHub", icon: GithubIcon, href: "https://github.com/ashish01-dev" },
-  { name: "X", icon: XIcon, href: "https://x.com/TechMaster54321" },
-  { name: "LinkedIn", icon: LinkedinIcon, href: "https://www.linkedin.com/in/ashish-kumar0406" },
-  {
-    name: "Instagram",
-    icon: InstagramIcon,
-    href: "#instagram",
-    popup: true,
-  },
-  {
-    name: "Email",
-    icon: (p: any) => (
-      <svg viewBox="0 0 24 24" className={(p?.className) || "size-5"} fill="none" stroke="currentColor" strokeWidth="2">
-        <rect x="2" y="4" width="20" height="16" rx="2" />
-        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-      </svg>
-    ),
-    href: "mailto:ashish.jayshreeram@gmail.com",
-  },
 ];
 
 const blogs = [
@@ -190,7 +172,19 @@ const Separator = memo(function Separator() {
   );
 });
 
-
+function SocialTip({ text, children }: { text: string; children: React.ReactNode }) {
+  return (
+    <div className="relative flex items-center select-none">
+      <div className="group relative flex">
+        {children}
+        <span className="absolute bottom-9 left-1/2 transform transition-all -translate-x-1/2 mb-2 w-max bg-white text-black font-medium text-sm rounded-md py-1 px-1.5 scale-0 group-hover:scale-100 duration-100 pointer-events-none whitespace-nowrap">
+          {text}
+          <span className="absolute top-full left-1/2 transform -translate-x-1/2 border-8 border-transparent border-t-white" />
+        </span>
+      </div>
+    </div>
+  );
+}
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -575,39 +569,7 @@ export default function Home() {
                     <p>Frontend Developer — <BlurShimmerText texts={["Designer", "Developer", "Creator", "Freelancer", "Problem Solver"]} blur={4} interval={4} className="text-foreground" /></p>
                   </div>
                 </div>
-                <div className="mt-3 flex justify-start gap-1.5 px-0 sm:mt-0 sm:gap-2 flex-wrap">
-                  {socialLinks.map((link) => {
-                    const isInsta = link.label === "Instagram";
-                    return (
-                      <div key={link.label} className="relative inline-block">
-                        {isInsta ? (
-                          <button
-                            type="button"
-                            onClick={() => setShowInstaPopup(true)}
-                            className="flex items-center group px-2 py-1 bg-muted hover:bg-accent/5 transition-colors duration-200 select-none rounded-[6px]"
-                          >
-                            <span style={{ '--brand': link.color } as React.CSSProperties} className="group-hover:text-[var(--brand)] transition-colors duration-200 flex">
-                              <link.icon className="size-4" />
-                            </span>
-                            <span className="ml-1.5 text-sm font-medium text-foreground">{link.label}</span>
-                          </button>
-                        ) : (
-                          <a
-                            className="flex items-center group px-2 py-1 bg-muted hover:bg-accent/5 transition-colors duration-200 select-none rounded-[6px]"
-                            href={link.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <span style={{ '--brand': link.color } as React.CSSProperties} className="group-hover:text-[var(--brand)] transition-colors duration-200 flex">
-                              <link.icon className="size-4" />
-                            </span>
-                            <span className="ml-1.5 text-sm font-medium text-foreground">{link.label}</span>
-                          </a>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
+
               </div>
             </motion.div>
 
@@ -630,43 +592,7 @@ export default function Home() {
               </div>
             </motion.div>
 
-            <motion.div
-              variants={{
-                hidden: { opacity: 0, y: 10 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } },
-              }}
-            >
-              <div className="mt-4 flex flex-col gap-2.5 px-4 sm:px-8">
-                <p className="text-sm text-foreground/60">Most of the time, you&apos;ll find me building things or exploring new tech. Feel free to DM me on X or reach out via email if you have any queries.</p>
-                <div className="flex flex-wrap items-center gap-2">
-                  {contactLinks.map((link) => {
-                    const Icon = link.icon;
-                    return link.popup ? (
-                      <button
-                        key={link.name}
-                        type="button"
-                        onClick={() => setShowInstaPopup(true)}
-                        className="cursor-pointer w-fit select-none transition-colors duration-100 flex flex-row gap-1.5 items-center bg-muted border border-border hover:bg-accent/5 px-2 py-1 rounded-md text-sm font-medium text-foreground/70"
-                      >
-                        {typeof Icon === "function" ? <Icon className="size-4" /> : Icon}
-                        {link.name}
-                      </button>
-                    ) : (
-                      <a
-                        key={link.name}
-                        className="cursor-pointer w-fit select-none transition-colors duration-100 flex flex-row gap-1.5 items-center bg-muted border border-border hover:bg-accent/5 px-2 py-1 rounded-md text-sm font-medium text-foreground/70"
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {typeof Icon === "function" ? <Icon className="size-4" /> : Icon}
-                        {link.name}
-                      </a>
-                    );
-                  })}
-                </div>
-              </div>
-            </motion.div>
+
           </motion.div>
         </div>
 
@@ -739,7 +665,7 @@ export default function Home() {
                 ALL <MoveRight className="size-3" />
               </Link>
             </div>
-            <div className="flex flex-col md:gap-2.5 gap-3.5">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {homeProjects.map((project) => (
                 <motion.div
                   key={project.id}
@@ -748,16 +674,36 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.35, delay: (project.id - 1) * 0.05 }}
                 >
-                  <ProjectCard
-                    title={project.title}
-                    img={project.img}
-                    content={project.content}
-                    status={project.status}
-                    skill={project.skill}
-                    url={project.url}
+                  <Link
                     href={project.href}
-                    shader={project.shader}
-                  />
+                    className="group flex cursor-pointer flex-col gap-4 rounded-lg pb-4 transition-shadow duration-300 hover:shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] dark:hover:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)]"
+                  >
+                    <div className="relative aspect-[3/2] overflow-hidden rounded-lg transition-all duration-300 group-hover:scale-[1.05]">
+                      {project.shader && (
+                        <div className="absolute inset-0">
+                          <ShaderBackground variant={project.shader.variant} {...project.shader.props} className="h-full w-full" />
+                        </div>
+                      )}
+                      <Image
+                        src={project.img}
+                        alt={project.title}
+                        width={400}
+                        height={300}
+                        className="relative h-full w-full object-contain object-bottom"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1 transition-all duration-300 group-hover:translate-x-4">
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-base font-semibold text-foreground">{project.title}</h4>
+                        {project.status ? (
+                          <span className="text-[10px] font-medium text-green-500 bg-green-500/10 rounded-full px-2 py-0.5">Live</span>
+                        ) : (
+                          <span className="text-[10px] font-medium text-red-500 bg-red-500/10 rounded-full px-2 py-0.5">Building</span>
+                        )}
+                      </div>
+                      <p className="w-[calc(100%-1.5rem)] text-sm text-foreground/50">{project.content}</p>
+                    </div>
+                  </Link>
                 </motion.div>
               ))}
             </div>
@@ -886,30 +832,30 @@ export default function Home() {
                       visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.3, ease: "easeOut" } },
                     }}
                   >
-                    {s.popup ? (
-                      <button
-                        type="button"
-                        onClick={() => setShowInstaPopup(true)}
-                        className={`${s.z} bg-background -mr-1 flex w-13 cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-foreground/20 p-2 text-foreground/60 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition-all duration-300 group-hover:mr-2 group-hover:rotate-0 dark:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)] ${rotation}`}
-                      >
-                        <span style={{ '--brand': (s as any).color } as React.CSSProperties} className="group-hover:text-[var(--brand)] transition-colors duration-200 flex">
-                          <s.icon className="size-5" />
-                        </span>
-                        <p className="text-[8px] font-bold text-foreground/50">{s.label}</p>
-                      </button>
-                    ) : (
-                      <a
-                        href={s.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`${s.z} bg-background -mr-1 flex w-13 cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-foreground/20 p-2 text-foreground/60 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition-all duration-300 group-hover:mr-2 group-hover:rotate-0 dark:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)] ${rotation}`}
-                      >
-                        <span style={{ '--brand': (s as any).color } as React.CSSProperties} className="group-hover:text-[var(--brand)] transition-colors duration-200 flex">
-                          <s.icon className="size-5" />
-                        </span>
-                        <p className="text-[8px] font-bold text-foreground/50">{s.label}</p>
-                      </a>
-                    )}
+                    <SocialTip text={s.label}>
+                      {s.popup ? (
+                        <button
+                          type="button"
+                          onClick={() => setShowInstaPopup(true)}
+                          className={`${s.z} bg-background -mr-1 flex w-13 cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-foreground/20 p-2 text-foreground/60 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition-all duration-300 group-hover:mr-2 group-hover:rotate-0 dark:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)] ${rotation}`}
+                        >
+                          <span style={{ '--brand': (s as any).color } as React.CSSProperties} className="group-hover:text-[var(--brand)] transition-colors duration-200 flex">
+                            <s.icon className="size-5" />
+                          </span>
+                        </button>
+                      ) : (
+                        <a
+                          href={s.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`${s.z} bg-background -mr-1 flex w-13 cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-foreground/20 p-2 text-foreground/60 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition-all duration-300 group-hover:mr-2 group-hover:rotate-0 dark:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)] ${rotation}`}
+                        >
+                          <span style={{ '--brand': (s as any).color } as React.CSSProperties} className="group-hover:text-[var(--brand)] transition-colors duration-200 flex">
+                            <s.icon className="size-5" />
+                          </span>
+                        </a>
+                      )}
+                    </SocialTip>
                   </motion.div>
                 );
               })}

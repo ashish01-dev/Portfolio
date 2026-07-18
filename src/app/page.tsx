@@ -549,96 +549,127 @@ export default function Home() {
         <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 pt-0">
           <motion.div
             className="-mt-10 flex-col"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
+            }}
           >
-            <div className="mr-4 mb-4 ml-4 flex items-center justify-between sm:mr-8 sm:ml-8">
-              <div className="relative">
-                <Image
-                  src="/decorations/cyber-katana.svg"
-                  alt="decoration katana"
-                  width={500}
-                  height={500}
-                  className="absolute z-10 size-24 sm:size-28"
-                />
-                <div
-                  className="relative z-0 h-24 w-24 shrink-0 overflow-hidden rounded-full border bg-white bg-cover bg-center sm:h-28 sm:w-28"
-                  role="img"
-                  aria-label="Ashish Kumar Singh"
-                  style={{ backgroundImage: "url(/me.png)" }}
-                />
-              </div>
-              <div className="mt-1 flex shrink-0 flex-col items-end gap-1.5">
-                <p className="flex items-center gap-1.5 font-mono text-[10px] font-medium whitespace-nowrap text-foreground/70 sm:text-xs">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-                  </span>
-                  Available for work
-                </p>
-                <div suppressHydrationWarning className="flex items-center gap-2 font-mono text-[10px] text-foreground/40 sm:text-xs">
-                  <span className="font-medium" suppressHydrationWarning><Clock /></span>
-                  <span className="text-foreground/20">&middot;</span>
-                  <span className="text-foreground/30" suppressHydrationWarning>5.5h ahead</span>
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 15 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+              }}
+            >
+              <div className="mr-4 mb-4 ml-4 flex items-center justify-between sm:mr-8 sm:ml-8">
+                <div className="relative">
+                  <Image
+                    src="/decorations/cyber-katana.svg"
+                    alt="decoration katana"
+                    width={500}
+                    height={500}
+                    className="absolute z-10 size-24 sm:size-28"
+                  />
+                  <div
+                    className="relative z-0 h-24 w-24 shrink-0 overflow-hidden rounded-full border bg-white bg-cover bg-center sm:h-28 sm:w-28"
+                    role="img"
+                    aria-label="Ashish Kumar Singh"
+                    style={{ backgroundImage: "url(/me.png)" }}
+                  />
+                </div>
+                <div className="mt-1 flex shrink-0 flex-col items-end gap-1.5">
+                  <p className="flex items-center gap-1.5 font-mono text-[10px] font-medium whitespace-nowrap text-foreground/70 sm:text-xs">
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+                    </span>
+                    Available for work
+                  </p>
+                  <div suppressHydrationWarning className="flex items-center gap-2 font-mono text-[10px] text-foreground/40 sm:text-xs">
+                    <span className="font-medium" suppressHydrationWarning><Clock /></span>
+                    <span className="text-foreground/20">&middot;</span>
+                    <span className="text-foreground/30" suppressHydrationWarning>5.5h ahead</span>
+                  </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="w-full flex-col px-4 text-left sm:flex sm:flex-row sm:items-end sm:justify-between sm:px-8">
-              <div className="px-0">
-                <h1 className="mb-0 font-serif text-2xl font-medium tracking-[0.01em] italic sm:text-4xl text-foreground">
-                  Ashish Kumar Singh
-                </h1>
-                <div className="flex flex-wrap items-center gap-1 text-xs font-medium text-foreground/40 sm:text-sm">
-                  <p>Frontend Developer — <BlurShimmerText texts={["Designer", "Developer", "Creator", "Freelancer", "Problem Solver"]} blur={4} interval={4} className="text-foreground" /></p>
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 15 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+              }}
+            >
+              <div className="w-full flex-col px-4 text-left sm:flex sm:flex-row sm:items-end sm:justify-between sm:px-8">
+                <div className="px-0">
+                  <h1 className="mb-0 font-serif text-2xl font-medium tracking-[0.01em] italic sm:text-4xl text-foreground">
+                    Ashish Kumar Singh
+                  </h1>
+                  <div className="flex flex-wrap items-center gap-1 text-xs font-medium text-foreground/40 sm:text-sm">
+                    <p>Frontend Developer — <BlurShimmerText texts={["Designer", "Developer", "Creator", "Freelancer", "Problem Solver"]} blur={4} interval={4} className="text-foreground" /></p>
+                  </div>
+                </div>
+                <div className="mt-3 flex justify-start gap-1 px-0 sm:mt-0 sm:gap-2">
+                  {socialLinks.map((link) => (
+                    <a
+                      key={link.label}
+                      className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all bg-secondary text-secondary-foreground hover:bg-secondary/80 size-8 rounded-full touch-manipulation active:opacity-75"
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <link.icon className="size-4" />
+                    </a>
+                  ))}
                 </div>
               </div>
-              <div className="mt-3 flex justify-start gap-1 px-0 sm:mt-0 sm:gap-2">
-                {socialLinks.map((link) => (
-                  <a
-                    key={link.label}
-                    className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all bg-secondary text-secondary-foreground hover:bg-secondary/80 size-8 rounded-full touch-manipulation active:opacity-75"
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <link.icon className="size-4" />
-                  </a>
-                ))}
+            </motion.div>
+
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 15 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+              }}
+            >
+              <div className="mt-4 px-4 text-base leading-loose tracking-wider text-foreground/50 sm:px-8">
+                I design{" "}
+                <span className="font-medium text-foreground">conversion-focused</span> websites and{" "}
+                <span className="font-medium text-foreground">scalable product interfaces</span> for{" "}
+                <span className="font-medium text-foreground">startups</span>. I&apos;m Ashish, an{" "}
+                <span className="font-medium text-foreground">India-based designer &amp; developer</span>{" "}
+                who specializes in building{" "}
+                <span className="font-medium text-foreground">high-converting</span> websites for{" "}
+                <span className="font-medium text-foreground">B2C</span> and{" "}
+                <span className="font-medium text-foreground">B2B</span> brands.
               </div>
-            </div>
+            </motion.div>
 
-            <div className="mt-4 px-4 text-base leading-loose tracking-wider text-foreground/50 sm:px-8">
-              I design{" "}
-              <span className="font-medium text-foreground">conversion-focused</span> websites and{" "}
-              <span className="font-medium text-foreground">scalable product interfaces</span> for{" "}
-              <span className="font-medium text-foreground">startups</span>. I&apos;m Ashish, an{" "}
-              <span className="font-medium text-foreground">India-based designer &amp; developer</span>{" "}
-              who specializes in building{" "}
-              <span className="font-medium text-foreground">high-converting</span> websites for{" "}
-              <span className="font-medium text-foreground">B2C</span> and{" "}
-              <span className="font-medium text-foreground">B2B</span> brands.
-            </div>
-
-            <div className="mt-4 flex items-center px-4 sm:px-8">
-              <a
-                className="inline-flex items-center cursor-pointer justify-center whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 h-8 rounded-md gap-1.5 px-3"
-                href="https://x.com/messages/compose?recipient_id=TechMaster54321"
-                target="_blank"
-              >
-                <MessageCircle className="size-4 opacity-40" />
-                Twitter DM
-              </a>
-              <span className="mx-1 text-xs font-medium text-foreground/20">OR</span>
-              <a
-                className="inline-flex items-center cursor-pointer justify-center whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 h-8 rounded-md gap-1.5 px-3"
-                href="mailto:ashish.jayshreeram@gmail.com"
-              >
-                <PenLine className="size-4 opacity-40" />
-                Email
-              </a>
-            </div>
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 15 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+              }}
+            >
+              <div className="mt-4 flex items-center px-4 sm:px-8">
+                <a
+                  className="inline-flex items-center cursor-pointer justify-center whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 h-8 rounded-md gap-1.5 px-3"
+                  href="https://x.com/messages/compose?recipient_id=TechMaster54321"
+                  target="_blank"
+                >
+                  <MessageCircle className="size-4 opacity-40" />
+                  Twitter DM
+                </a>
+                <span className="mx-1 text-xs font-medium text-foreground/20">OR</span>
+                <a
+                  className="inline-flex items-center cursor-pointer justify-center whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 h-8 rounded-md gap-1.5 px-3"
+                  href="mailto:ashish.jayshreeram@gmail.com"
+                >
+                  <PenLine className="size-4 opacity-40" />
+                  Email
+                </a>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
 
@@ -676,18 +707,27 @@ export default function Home() {
                   <p className="text-[10px] tracking-tight text-foreground/30 normal-case sm:text-xs">Delhi, India</p>
                 </div>
               </div>
-              <div className={`grid transition-all duration-500 ease-in-out ${expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
-                <div className="overflow-hidden">
-                  <div className="space-y-4 text-sm leading-relaxed text-foreground/70 pt-4 md:text-base">
-                    <p>Worked as a <span className="font-semibold">Software Intern</span> at JSPL, where I helped manage and maintain internal databases — organizing records, writing queries, and ensuring data consistency across systems.</p>
-                    <ul className="space-y-3 pl-1">
-                      <li className="flex items-start gap-3"><span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" /><p className="text-base text-foreground/50">Assisted in managing relational databases — writing SQL queries, updating records, and maintaining data integrity.</p></li>
-                      <li className="flex items-start gap-3"><span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" /><p className="text-base text-foreground/50">Collaborated with the team to organize database schemas and optimize query performance.</p></li>
-                      <li className="flex items-start gap-3"><span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" /><p className="text-base text-foreground/50">Documented database processes and assisted in migrating legacy data to newer systems.</p></li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+              <AnimatePresence initial={false}>
+                {expanded && (
+                  <motion.div
+                    key="expanded-content"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="space-y-4 text-sm leading-relaxed text-foreground/70 pt-4 md:text-base">
+                      <p>Worked as a <span className="font-semibold">Software Intern</span> at JSPL, where I helped manage and maintain internal databases — organizing records, writing queries, and ensuring data consistency across systems.</p>
+                      <ul className="space-y-3 pl-1">
+                        <li className="flex items-start gap-3"><span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" /><p className="text-base text-foreground/50">Assisted in managing relational databases — writing SQL queries, updating records, and maintaining data integrity.</p></li>
+                        <li className="flex items-start gap-3"><span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" /><p className="text-base text-foreground/50">Collaborated with the team to organize database schemas and optimize query performance.</p></li>
+                        <li className="flex items-start gap-3"><span className="size-1.5 shrink-0 rounded-full bg-foreground/40 mt-2" /><p className="text-base text-foreground/50">Documented database processes and assisted in migrating legacy data to newer systems.</p></li>
+                      </ul>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </MotionSection>
@@ -755,7 +795,7 @@ export default function Home() {
                 </motion.div>
               ))}
             </div>
-            <h5 className="font-serif mt-4 bg-linear-to-r from-gray-200 via-gray-400 to-gray-600 bg-clip-text py-1 text-center text-3xl font-bold whitespace-nowrap text-transparent opacity-30 md:text-6xl">
+            <h5 className="font-serif mt-4 bg-linear-to-r from-gray-200 via-gray-400 to-gray-600 bg-clip-text py-1 text-center text-3xl font-bold whitespace-nowrap text-transparent opacity-30 shimmer-text md:text-6xl">
               More Projects Soon . . .
             </h5>
           </div>
@@ -773,8 +813,16 @@ export default function Home() {
                 <path d="M281.442 256.312c-47.124 59.364-139.536 44.676-160.956-29.376-1.224-3.672-1.836-7.956-2.448-11.628 49.572-11.016 97.92-47.124 102.204-90.576 3.672-39.168-36.108-50.796-62.424-28.764-31.212 26.316-53.244 64.872-55.08 105.875-31.824 4.284-63.036-4.284-80.172-35.496-28.764-52.631 9.792-123.624 61.2-144.432 5.508-1.836 3.06-10.404-2.448-8.568C10.326 33.544-26.394 132.688 21.954 191.439c18.972 22.645 49.572 29.988 81.396 26.316 4.284 41.616 36.72 74.664 75.275 87.516 44.676 14.688 85.68-6.731 111.996-41.616 4.285-5.508-4.896-12.239-9.179-7.343M144.354 132.688c9.792-13.464 22.644-28.764 39.168-34.272 15.911-5.508 21.42 16.524 22.031 26.316.612 12.24-7.956 23.256-15.912 31.824-16.523 18.971-44.063 35.496-72.215 42.839 1.836-23.868 13.464-47.123 26.928-66.707"></path>
                 <path d="M315.713 233.668c-17.136 0-34.884 1.224-51.408 5.508-6.731 1.836-3.672 11.016 3.061 9.792 13.464-2.448 27.54-1.836 41.004-1.224-.612 7.955-1.224 16.523-2.448 24.479-1.224 6.12-5.508 15.3-1.836 21.42 1.836 3.061 4.896 3.061 7.956 1.836 7.344-3.06 7.344-15.912 8.568-22.644 1.836-11.017 2.447-21.42 2.447-32.437 0-3.67-3.672-6.73-7.344-6.73"></path>
               </svg>
-              {skills.map((skill) => (
-                <StackIcon key={skill.name} name={skill.name} type={skill.type} src={skill.src} />
+              {skills.map((skill, index) => (
+                <motion.div
+                  key={skill.name}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.06, ease: "easeOut" }}
+                >
+                  <StackIcon name={skill.name} type={skill.type} src={skill.src} />
+                </motion.div>
               ))}
             </div>
           </div>
@@ -856,40 +904,62 @@ export default function Home() {
             <p className="py-2 text-center text-sm font-medium text-foreground/30 uppercase">or</p>
 
             {/* FOOTER SOCIAL CARDS — CSS group-hover matching reference */}
-            <div className="group flex items-center justify-center flex-wrap">
+            <motion.div
+              className="group flex items-center justify-center flex-wrap"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={{
+                visible: { transition: { staggerChildren: 0.07, delayChildren: 0.3 } },
+              }}
+            >
               {footerSocials.map((s) => {
                 const rotation = s.label === "Github" ? "-rotate-20" : s.label === "Instagram" ? "-rotate-10" : s.label === "Twitter" ? "-rotate-2" : s.label === "LinkedIn" ? "rotate-10" : "rotate-20";
-                return s.popup ? (
-                  <button
+                return (
+                  <motion.div
                     key={s.label}
-                    type="button"
-                    onClick={() => setShowInstaPopup(true)}
-                    className={`${s.z} bg-background -mr-1 flex w-13 cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-foreground/20 p-2 text-foreground/60 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition-all duration-300 group-hover:mr-2 group-hover:rotate-0 dark:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)] ${rotation}`}
+                    variants={{
+                      hidden: { opacity: 0, y: 10, scale: 0.95 },
+                      visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.35, ease: "easeOut" } },
+                    }}
                   >
-                    <s.icon className="size-5" />
-                    <p className="text-[8px] font-bold text-foreground/50">{s.label}</p>
-                  </button>
-                ) : (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${s.z} bg-background -mr-1 flex w-13 cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-foreground/20 p-2 text-foreground/60 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition-all duration-300 group-hover:mr-2 group-hover:rotate-0 dark:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)] ${rotation}`}
-                  >
-                    <s.icon className="size-5" />
-                    <p className="text-[8px] font-bold text-foreground/50">{s.label}</p>
-                  </a>
+                    {s.popup ? (
+                      <button
+                        type="button"
+                        onClick={() => setShowInstaPopup(true)}
+                        className={`${s.z} bg-background -mr-1 flex w-13 cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-foreground/20 p-2 text-foreground/60 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition-all duration-300 group-hover:mr-2 group-hover:rotate-0 dark:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)] ${rotation}`}
+                      >
+                        <s.icon className="size-5" />
+                        <p className="text-[8px] font-bold text-foreground/50">{s.label}</p>
+                      </button>
+                    ) : (
+                      <a
+                        href={s.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`${s.z} bg-background -mr-1 flex w-13 cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-foreground/20 p-2 text-foreground/60 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition-all duration-300 group-hover:mr-2 group-hover:rotate-0 dark:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)] ${rotation}`}
+                      >
+                        <s.icon className="size-5" />
+                        <p className="text-[8px] font-bold text-foreground/50">{s.label}</p>
+                      </a>
+                    )}
+                  </motion.div>
                 );
               })}
-            </div>
+            </motion.div>
           </div>
         </MotionSection>
 
         <Separator />
 
         {/* RESUME SECTION */}
-        <div className="border-border ring-0.5 ring-border mx-auto max-w-3xl border-x relative flex w-full flex-col items-center overflow-visible py-0 select-none">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+          className="border-border ring-0.5 ring-border mx-auto max-w-3xl border-x relative flex w-full flex-col items-center overflow-visible py-0 select-none"
+        >
           <div className="relative h-8 w-full">
             <div className="absolute inset-0 opacity-15" style={{ backgroundImage: "repeating-linear-gradient(-45deg, transparent, transparent 10px, var(--color-foreground) 10px, var(--color-foreground) 11px)" }} />
           </div>
@@ -912,7 +982,7 @@ export default function Home() {
           <div className="relative h-8 w-full overflow-hidden">
             <div className="absolute inset-0 opacity-15" style={{ backgroundImage: "repeating-linear-gradient(-45deg, transparent, transparent 10px, currentColor 10px, currentColor 11px)" }} />
           </div>
-        </div>
+        </motion.div>
 
         <Separator />
 

@@ -247,6 +247,7 @@ function StackIcon({ name, type, src }: { name: string; type: string; src?: stri
         animate(x, 0, { type: "spring", stiffness: 350, damping: 24, mass: 1.1 });
         animate(y, 0, { type: "spring", stiffness: 350, damping: 24, mass: 1.1 });
       }}
+      whileHover={{ scale: 1.2, transition: { type: "spring", stiffness: 260, damping: 18 } }}
       whileTap={{ cursor: "grabbing", scale: 1.1 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -795,7 +796,7 @@ export default function Home() {
                 </motion.div>
               ))}
             </div>
-            <h5 className="font-serif mt-4 bg-linear-to-r from-gray-200 via-gray-400 to-gray-600 bg-clip-text py-1 text-center text-3xl font-bold whitespace-nowrap text-transparent opacity-30 shimmer-text md:text-6xl">
+            <h5 className="font-serif mt-4 bg-linear-to-r from-gray-200 via-gray-400 to-gray-600 bg-clip-text py-1 text-center text-3xl font-bold whitespace-nowrap text-transparent opacity-30 transition-all duration-300 hover:opacity-80 md:text-6xl">
               More Projects Soon . . .
             </h5>
           </div>

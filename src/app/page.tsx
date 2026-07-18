@@ -181,9 +181,9 @@ function SocialTip({ text, children }: { text: string; children: React.ReactNode
     <div className="relative flex items-center select-none">
       <div className="group relative flex">
         {children}
-        <span className="absolute bottom-9 left-1/2 transform transition-all -translate-x-1/2 mb-2 w-max bg-foreground text-background font-medium text-sm rounded-md py-1 px-1.5 scale-0 group-hover:scale-100 duration-100 pointer-events-none whitespace-nowrap">
+        <span className="absolute bottom-9 left-1/2 transform transition-all -translate-x-1/2 mb-2 w-max bg-white text-black font-medium text-sm rounded-md py-1 px-1.5 scale-0 group-hover:scale-100 duration-100 pointer-events-none whitespace-nowrap">
           {text}
-          <span className="absolute top-full left-1/2 transform -translate-x-1/2 border-8 border-transparent border-t-foreground" />
+          <span className="absolute top-full left-1/2 transform -translate-x-1/2 border-8 border-transparent border-t-white" />
         </span>
       </div>
     </div>
@@ -310,10 +310,10 @@ function StackIcon({ name, type, src }: { name: string; type: string; src?: stri
 function MotionSection({ children, className, delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 15 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
+      transition={{ duration: 0.35, delay, ease: "easeOut" }}
       className={className}
     >
       {children}
@@ -433,7 +433,7 @@ function ScrollIndicator() {
       className="fixed right-6 top-1/2 z-50 hidden flex-col items-center gap-5 md:flex"
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: hidden ? 0 : 1, x: hidden ? 20 : 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
       style={{ translateY: "-50%" }}
     >
       <span className="font-serif text-sm font-medium italic tracking-[0.2em] text-foreground/20 [writing-mode:vertical-rl]">
@@ -515,13 +515,13 @@ export default function Home() {
             animate="visible"
             variants={{
               hidden: { opacity: 0 },
-              visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
+              visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.15 } },
             }}
           >
             <motion.div
               variants={{
-                hidden: { opacity: 0, y: 15 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+                hidden: { opacity: 0, y: 10 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } },
               }}
             >
               <div className="mr-4 mb-4 ml-4 flex items-center justify-between sm:mr-8 sm:ml-8">
@@ -559,8 +559,8 @@ export default function Home() {
 
             <motion.div
               variants={{
-                hidden: { opacity: 0, y: 15 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+                hidden: { opacity: 0, y: 10 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } },
               }}
             >
               <div className="w-full flex-col px-4 text-left sm:flex sm:flex-row sm:items-end sm:justify-between sm:px-8">
@@ -608,8 +608,8 @@ export default function Home() {
 
             <motion.div
               variants={{
-                hidden: { opacity: 0, y: 15 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+                hidden: { opacity: 0, y: 10 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } },
               }}
             >
               <div className="mt-4 px-4 text-base leading-loose tracking-wider text-foreground/65 sm:px-8">
@@ -627,8 +627,8 @@ export default function Home() {
 
             <motion.div
               variants={{
-                hidden: { opacity: 0, y: 15 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+                hidden: { opacity: 0, y: 10 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } },
               }}
             >
               <div className="mt-4 flex flex-col gap-2.5 px-4 sm:px-8">
@@ -741,7 +741,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: (project.id - 1) * 0.075 }}
+                  transition={{ duration: 0.35, delay: (project.id - 1) * 0.05 }}
                 >
                   <ProjectCard
                     title={project.title}
@@ -776,7 +776,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 12 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.06, ease: "easeOut" }}
+                  transition={{ duration: 0.35, delay: index * 0.04, ease: "easeOut" }}
                 >
                   <StackIcon name={skill.name} type={skill.type} src={skill.src} />
                 </motion.div>
@@ -867,7 +867,7 @@ export default function Home() {
               whileInView="visible"
               viewport={{ once: true }}
               variants={{
-                visible: { transition: { staggerChildren: 0.07, delayChildren: 0.3 } },
+                visible: { transition: { staggerChildren: 0.05, delayChildren: 0.25 } },
               }}
             >
               {footerSocials.map((s) => {
@@ -876,8 +876,8 @@ export default function Home() {
                   <motion.div
                     key={s.label}
                     variants={{
-                      hidden: { opacity: 0, y: 10, scale: 0.95 },
-                      visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.35, ease: "easeOut" } },
+                      hidden: { opacity: 0, y: 8, scale: 0.97 },
+                      visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.3, ease: "easeOut" } },
                     }}
                   >
                     {s.popup ? (
@@ -915,10 +915,10 @@ export default function Home() {
 
         {/* RESUME SECTION */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+          transition={{ duration: 0.35, delay: 0.1, ease: "easeOut" }}
           className="border-border ring-0.5 ring-border mx-auto max-w-3xl border-x relative flex w-full flex-col items-center overflow-visible py-0 select-none"
         >
           <div className="relative h-8 w-full">

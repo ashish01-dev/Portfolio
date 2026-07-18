@@ -51,7 +51,7 @@ export default function ProjectCard({
   preview,
   href,
 }: ProjectCardProps) {
-  const [showPreview, setShowPreview] = useState(false);
+  const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -82,9 +82,12 @@ export default function ProjectCard({
   };
 
   return (
-    <div className="project-box bg-muted cursor-pointer hover:bg-accent/[0.03] transition-colors duration-100 border border-border rounded-md">
+    <div
+      onClick={() => setOpen((prev) => !prev)}
+      className="project-box bg-muted cursor-pointer hover:bg-accent/[0.04] transition-colors duration-100 border border-border rounded-md"
+    >
       <AnimatePresence mode="wait">
-        {showPreview && preview && (
+        {show && preview && (
           <motion.div
             onClick={(e) => e.stopPropagation()}
             initial={{ opacity: 0, height: 0 }}
@@ -130,15 +133,12 @@ export default function ProjectCard({
             />
           )}
         </div>
-        <div
-          className="basis-[78%] flex flex-col md:gap-0 gap-1"
-          onClick={() => setOpen((prev) => !prev)}
-        >
+        <div className="basis-[78%] flex flex-col md:gap-0 gap-1">
           <div className="flex justify-between items-center">
             <div className="flex gap-2 items-center truncate">
               <h1 className="text-2xl font-semibold text-foreground">{title}</h1>
               {status ? (
-                <div className="select-none font-medium text-xs w-fit px-1.5 py-0.5 gap-0.5 rounded-md flex items-center bg-green-500/10 text-green-500">
+                <div className="select-none font-medium text-xs w-fit px-1.5 py-0.5 gap-0.5 rounded-md flex items-center bg-green-400/10 text-green-400">
                   <span className="animate-pulse"><span className="size-1.5 rounded-full bg-current inline-block" /></span>
                   Running
                 </div>
@@ -152,12 +152,12 @@ export default function ProjectCard({
             <div className="select-none flex gap-2 px-2 text-base">
               {preview && (
                 <>
-                  {showPreview ? (
+                  {show ? (
                     <InfoTipProject text="Close">
                       <a
                         onClick={(e) => {
                           e.stopPropagation();
-                          setShowPreview((prev) => !prev);
+                          setShow((prev) => !prev);
                         }}
                         target="_blank"
                         className="cursor-pointer hover:text-foreground/60 transition-colors duration-100 text-foreground/60"
@@ -170,7 +170,7 @@ export default function ProjectCard({
                       <a
                         onClick={(e) => {
                           e.stopPropagation();
-                          setShowPreview((prev) => !prev);
+                          setShow((prev) => !prev);
                         }}
                         target="_blank"
                         className="cursor-pointer hover:text-foreground/60 transition-colors duration-100 text-foreground/60"

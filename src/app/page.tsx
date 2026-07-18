@@ -515,7 +515,7 @@ export default function Home() {
           </motion.div>
         </div>
 
-        {/* SOCIAL PILLS with InfoTip tooltips */}
+        {/* SOCIAL PILLS with InfoTip tooltip (switchfolio pattern) */}
         <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-3 px-8">
           <div className="flex flex-wrap items-center gap-2">
             {[
@@ -539,9 +539,8 @@ export default function Home() {
                     className="inline-flex items-center gap-1.5 rounded-full border border-black/5 dark:border-white/5 bg-background px-3 py-1.5 text-[10px] font-medium text-foreground/60 shadow-sm transition-all duration-200 hover:scale-105 hover:border-foreground/20 hover:text-foreground/90 hover:shadow-md"
                   >
                     <s.icon className="size-3" />
-                    {s.label}
                   </a>
-                  <span className="absolute bottom-8 left-1/2 transform transition-all -translate-x-1/2 mb-2 w-max bg-white text-black font-medium text-xs rounded-md py-1 px-1.5 scale-0 group-hover:scale-100 duration-100 pointer-events-none whitespace-nowrap">
+                  <span className="absolute bottom-9 left-1/2 transform transition-all -translate-x-1/2 mb-2 w-max bg-white text-black font-medium text-sm rounded-md py-1 px-1.5 scale-0 group-hover:scale-100 duration-100">
                     {s.label}
                     <span className="absolute top-full left-1/2 transform -translate-x-1/2 border-8 border-transparent border-t-white" />
                   </span>

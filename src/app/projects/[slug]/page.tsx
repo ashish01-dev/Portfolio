@@ -32,7 +32,7 @@ const projectsData: Record<
       { name: "Supabase", type: "supabase" },
       { name: "Drizzle", type: "drizzle" },
     ],
-    screenshots: [{ src: "/projects/3.png", label: "Homepage" }],
+    screenshots: [{ src: "/projects/7.png", label: "Homepage" }],
     badge: "100+ users!",
     details: [
       "<p><strong>Track Your Syllabus</strong> &ndash; Mark chapters as done/in-progress/revision for Physics, Chemistry, and Maths. See your progress at a glance.</p>",
@@ -60,7 +60,7 @@ const projectsData: Record<
       { name: "TypeScript", type: "ts" },
       { name: "Tailwind", type: "tailwind" },
     ],
-    screenshots: [{ src: "/projects/4.png", label: "Homepage" }],
+    screenshots: [{ src: "/projects/7.png", label: "Homepage" }],
     badge: "Down!",
     details: [
       "<p>Choosing the right stream after 10th or 12th is one of the most confusing decisions a student faces. INNOVISION is built to solve exactly that — it helps students explore career paths, understand stream options, and make an informed choice based on their interests and strengths.</p>",
@@ -89,7 +89,7 @@ const projectsData: Record<
       { name: "Tailwind", type: "tailwind" },
       { name: "Supabase", type: "supabase" },
     ],
-    screenshots: [{ src: "/placeholder-banner.svg", label: "Homepage" }],
+    screenshots: [{ src: "/projects/7.png", label: "Homepage" }],
     details: [
       "<p><strong>WallX</strong> is a wallpaper discovery platform that curates stunning visuals across categories — minimal, abstract, nature, anime, and more.</p>",
       "<p class='mt-4 font-semibold text-foreground/80'>Key Features:</p>",

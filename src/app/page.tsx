@@ -648,14 +648,33 @@ export default function Home() {
                           className="object-contain object-left-bottom"
                         />
                       </motion.div>
-                      {/* Redesigned badge with backdrop-blur - lets shader show through */}
-                      {project.badge && (
-                        <div className="absolute top-2 left-2 z-10">
-                          <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider backdrop-blur-md bg-white/20 dark:bg-black/20 text-white shadow-sm border border-white/25">
-                            {project.badge}
-                          </span>
-                        </div>
-                      )}
+                      {/* Modern colored badge per project */}
+                      {project.badge && (() => {
+                        if (project.status === "running") return (
+                          <div className="absolute top-2 left-2 z-10">
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-linear-to-r from-emerald-500 to-emerald-600 px-2.5 py-1 text-[10px] font-semibold text-white shadow-xs">
+                              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-white/80" />
+                              {project.badge}
+                            </span>
+                          </div>
+                        );
+                        if (project.status === "down") return (
+                          <div className="absolute top-2 left-2 z-10">
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-linear-to-r from-rose-500 to-rose-600 px-2.5 py-1 text-[10px] font-semibold text-white shadow-xs">
+                              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-white/80" />
+                              {project.badge}
+                            </span>
+                          </div>
+                        );
+                        return (
+                          <div className="absolute top-2 left-2 z-10">
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-linear-to-r from-amber-500 to-orange-500 px-2.5 py-1 text-[10px] font-semibold text-white shadow-xs">
+                              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-white/80" />
+                              {project.badge}
+                            </span>
+                          </div>
+                        );
+                      })()}
                       <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
                     </div>
                     <div className="flex flex-col gap-1">

@@ -60,6 +60,13 @@ export default function GithubContributions() {
         .github-calendar .react-activity-calendar__scroll-container {
           overflow: visible;
         }
+        @media (max-width: 767px) {
+          .github-calendar .react-activity-calendar__scroll-container {
+            overflow-x: auto;
+            overflow-y: visible;
+            -webkit-overflow-scrolling: touch;
+          }
+        }
         .github-calendar .react-activity-calendar__count {
           font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
           color: var(--color-foreground);

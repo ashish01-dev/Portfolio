@@ -390,10 +390,10 @@ function ForeignWordTooltip() {
       onPointerLeave={() => setVisible(false)}
     >
       <div className="group relative">
-        <span className="text-inner-shadow pointer-events-none absolute inset-0 -z-10 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px] bg-clip-text text-center text-9xl font-bold whitespace-nowrap text-transparent italic select-none">
+        <span className="text-inner-shadow pointer-events-none absolute inset-0 -z-10 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px] bg-clip-text text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-9xl font-bold whitespace-nowrap text-transparent italic select-none">
           अध्यात्म
         </span>
-        <span className="text-inner-shadow z-10 block -translate-x-4 -translate-y-4 text-center text-9xl font-bold whitespace-nowrap text-[#808080] italic transition-all duration-200 group-hover:translate-x-0 group-hover:translate-y-0 hover:text-black dark:hover:text-white">
+        <span className="text-inner-shadow z-10 block -translate-x-4 -translate-y-4 text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-9xl font-bold whitespace-nowrap text-[#808080] italic transition-all duration-200 group-hover:translate-x-0 group-hover:translate-y-0 hover:text-black dark:hover:text-white">
           अध्यात्म
         </span>
       </div>
@@ -497,12 +497,12 @@ export default function Home() {
   const { theme } = useTheme();
 
   return (
-    <div className="relative min-h-dvh w-full overflow-clip">
+    <div className="relative min-h-dvh w-full overflow-x-clip">
       <ScrollIndicator />
       <div className="relative mx-auto max-w-3xl">
         <Ruler />
       </div>
-      <div className="border-border ring-0.5 ring-border z-10 mx-auto min-h-screen w-full overflow-y-clip border-x bg-background">
+      <div className="border-border ring-0.5 ring-border z-10 mx-auto min-h-screen w-full border-x bg-background">
 
         {/* NAV */}
         <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4">

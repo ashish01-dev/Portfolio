@@ -31,8 +31,8 @@ export default function BlogsPage() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <div className="relative min-h-dvh w-full overflow-clip">
-      <div className="border-border ring-0.5 ring-border z-10 mx-auto min-h-screen w-full overflow-y-clip border-x bg-background">
+    <div className="relative min-h-dvh w-full overflow-x-clip">
+      <div className="border-border ring-0.5 ring-border z-10 mx-auto min-h-screen w-full border-x bg-background">
         <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4">
           <header className="w-full px-8">
             <nav className="flex justify-between">

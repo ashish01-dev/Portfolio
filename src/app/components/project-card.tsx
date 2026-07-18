@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { Eye, EyeOff, Link, Share2 } from "lucide-react";
+import Link from "next/link";
+import { Eye, EyeOff, Link as LinkIcon, Share2 } from "lucide-react";
 
 function GithubIcon({ className }: { className?: string }) {
   return (
@@ -36,6 +37,7 @@ interface ProjectCardProps {
   github?: string;
   skill: string[];
   preview?: string;
+  href?: string;
 }
 
 export default function ProjectCard({
@@ -47,6 +49,7 @@ export default function ProjectCard({
   github,
   skill,
   preview,
+  href,
 }: ProjectCardProps) {
   const [showPreview, setShowPreview] = useState(false);
   const [open, setOpen] = useState(false);
@@ -79,10 +82,7 @@ export default function ProjectCard({
   };
 
   return (
-    <div
-      onClick={() => setOpen((prev) => !prev)}
-      className="project-box bg-muted cursor-pointer hover:bg-accent/[0.03] transition-colors duration-100 border border-border rounded-md"
-    >
+    <div className="project-box bg-muted cursor-pointer hover:bg-accent/[0.03] transition-colors duration-100 border border-border rounded-md">
       <AnimatePresence mode="wait">
         {showPreview && preview && (
           <motion.div
@@ -103,15 +103,37 @@ export default function ProjectCard({
       </AnimatePresence>
       <div className="flex md:flex-row flex-col gap-3 p-2">
         <div className="basis-[22%] p-1 select-none">
-          <Image
-            className="rounded-md md:h-[130px] h-[200px] w-full object-cover"
-            src={img}
-            alt={title}
-            width={200}
-            height={200}
-          />
+          {href ? (
+            <Link href={href} onClick={(e) => e.stopPropagation()}>
+              <motion.div
+                whileHover={{ scaleY: 0.92, translateY: 4 }}
+                whileTap={{ scale: 0.88 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                className="origin-top"
+              >
+                <Image
+                  className="rounded-md md:h-[130px] h-[200px] w-full object-cover"
+                  src={img}
+                  alt={title}
+                  width={200}
+                  height={200}
+                />
+              </motion.div>
+            </Link>
+          ) : (
+            <Image
+              className="rounded-md md:h-[130px] h-[200px] w-full object-cover"
+              src={img}
+              alt={title}
+              width={200}
+              height={200}
+            />
+          )}
         </div>
-        <div className="basis-[78%] flex flex-col md:gap-0 gap-1">
+        <div
+          className="basis-[78%] flex flex-col md:gap-0 gap-1"
+          onClick={() => setOpen((prev) => !prev)}
+        >
           <div className="flex justify-between items-center">
             <div className="flex gap-2 items-center truncate">
               <h1 className="text-2xl font-semibold text-foreground">{title}</h1>
@@ -167,7 +189,7 @@ export default function ProjectCard({
                     href={url}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <Link className="size-4" />
+                    <LinkIcon className="size-4" />
                   </a>
                 </InfoTipProject>
               )}

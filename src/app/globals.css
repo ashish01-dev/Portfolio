@@ -51,15 +51,15 @@ html {
 }
 
 ::view-transition-new(root) {
-  animation: clip-reveal 0.6s ease-in-out both;
+  animation: slide-reveal 0.65s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
-@keyframes clip-reveal {
+@keyframes slide-reveal {
   from {
-    clip-path: circle(0% at var(--toggle-x, 50%) var(--toggle-y, 50%));
+    clip-path: var(--theme-clip-from, inset(100% 0 0 0));
   }
   to {
-    clip-path: circle(150% at var(--toggle-x, 50%) var(--toggle-y, 50%));
+    clip-path: var(--theme-clip-to, inset(0 0 0 0));
   }
 }
 

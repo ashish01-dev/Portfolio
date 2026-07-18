@@ -4,9 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { useTheme } from "next-themes";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { House, ArrowUpRight, Sun, Moon } from "lucide-react";
+import { House, ArrowUpRight, Lightbulb, Moon } from "lucide-react";
 
 const projectsData: Record<
   string,
@@ -77,82 +77,85 @@ const projectsData: Record<
       "<p class='mt-4 text-foreground/60'>It&apos;s a one-stop platform that replaces the confusion, peer pressure, and guesswork with clear, structured guidance — helping students take their first big career step with confidence.</p>",
     ].join(""),
     prev: { title: "JEEIFY", href: "/projects/jeeify" },
+    next: { title: "WallX", href: "/projects/wallx" },
   },
-  "divine-canvas": {
-    title: "Divine Canvas",
-    description: "An e-commerce platform offering premium, sacred vector paintings.",
-    url: "https://divinecanvas.art/",
+  wallx: {
+    title: "WallX",
+    description: "A curated wallpaper platform with dynamic collections and smart categorization.",
+    url: "#",
     stack: [
       { name: "Next.js", type: "next" },
+      { name: "TypeScript", type: "ts" },
       { name: "Tailwind", type: "tailwind" },
-      { name: "Motion", type: "motion", src: "/skills/motion.svg" },
-      { name: "Payload", type: "payload" },
-      { name: "TanStack Query", type: "ts" },
-      { name: "Zod SVG Icon", type: "zod" },
-      { name: "TanStack Forms", type: "forms" },
-      { name: "PostgreSQL", type: "pg" },
+      { name: "Supabase", type: "supabase" },
     ],
-    screenshots: [{ src: "/projects/divine-canvas/home.svg", label: "Home" }],
-    details:
-      "Built an e-commerce store for Divine Canvas that sells sacred vector artwork. It's got a proper product catalog with filtering, a smooth cart and checkout flow, and a headless CMS running on Payload so they can manage inventory and orders on their own.",
-    prev: { title: "The Leansuite", href: "/projects/theleansuite" },
-    next: { title: "JEEIFY", href: "/projects/jeeify" },
-  },
-  rvyu: {
-    title: "rvyu.",
-    description: "A place for developers to share their side projects and get feedback from peers.",
-    url: "https://rvyu.dev/",
-    stack: [
-      { name: "Next.js", type: "next" },
-      { name: "Tailwind", type: "tailwind" },
-      { name: "Motion", type: "motion", src: "/skills/motion.svg" },
-      { name: "Drizzle", type: "drizzle" },
-      { name: "PostgreSQL", type: "pg" },
-    ],
-    screenshots: [{ src: "/rvyu.svg", label: "Home" }],
-    details:
-      "Built rvyu. — a platform where developers can share side projects and get meaningful feedback from the community. Features include project showcases, peer reviews, and a clean browsing experience.",
-    prev: { title: "Divine Canvas", href: "/projects/divine-canvas" },
-    next: { title: "The Leansuite", href: "/projects/theleansuite" },
-  },
-  theleansuite: {
-    title: "The Leansuite",
-    description: "SaaS website and dashboard with a custom CMS to manage blogs and pages.",
-    url: "https://theleansuite.com/",
-    stack: [
-      { name: "Next.js", type: "next" },
-      { name: "Tailwind", type: "tailwind" },
-      { name: "Motion", type: "motion", src: "/skills/motion.svg" },
-      { name: "Sanity", type: "sanity" },
-    ],
-    screenshots: [{ src: "/projects/theleansuite/theleansuite.svg", label: "Dashboard" }],
-    details:
-      "Built a SaaS platform for The Leansuite with a public website, dashboard, and a custom headless CMS using Sanity to manage blogs, pages, and content seamlessly.",
-    prev: { title: "rvyu.", href: "/projects/rvyu" },
-    next: { title: "Divine Canvas", href: "/projects/divine-canvas" },
+    screenshots: [{ src: "/placeholder-banner.svg", label: "Homepage" }],
+    details: [
+      "<p><strong>WallX</strong> is a wallpaper discovery platform that curates stunning visuals across categories — minimal, abstract, nature, anime, and more.</p>",
+      "<p class='mt-4 font-semibold text-foreground/80'>Key Features:</p>",
+      "<ul class='mt-2 space-y-2 list-disc pl-5'>",
+      "<li><strong>Curated Collections</strong> &ndash; Browse hand-picked wallpapers organized by mood, color, and category.</li>",
+      "<li><strong>Smart Search</strong> &ndash; Find wallpapers by color palette, resolution, orientation, or keyword.</li>",
+      "<li><strong>Daily Discovery</strong> &ndash; Fresh wallpapers every day with personalized recommendations.</li>",
+      "<li><strong>Collections &amp; Favorites</strong> &ndash; Save your favorite wallpapers and organize them into custom collections.</li>",
+      "<li><strong>Upload &amp; Share</strong> &ndash; Contribute your own wallpapers and share collections with the community.</li>",
+      "</ul>",
+      "<p class='mt-4 text-foreground/60'>Built with a focus on performance and smooth browsing — lazy-loaded images, infinite scroll, and optimized CDN delivery.</p>",
+    ].join(""),
+    prev: { title: "INNOVISION", href: "/projects/innovision" },
   },
 };
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const isAnimating = useRef(false);
   useEffect(() => setMounted(true), []);
+
+  const handleToggle = () => {
+    if (isAnimating.current || !mounted) return;
+    const target = theme === "dark" ? "light" : "dark";
+    const fromBottom = theme === "dark";
+
+    document.documentElement.style.setProperty(
+      "--theme-clip-from",
+      fromBottom ? "inset(100% 0 0 0)" : "inset(0 0 100% 0)"
+    );
+    document.documentElement.style.setProperty(
+      "--theme-clip-to",
+      "inset(0 0 0 0)"
+    );
+
+    if ((document as any).startViewTransition) {
+      isAnimating.current = true;
+      const t = (document as any).startViewTransition(() => setTheme(target));
+      t.finished.finally(() => { isAnimating.current = false; });
+    } else {
+      isAnimating.current = true;
+      setTheme(target);
+      setTimeout(() => { isAnimating.current = false; }, 500);
+    }
+  };
 
   if (!mounted) {
     return (
       <button className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full" aria-label="Toggle theme">
-        <Sun className="size-5" />
+        <Lightbulb className="size-4" />
       </button>
     );
   }
 
   return (
     <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      onClick={handleToggle}
       className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full"
       aria-label="Toggle theme"
     >
-      {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+      {theme === "dark" ? (
+        <Lightbulb className="size-4 fill-yellow-400 text-yellow-500" />
+      ) : (
+        <Moon className="size-4" />
+      )}
     </button>
   );
 }

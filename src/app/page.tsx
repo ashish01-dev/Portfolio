@@ -11,7 +11,7 @@ import ProjectCard from "./components/project-card";
 import {
   House,
   ChevronDown,
-  Sun,
+  Lightbulb,
   Moon,
   MoveRight,
 } from "lucide-react";
@@ -50,10 +50,10 @@ function LinkedinIcon({ className }: { className?: string }) {
 }
 
 const socialLinks = [
-  { href: "https://github.com/ashish01-dev", icon: GithubIcon, label: "GitHub" },
-  { href: "https://x.com/TechMaster54321", icon: XIcon, label: "X" },
-  { href: "https://www.instagram.com/ashish.kumar.singh", icon: InstagramIcon, label: "Instagram" },
-  { href: "https://www.linkedin.com/in/ashish-kumar0406", icon: LinkedinIcon, label: "LinkedIn" },
+  { href: "https://github.com/ashish01-dev", icon: GithubIcon, label: "GitHub", color: "#333" },
+  { href: "https://x.com/TechMaster54321", icon: XIcon, label: "X", color: "#000" },
+  { href: "https://www.instagram.com/ashish.kumar.singh", icon: InstagramIcon, label: "Instagram", color: "#E1306C" },
+  { href: "https://www.linkedin.com/in/ashish-kumar0406", icon: LinkedinIcon, label: "LinkedIn", color: "#0077B5" },
 ];
 
 const homeProjects = [
@@ -64,6 +64,7 @@ const homeProjects = [
     status: true,
     content: "A full-stack JEE prep platform serving 100+ users with AI tutor, syllabus tracker, and more.",
     url: "https://jeeify.vercel.app/",
+    href: "/projects/jeeify",
     skill: ["Next.js", "Tailwind", "Supabase", "Drizzle"],
   },
   {
@@ -73,34 +74,18 @@ const homeProjects = [
     status: true,
     content: "A platform that helps students choose the right stream after 10th & 12th.",
     url: "https://innovison.vercel.app/",
+    href: "/projects/innovision",
     skill: ["Next.js", "TypeScript", "Tailwind"],
   },
   {
     id: 3,
-    img: "/projects/divine-canvas/home.svg",
-    title: "Divine Canvas",
-    status: true,
-    content: "An e-commerce platform offering premium, sacred vector paintings.",
-    url: "https://divinecanvas.art/",
-    skill: ["Next.js", "Tailwind", "Motion", "Payload", "PostgreSQL"],
-  },
-  {
-    id: 4,
-    img: "/rvyu.svg",
-    title: "rvyu.",
-    status: true,
-    content: "A place for developers to share their side projects and get feedback from peers.",
-    url: "https://rvyu.dev/",
-    skill: ["Next.js", "Tailwind", "Motion", "Drizzle", "PostgreSQL"],
-  },
-  {
-    id: 5,
-    img: "/projects/theleansuite/theleansuite.svg",
-    title: "The Leansuite",
-    status: true,
-    content: "SaaS website and dashboard with a custom CMS to manage blogs and pages.",
-    url: "https://theleansuite.com/",
-    skill: ["Next.js", "Tailwind", "Motion", "Sanity"],
+    img: "/placeholder-banner.svg",
+    title: "WallX",
+    status: false,
+    content: "A curated wallpaper platform with dynamic collections and smart categorization.",
+    url: "#",
+    href: "/projects/wallx",
+    skill: ["Next.js", "TypeScript", "Tailwind", "Supabase"],
   },
 ];
 
@@ -149,16 +134,16 @@ const skills = [
 ];
 
 const footerSocials = [
-  { href: "https://github.com/ashish01-dev", icon: GithubIcon, label: "Github", rotate: -20, z: "" },
-  { href: "https://www.instagram.com/ashish.kumar.singh", icon: InstagramIcon, label: "Instagram", rotate: -10, z: "", popup: true },
-  { href: "https://x.com/TechMaster54321", icon: XIcon, label: "Twitter", rotate: -2, z: "z-5" },
-  { href: "https://www.linkedin.com/in/ashish-kumar0406", icon: LinkedinIcon, label: "LinkedIn", rotate: 10, z: "z-2" },
+  { href: "https://github.com/ashish01-dev", icon: GithubIcon, label: "Github", rotate: -20, z: "", color: "#333" },
+  { href: "https://www.instagram.com/ashish.kumar.singh", icon: InstagramIcon, label: "Instagram", rotate: -10, z: "", popup: true, color: "#E1306C" },
+  { href: "https://x.com/TechMaster54321", icon: XIcon, label: "Twitter", rotate: -2, z: "z-5", color: "#000" },
+  { href: "https://www.linkedin.com/in/ashish-kumar0406", icon: LinkedinIcon, label: "LinkedIn", rotate: 10, z: "z-2", color: "#0077B5" },
   { href: "mailto:ashish.jayshreeram@gmail.com", icon: (p: any) => (
     <svg viewBox="0 0 24 24" className={(p?.className) || "size-5"} fill="none" stroke="currentColor" strokeWidth="2">
       <rect x="2" y="4" width="20" height="16" rx="2" />
       <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
     </svg>
-  ), label: "Mail", rotate: 20, z: "z-1" },
+  ), label: "Mail", rotate: 20, z: "z-1", color: "#666" },
 ];
 
 const Ruler = memo(function Ruler() {
@@ -208,20 +193,23 @@ function SocialTip({ text, children }: { text: string; children: React.ReactNode
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
   const isAnimating = useRef(false);
 
   useEffect(() => setMounted(true), []);
 
   const handleToggle = () => {
-    if (isAnimating.current || !buttonRef.current || !mounted) return;
-    const rect = buttonRef.current.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
+    if (isAnimating.current || !mounted) return;
     const target = theme === "dark" ? "light" : "dark";
+    const fromBottom = theme === "dark";
 
-    document.documentElement.style.setProperty("--toggle-x", x + "px");
-    document.documentElement.style.setProperty("--toggle-y", y + "px");
+    document.documentElement.style.setProperty(
+      "--theme-clip-from",
+      fromBottom ? "inset(100% 0 0 0)" : "inset(0 0 100% 0)"
+    );
+    document.documentElement.style.setProperty(
+      "--theme-clip-to",
+      "inset(0 0 0 0)"
+    );
 
     if ((document as any).startViewTransition) {
       isAnimating.current = true;
@@ -230,7 +218,7 @@ function ThemeToggle() {
     } else {
       isAnimating.current = true;
       setTheme(target);
-      setTimeout(() => { isAnimating.current = false; }, 400);
+      setTimeout(() => { isAnimating.current = false; }, 500);
     }
   };
 
@@ -240,19 +228,22 @@ function ThemeToggle() {
         className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full"
         aria-label="Toggle theme"
       >
-        <Sun className="size-5" />
+        <Lightbulb className="size-4" />
       </button>
     );
   }
 
   return (
     <button
-      ref={buttonRef}
       onClick={handleToggle}
       className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full"
       aria-label="Toggle theme"
     >
-      {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+      {theme === "dark" ? (
+        <Lightbulb className="size-4 fill-yellow-400 text-yellow-500" />
+      ) : (
+        <Moon className="size-4" />
+      )}
     </button>
   );
 }
@@ -559,8 +550,8 @@ export default function Home() {
                   </p>
                   <div suppressHydrationWarning className="flex items-center gap-2 font-mono text-[10px] text-foreground/40 sm:text-xs">
                     <span className="font-medium" suppressHydrationWarning><Clock /></span>
-                    <span className="text-foreground/20">&middot;</span>
-                    <span className="text-foreground/30" suppressHydrationWarning>5.5h ahead</span>
+                    <span className="text-foreground/30">&middot;</span>
+                    <span className="text-foreground/40" suppressHydrationWarning>5.5h ahead</span>
                   </div>
                 </div>
               </div>
@@ -592,7 +583,9 @@ export default function Home() {
                             onClick={() => setShowInstaPopup(true)}
                             className="select-none bg-background border border-border rounded-md p-1.5 text-[1.35rem] hover:bg-muted transition-all duration-100 cursor-pointer flex items-center justify-center"
                           >
-                            <link.icon className="size-4" />
+                            <span style={{ '--brand': link.color } as React.CSSProperties} className="group-hover:text-[var(--brand)] transition-colors duration-100 flex">
+                              <link.icon className="size-4" />
+                            </span>
                           </button>
                         ) : (
                           <a
@@ -601,7 +594,9 @@ export default function Home() {
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            <link.icon className="size-4" />
+                            <span style={{ '--brand': link.color } as React.CSSProperties} className="group-hover:text-[var(--brand)] transition-colors duration-100 flex">
+                              <link.icon className="size-4" />
+                            </span>
                           </a>
                         )}
                       </SocialTip>
@@ -617,7 +612,7 @@ export default function Home() {
                 visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
               }}
             >
-              <div className="mt-4 px-4 text-base leading-loose tracking-wider text-foreground/50 sm:px-8">
+              <div className="mt-4 px-4 text-base leading-loose tracking-wider text-foreground/65 sm:px-8">
                 I design{" "}
                 <span className="font-medium text-foreground">conversion-focused</span> websites and{" "}
                 <span className="font-medium text-foreground">scalable product interfaces</span> for{" "}
@@ -678,7 +673,7 @@ export default function Home() {
         {/* EXPERIENCE */}
         <MotionSection delay={0.1}>
           <div className="section-contain border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
-            <h2 className="mb-2 font-serif text-xl text-foreground/50">Professional Experience</h2>
+              <h2 className="mb-2 font-serif text-xl text-foreground/60">Professional Experience</h2>
             <div className="group mt-4 rounded-2xl transition-all duration-300">
               <div
                 className="flex cursor-pointer flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
@@ -734,8 +729,8 @@ export default function Home() {
         <MotionSection delay={0.2}>
           <div className="section-contain border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="font-serif text-xl text-black/50 dark:text-white/40">Projects</h2>
-              <Link href="/projects" className="inline-flex items-center gap-1 text-xs font-medium text-foreground/30 transition-colors duration-200 hover:text-foreground/90">
+              <h2 className="font-serif text-xl text-foreground/60">Projects</h2>
+              <Link href="/projects" className="inline-flex items-center gap-1 text-xs font-medium text-foreground/40 transition-colors duration-200 hover:text-foreground/90">
                 ALL <MoveRight className="size-3" />
               </Link>
             </div>
@@ -755,6 +750,7 @@ export default function Home() {
                     status={project.status}
                     skill={project.skill}
                     url={project.url}
+                    href={project.href}
                   />
                 </motion.div>
               ))}
@@ -767,7 +763,7 @@ export default function Home() {
         {/* STACK */}
         <MotionSection delay={0.3}>
           <div className="section-contain border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
-              <h2 className="mb-6 font-serif text-xl text-black/50 dark:text-white/40">Stack I use</h2>
+              <h2 className="mb-6 font-serif text-xl text-foreground/60">Stack I use</h2>
             <div className="relative grid grid-cols-4 justify-items-center gap-8 sm:grid-cols-6 md:grid-cols-8 md:justify-items-start lg:grid-cols-12">
               <span className="pointer-events-none absolute -top-12 right-0 size-12 -rotate-34 font-mono text-[10px] font-medium text-foreground/30">drag me :D</span>
               <svg className="pointer-events-none absolute -top-12 right-15 size-10 rotate-120 text-foreground/30" viewBox="0 0 323.057 323.057" fill="currentColor">
@@ -793,8 +789,8 @@ export default function Home() {
         <MotionSection delay={0.4}>
           <div className="section-contain border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
             <div className="mb-4 flex items-baseline justify-between">
-              <h2 className="font-serif text-xl text-foreground/50 italic">My Thoughts</h2>
-              <Link href="/blogs" className="inline-flex cursor-pointer items-center gap-1 text-xs font-medium text-foreground/30 transition-colors duration-200 hover:text-foreground/90">
+              <h2 className="font-serif text-xl text-foreground/60 italic">My Thoughts</h2>
+              <Link href="/blogs" className="inline-flex cursor-pointer items-center gap-1 text-xs font-medium text-foreground/40 transition-colors duration-200 hover:text-foreground/90">
                 ALL <MoveRight className="size-3" />
               </Link>
             </div>
@@ -816,11 +812,11 @@ export default function Home() {
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-[10px] text-foreground/40">{blog.date}</span>
+                        <span className="font-mono text-[10px] text-foreground/55">{blog.date}</span>
                       </div>
                       <h3 className="relative block overflow-visible">
                         <span aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:4px_4px] bg-clip-text font-medium text-transparent italic select-none">{blog.title}</span>
-                        <span className="block max-w-[90%] text-sm leading-tight font-medium text-foreground/60 italic transition-colors duration-200 group-hover:text-foreground">{blog.title}</span>
+                        <span className="block max-w-[90%] text-sm leading-tight font-medium text-foreground/70 italic transition-colors duration-200 group-hover:text-foreground">{blog.title}</span>
                       </h3>
                     </div>
                   </div>
@@ -836,7 +832,7 @@ export default function Home() {
         <MotionSection delay={0.5}>
           {/* CTA Section */}
           <div className="section-contain border-border ring-0.5 ring-border mx-auto max-w-3xl border-x py-4 w-full flex-col px-6 sm:flex sm:items-center sm:justify-between sm:px-12">
-            <p className="mb-4 text-center font-serif text-2xl text-pretty italic text-foreground/50 sm:mb-3 md:text-xl">
+            <p className="mb-4 text-center font-serif text-2xl text-pretty italic text-foreground/60 sm:mb-3 md:text-xl">
               If you&apos;ve read this far, you might be interested in what I do.
             </p>
             <div className="mt-4 flex w-full justify-center sm:mt-0 sm:w-auto sm:justify-end">
@@ -862,7 +858,7 @@ export default function Home() {
               </a>
             </div>
 
-            <p className="py-2 text-center text-sm font-medium text-foreground/30 uppercase">or</p>
+            <p className="py-2 text-center text-sm font-medium text-foreground/40 uppercase">or</p>
 
             {/* FOOTER SOCIAL CARDS — CSS group-hover matching reference */}
             <motion.div
@@ -890,7 +886,9 @@ export default function Home() {
                         onClick={() => setShowInstaPopup(true)}
                         className={`${s.z} bg-background -mr-1 flex w-13 cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-foreground/20 p-2 text-foreground/60 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition-all duration-300 group-hover:mr-2 group-hover:rotate-0 dark:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)] ${rotation}`}
                       >
-                        <s.icon className="size-5" />
+                        <span style={{ '--brand': (s as any).color } as React.CSSProperties} className="group-hover:text-[var(--brand)] transition-colors duration-200 flex">
+                          <s.icon className="size-5" />
+                        </span>
                         <p className="text-[8px] font-bold text-foreground/50">{s.label}</p>
                       </button>
                     ) : (
@@ -900,7 +898,9 @@ export default function Home() {
                         rel="noopener noreferrer"
                         className={`${s.z} bg-background -mr-1 flex w-13 cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-foreground/20 p-2 text-foreground/60 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition-all duration-300 group-hover:mr-2 group-hover:rotate-0 dark:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)] ${rotation}`}
                       >
-                        <s.icon className="size-5" />
+                        <span style={{ '--brand': (s as any).color } as React.CSSProperties} className="group-hover:text-[var(--brand)] transition-colors duration-200 flex">
+                          <s.icon className="size-5" />
+                        </span>
                         <p className="text-[8px] font-bold text-foreground/50">{s.label}</p>
                       </a>
                     )}
@@ -925,12 +925,12 @@ export default function Home() {
             <div className="absolute inset-0 opacity-15" style={{ backgroundImage: "repeating-linear-gradient(-45deg, transparent, transparent 10px, var(--color-foreground) 10px, var(--color-foreground) 11px)" }} />
           </div>
           <div className="py-12 text-center">
-            <p className="font-serif text-xl italic text-foreground/50 mb-6">
+            <p className="font-serif text-xl italic text-foreground/60 mb-6">
               Want to know more about me?
             </p>
             <a
               href="#"
-              className="group inline-flex items-center gap-2.5 rounded-lg border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground/50 transition-all duration-200 hover:border-foreground/20 hover:text-foreground/80 hover:shadow-sm"
+              className="group inline-flex items-center gap-2.5 rounded-lg border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground/60 transition-all duration-200 hover:border-foreground/20 hover:text-foreground/90 hover:shadow-sm"
             >
               <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -969,7 +969,7 @@ export default function Home() {
           </div>
           <div className="relative z-10 flex flex-col justify-center">
             <div className="flex flex-col">
-              <p className="font-serif text-lg leading-relaxed text-foreground/40 italic dark:text-white/40">
+              <p className="font-serif text-lg leading-relaxed text-foreground/60 italic">
                 &quot;कर्मण्येवाधिकारस्ते मा फलेषु कदाचन। मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥&quot;
               </p>
               <div className="mt-4 flex items-center gap-3 self-end">

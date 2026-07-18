@@ -8,6 +8,9 @@ import { motion, useScroll, useMotionValueEvent, useMotionValue, animate, Animat
 import BlurShimmerText from "./components/blur-shimmer-text";
 import GithubContributions from "./components/github-contributions";
 import ProjectCard from "./components/project-card";
+import { TextReveal } from "./components/text-reveal";
+import { PreviewRail } from "./components/preview-rail";
+import type { PreviewRailItem } from "./components/preview-rail";
 import {
   House,
   ChevronDown,
@@ -66,6 +69,7 @@ const homeProjects = [
     url: "https://jeeify.vercel.app/",
     href: "/projects/jeeify",
     skill: ["Next.js", "Tailwind", "Supabase", "Drizzle"],
+    shader: { variant: "mesh-gradient" as const, props: { colors: ["#e0eaff", "#241d9a", "#f75092", "#9f50d3"], distortion: 0.8, swirl: 0.3, speed: 0.4 } },
   },
   {
     id: 2,
@@ -76,6 +80,7 @@ const homeProjects = [
     url: "https://innovison.vercel.app/",
     href: "/projects/innovision",
     skill: ["Next.js", "TypeScript", "Tailwind"],
+    shader: { variant: "grain-gradient" as const, props: { colors: ["#7300ff", "#eba8ff", "#00bfff", "#2a00ff"], colorBack: "#000000", softness: 0.6, speed: 0.5 } },
   },
   {
     id: 3,
@@ -86,7 +91,16 @@ const homeProjects = [
     url: "#",
     href: "/projects/wallx",
     skill: ["Next.js", "TypeScript", "Tailwind", "Supabase"],
+    shader: { variant: "warp" as const, props: { colors: ["#121212", "#9470ff", "#121212", "#8838ff"], speed: 0.4 } },
   },
+];
+
+const railItems: PreviewRailItem[] = [
+  { id: "experience", label: "Experience", description: "My professional experience as a Software Intern at JSPL.", href: "#experience" },
+  { id: "projects", label: "Projects", description: "Showcase of my work — JEEIFY, INNOVISION, and WallX.", href: "#projects" },
+  { id: "stack", label: "Stack", description: "Technologies and tools I use daily.", href: "#stack" },
+  { id: "thoughts", label: "Thoughts", description: "Occasional writings on tech and life.", href: "#thoughts" },
+  { id: "cta", label: "Contact", description: "Book a call or reach out via socials.", href: "#cta" },
 ];
 
 const contactLinks = [
@@ -295,9 +309,10 @@ function StackIcon({ name, type, src }: { name: string; type: string; src?: stri
   );
 }
 
-function MotionSection({ children, className, delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+function MotionSection({ children, className, delay = 0, id }: { children: React.ReactNode; className?: string; delay?: number; id?: string }) {
   return (
     <motion.div
+      id={id}
       initial={{ opacity: 0, y: 15 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
@@ -603,15 +618,15 @@ export default function Home() {
               }}
             >
               <div className="mt-4 px-4 text-base leading-loose tracking-wider text-foreground/65 sm:px-8">
-                I design{" "}
-                <span className="font-medium text-foreground">conversion-focused</span> websites and{" "}
-                <span className="font-medium text-foreground">scalable product interfaces</span> for{" "}
-                <span className="font-medium text-foreground">startups</span>. I&apos;m Ashish, an{" "}
-                <span className="font-medium text-foreground">India-based designer &amp; developer</span>{" "}
-                who specializes in building{" "}
-                <span className="font-medium text-foreground">high-converting</span> websites for{" "}
-                <span className="font-medium text-foreground">B2C</span> and{" "}
-                <span className="font-medium text-foreground">B2B</span> brands.
+                <TextReveal
+                  text="I design conversion-focused websites and scalable product interfaces for startups. I'm Ashish, an India-based designer & developer who specializes in building high-converting websites for B2C and B2B brands."
+                  split="word"
+                  delay={0.2}
+                  stagger={0.06}
+                  blur={6}
+                  yOffset="30%"
+                  className="inline"
+                />
               </div>
             </motion.div>
 
@@ -661,7 +676,7 @@ export default function Home() {
         <Separator />
 
         {/* EXPERIENCE */}
-        <MotionSection delay={0.1}>
+        <MotionSection id="experience" delay={0.1}>
           <div className="section-contain border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
               <h2 className="mb-2 font-serif text-xl text-foreground/60">Professional Experience</h2>
             <div className="group mt-4 rounded-2xl transition-all duration-300">
@@ -716,7 +731,7 @@ export default function Home() {
         <Separator />
 
         {/* PROJECTS */}
-        <MotionSection delay={0.2}>
+        <MotionSection id="projects" delay={0.2}>
           <div className="section-contain border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="font-serif text-xl text-foreground/60">Projects</h2>
@@ -741,6 +756,7 @@ export default function Home() {
                     skill={project.skill}
                     url={project.url}
                     href={project.href}
+                    shader={project.shader}
                   />
                 </motion.div>
               ))}
@@ -751,7 +767,7 @@ export default function Home() {
         <Separator />
 
         {/* STACK */}
-        <MotionSection delay={0.3}>
+        <MotionSection id="stack" delay={0.3}>
           <div className="section-contain border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
               <h2 className="mb-6 font-serif text-xl text-foreground/60">Stack I use</h2>
             <div className="relative grid grid-cols-4 justify-items-center gap-8 sm:grid-cols-6 md:grid-cols-8 md:justify-items-start lg:grid-cols-12">
@@ -776,7 +792,7 @@ export default function Home() {
         </MotionSection>
 
         {/* MY THOUGHTS */}
-        <MotionSection delay={0.4}>
+        <MotionSection id="thoughts" delay={0.4}>
           <div className="section-contain border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
             <div className="mb-4 flex items-baseline justify-between">
               <h2 className="font-serif text-xl text-foreground/60 italic">My Thoughts</h2>
@@ -819,7 +835,7 @@ export default function Home() {
         <Separator />
 
         {/* CTA + FOOTER SOCIALS + KAIZEN + QUOTE — exact original structure */}
-        <MotionSection delay={0.5}>
+        <MotionSection id="cta" delay={0.5}>
           {/* CTA Section */}
           <div className="section-contain border-border ring-0.5 ring-border mx-auto max-w-3xl border-x py-4 w-full flex-col px-6 sm:flex sm:items-center sm:justify-between sm:px-12">
             <p className="mb-4 text-center font-serif text-2xl text-pretty italic text-foreground/60 sm:mb-3 md:text-xl">
@@ -979,6 +995,17 @@ export default function Home() {
             <p className="font-mono text-xs text-foreground/40">&copy; 2026 All rights reserved.</p>
           </div>
         </div>
+      </div>
+
+      {/* Preview Rail - right sidebar on desktop */}
+      <div className="hidden lg:fixed lg:right-[calc(50%-480px)] lg:top-1/2 lg:-translate-y-1/2 lg:flex lg:z-40 pointer-events-none">
+        <PreviewRail
+          items={railItems}
+          orientation="vertical"
+          defaultActiveId="experience"
+          className="pointer-events-auto"
+          previewClassName="absolute left-[-16rem] w-60"
+        />
       </div>
 
       {/* Instagram popup */}

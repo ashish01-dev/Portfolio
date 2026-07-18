@@ -5,6 +5,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Eye, EyeOff, Link as LinkIcon, Share2 } from "lucide-react";
+import { ShaderBackground } from "./shader-background";
+import type { ShaderVariant } from "./shader-background";
 
 function GithubIcon({ className }: { className?: string }) {
   return (
@@ -38,6 +40,7 @@ interface ProjectCardProps {
   skill: string[];
   preview?: string;
   href?: string;
+  shader?: { variant: ShaderVariant; props: Record<string, unknown> };
 }
 
 export default function ProjectCard({
@@ -50,6 +53,7 @@ export default function ProjectCard({
   skill,
   preview,
   href,
+  shader,
 }: ProjectCardProps) {
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
@@ -112,10 +116,15 @@ export default function ProjectCard({
                 whileHover={{ scaleY: 0.92, translateY: 4 }}
                 whileTap={{ scale: 0.88 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                className="origin-top"
+                className="origin-top relative overflow-hidden rounded-md"
               >
+                {shader && (
+                  <div className="absolute inset-0">
+                    <ShaderBackground variant={shader.variant} {...shader.props} className="h-full w-full" />
+                  </div>
+                )}
                 <Image
-                  className="rounded-md md:h-[130px] h-[200px] w-full object-cover"
+                  className="relative md:h-[130px] h-[200px] w-full object-contain object-bottom"
                   src={img}
                   alt={title}
                   width={200}
@@ -124,13 +133,20 @@ export default function ProjectCard({
               </motion.div>
             </Link>
           ) : (
-            <Image
-              className="rounded-md md:h-[130px] h-[200px] w-full object-cover"
-              src={img}
-              alt={title}
-              width={200}
-              height={200}
-            />
+            <div className="relative overflow-hidden rounded-md">
+              {shader && (
+                <div className="absolute inset-0">
+                  <ShaderBackground variant={shader.variant} {...shader.props} className="h-full w-full" />
+                </div>
+              )}
+              <Image
+                className="relative md:h-[130px] h-[200px] w-full object-contain object-bottom"
+                src={img}
+                alt={title}
+                width={200}
+                height={200}
+              />
+            </div>
           )}
         </div>
         <div className="basis-[78%] flex flex-col md:gap-0 gap-1">

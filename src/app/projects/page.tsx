@@ -6,8 +6,20 @@ import { useTheme } from "next-themes";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { House, Sun, Moon } from "lucide-react";
+import { ShaderBackground } from "../components/shader-background";
+import type { ShaderVariant } from "../components/shader-background";
 
-const projects = [
+const projects: ({
+  title: string;
+  description?: string;
+  href: string;
+  image?: string;
+  badge?: string;
+  badgeColor?: string;
+  stack?: string[];
+  comingSoon?: boolean;
+  shader?: { variant: ShaderVariant; props: Record<string, unknown> };
+})[] = [
   {
     title: "JEEIFY",
     description: "JEEIFY is a JEE preparation assistant website.",
@@ -16,6 +28,7 @@ const projects = [
     badge: "100+ users!",
     badgeColor: "green",
     stack: ["Next.js", "Tailwind", "Supabase", "Drizzle"],
+    shader: { variant: "mesh-gradient", props: { colors: ["#e0eaff", "#241d9a", "#f75092", "#9f50d3"], distortion: 0.8, swirl: 0.3, speed: 0.4 } },
   },
   {
     title: "INNOVISION",
@@ -25,6 +38,7 @@ const projects = [
     badge: "Down!",
     badgeColor: "red",
     stack: ["Next.js", "TypeScript", "Tailwind"],
+    shader: { variant: "grain-gradient", props: { colors: ["#7300ff", "#eba8ff", "#00bfff", "#2a00ff"], colorBack: "#000000", softness: 0.6, speed: 0.5 } },
   },
   {
     title: "Coming Soon",
@@ -112,12 +126,17 @@ export default function ProjectsPage() {
                     className="group flex cursor-pointer flex-col gap-4 rounded-lg pb-4 transition-shadow duration-300 hover:shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] dark:hover:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)]"
                   >
                     <div className="relative aspect-[3/2] overflow-hidden rounded-lg transition-all duration-300 group-hover:scale-[1.05]">
+                      {project.shader && (
+                        <div className="absolute inset-0">
+                          <ShaderBackground variant={project.shader.variant} {...project.shader.props} className="h-full w-full" />
+                        </div>
+                      )}
                       <Image
                         src={project.image!}
                         alt={project.title}
                         width={400}
                         height={300}
-                        className="h-full w-full object-cover object-top"
+                        className="relative h-full w-full object-contain object-bottom"
                       />
                       {project.badge && (
                         <span className={`absolute bottom-2 right-2 rounded-full px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm ${project.badgeColor === "green" ? "bg-green-500/90" : "bg-red-500/90"}`}>

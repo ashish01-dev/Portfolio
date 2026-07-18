@@ -36,7 +36,7 @@ const projects: ({
     title: "INNOVISION",
     description: "A platform that helps students choose the right stream after 10th & 12th through interest assessments, career path visualization, and curated guidance resources — turning confusion into clarity for one of life's biggest decisions.",
     href: "/projects/innovision",
-    image: "/projects/4.png",
+    image: "/projects/7.png",
     url: "https://innovison.vercel.app/",
     status: "down",
     stack: ["Next.js", "TypeScript", "Tailwind"],

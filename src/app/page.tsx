@@ -67,7 +67,7 @@ const homeProjects = [
   },
   {
     id: 2,
-    img: "/projects/4.png",
+    img: "/projects/7.png",
     title: "INNOVISION",
     status: "down",
     badge: "Beta",
@@ -515,8 +515,9 @@ export default function Home() {
           </motion.div>
         </div>
 
-        {/* SOCIAL PILLS with InfoTip tooltip (switchfolio pattern) */}
+        {/* SOCIAL PILLS */}
         <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-3 px-8">
+          <p className="mb-3 font-mono text-[10px] font-medium uppercase tracking-wider text-foreground/40">Reach out</p>
           <div className="flex flex-wrap items-center gap-2">
             {[
               { icon: GithubIcon, href: "https://github.com/ashish01-dev", label: "GitHub" },
@@ -530,22 +531,16 @@ export default function Home() {
                 </svg>
               ), href: "mailto:ashish.jayshreeram@gmail.com", label: "Email" },
             ].map((s) => (
-              <div key={s.label} className="relative flex items-center select-none">
-                <div className="group relative flex">
-                  <a
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-black/5 dark:border-white/5 bg-background px-3 py-1.5 text-[10px] font-medium text-foreground/60 shadow-sm transition-all duration-200 hover:scale-105 hover:border-foreground/20 hover:text-foreground/90 hover:shadow-md"
-                  >
-                    <s.icon className="size-3" />
-                  </a>
-                  <span className="absolute bottom-9 left-1/2 transform transition-all -translate-x-1/2 mb-2 w-max bg-white text-black font-medium text-sm rounded-md py-1 px-1.5 scale-0 group-hover:scale-100 duration-100">
-                    {s.label}
-                    <span className="absolute top-full left-1/2 transform -translate-x-1/2 border-8 border-transparent border-t-white" />
-                  </span>
-                </div>
-              </div>
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-full border border-black/5 dark:border-white/5 bg-background px-3 py-1.5 text-[10px] font-medium text-foreground/60 shadow-sm transition-all duration-200 hover:scale-105 hover:border-foreground/20 hover:text-foreground/90 hover:shadow-md"
+              >
+                <s.icon className="size-3" />
+                {s.label}
+              </a>
             ))}
           </div>
         </div>

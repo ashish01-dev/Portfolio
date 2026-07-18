@@ -130,7 +130,7 @@ const footerSocials = [
   ), label: "Mail", rotate: 20, z: "z-1" },
 ];
 
-function Ruler() {
+const Ruler = memo(function Ruler() {
   const marks = [];
   for (let i = 0; i <= 2450; i += 50) {
     marks.push(
@@ -145,9 +145,9 @@ function Ruler() {
     );
   }
   return <div className="absolute inset-0 overflow-hidden pointer-events-none">{marks}</div>;
-}
+});
 
-function Separator() {
+const Separator = memo(function Separator() {
   return (
     <div className="w-full">
       <div className="relative z-0 mx-auto h-px max-w-3xl overflow-visible">
@@ -158,7 +158,7 @@ function Separator() {
       </div>
     </div>
   );
-}
+});
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -612,17 +612,28 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="mt-3 flex justify-start gap-1 px-0 sm:mt-0 sm:gap-2">
-                  {socialLinks.map((link) => (
-                    <a
-                      key={link.label}
-                      className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all bg-secondary text-secondary-foreground hover:bg-secondary/80 size-8 rounded-full touch-manipulation active:opacity-75"
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <link.icon className="size-4" />
-                    </a>
-                  ))}
+                  {socialLinks.map((link) =>
+                    link.label === "Instagram" ? (
+                      <button
+                        key={link.label}
+                        type="button"
+                        onClick={() => setShowInstaPopup(true)}
+                        className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all bg-secondary text-secondary-foreground hover:bg-secondary/80 size-8 rounded-full touch-manipulation active:opacity-75"
+                      >
+                        <link.icon className="size-4" />
+                      </button>
+                    ) : (
+                      <a
+                        key={link.label}
+                        className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all bg-secondary text-secondary-foreground hover:bg-secondary/80 size-8 rounded-full touch-manipulation active:opacity-75"
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <link.icon className="size-4" />
+                      </a>
+                    )
+                  )}
                 </div>
               </div>
             </motion.div>

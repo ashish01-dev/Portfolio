@@ -60,7 +60,7 @@ const socialLinks = [
 const projects = [
   {
     title: "JEEIFY",
-    description: "JEEIFY is a JEE preparation assistant website.",
+    description: "A full-stack JEE prep platform serving 100+ users with AI tutor, syllabus tracker, and more.",
     href: "/projects/jeeify",
     url: "https://jeeify.vercel.app/",
     image: "/projects/3.png",
@@ -918,6 +918,34 @@ export default function Home() {
                 <span className="text-sm font-medium text-foreground italic">Bhagavad Gita 2.47</span>
               </div>
             </div>
+          </div>
+        </div>
+
+        <Separator />
+
+        {/* RESUME SECTION */}
+        <div className="border-border ring-0.5 ring-border mx-auto max-w-3xl border-x relative flex w-full flex-col items-center overflow-visible py-0 select-none">
+          <div className="relative h-8 w-full">
+            <div className="absolute inset-0 opacity-15" style={{ backgroundImage: "repeating-linear-gradient(-45deg, transparent, transparent 10px, var(--color-foreground) 10px, var(--color-foreground) 11px)" }} />
+          </div>
+          <div className="py-12 text-center">
+            <p className="font-serif text-xl italic text-foreground/50 mb-6">
+              Want to know more about me?
+            </p>
+            <a
+              href="#"
+              className="group inline-flex items-center gap-2.5 rounded-lg border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground/50 transition-all duration-200 hover:border-foreground/20 hover:text-foreground/80 hover:shadow-sm"
+            >
+              <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              <span>Download Resume</span>
+            </a>
+          </div>
+          <div className="relative h-8 w-full overflow-hidden">
+            <div className="absolute inset-0 opacity-15" style={{ backgroundImage: "repeating-linear-gradient(-45deg, transparent, transparent 10px, currentColor 10px, currentColor 11px)" }} />
           </div>
         </div>
 

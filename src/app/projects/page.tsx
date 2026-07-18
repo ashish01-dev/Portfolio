@@ -112,11 +112,11 @@ export default function ProjectsPage() {
               >
                 <Link
                   href={project.href}
-                  className="group flex cursor-pointer flex-col gap-4 rounded-xl border border-border/50 bg-card/30 p-4 transition-all duration-300 hover:border-foreground/20 hover:shadow-sm"
+                  className="group flex cursor-pointer flex-col gap-3 rounded-xl border border-border/20 bg-background/50 p-3 transition-all duration-500 hover:border-foreground/10 hover:shadow-[0_0_30px_-10px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_0_30px_-10px_rgba(255,255,255,0.05)]"
                 >
-                  <div className="relative aspect-video overflow-hidden rounded-lg">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
                     {project.shader && (
-                      <div className="absolute inset-0 transition-all duration-700 group-hover:scale-110 group-hover:opacity-90">
+                      <div className="absolute inset-0 grayscale transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105">
                         <ShaderBackground variant={project.shader.variant} {...project.shader.props} className="h-full w-full" />
                       </div>
                     )}
@@ -124,9 +124,10 @@ export default function ProjectsPage() {
                       src={project.image!}
                       alt={project.title}
                       width={600}
-                      height={338}
-                      className="relative h-full w-full object-contain object-bottom p-2 transition-all duration-500 group-hover:scale-105"
+                      height={450}
+                      className="relative h-full w-full object-cover transition-all duration-500 group-hover:scale-[1.03]"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
                     {project.live ? (
                       <span className="absolute bottom-2 right-2 rounded-full bg-green-500/90 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm">
                         Running
@@ -137,21 +138,9 @@ export default function ProjectsPage() {
                       </span>
                     )}
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <h4 className="text-base font-semibold text-foreground">{project.title}</h4>
-                    <p className="text-sm text-foreground/50">{project.description}</p>
-                    {project.stack && (
-                      <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                        {project.stack.map((tech) => (
-                          <span
-                            key={tech}
-                            className="inline-flex items-center gap-1 rounded-full border border-black/5 dark:border-white/5 bg-background px-2 py-0.5 text-[10px] font-medium text-foreground/60 shadow-sm"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+                  <div className="flex flex-col gap-0.5 px-0.5">
+                    <h4 className="text-sm font-semibold text-foreground">{project.title}</h4>
+                    <p className="text-xs text-foreground/45">{project.description}</p>
                   </div>
                 </Link>
               </motion.div>

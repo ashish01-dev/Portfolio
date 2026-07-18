@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { motion, useScroll, useMotionValueEvent, useMotionValue, animate, AnimatePresence } from "framer-motion";
+import { motion, useMotionValue, animate, AnimatePresence } from "framer-motion";
 import BlurShimmerText from "./components/blur-shimmer-text";
 import GithubContributions from "./components/github-contributions";
 import { TextReveal } from "./components/text-reveal";
@@ -379,46 +379,12 @@ const Clock = /*@__PURE__*/ memo(function Clock() {
   return <>{formatted} IST.</>;
 });
 
-function ScrollIndicator() {
-  const { scrollY } = useScroll();
-  const [hidden, setHidden] = useState(false);
-
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 60) setHidden(true);
-    else setHidden(false);
-  });
-
-  return (
-    <motion.div
-      className="fixed right-6 top-1/2 z-50 hidden flex-col items-center gap-5 md:flex"
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: hidden ? 0 : 1, x: hidden ? 20 : 0 }}
-      transition={{ duration: 0.35, ease: "easeOut" }}
-      style={{ translateY: "-50%" }}
-    >
-      <span className="font-serif text-sm font-medium italic tracking-[0.2em] text-foreground/20 [writing-mode:vertical-rl]">
-        scroll down
-      </span>
-      <svg viewBox="0 0 24 80" className="size-6 text-foreground/15" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M12 0 Q 20 20, 12 40 Q 4 60, 12 80" />
-        <path d="M6 68 L12 80 L18 68" />
-      </svg>
-      <motion.div
-        className="mt-2 h-10 w-px bg-foreground/10"
-        animate={{ height: [10, 28, 10] }}
-        transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-      />
-    </motion.div>
-  );
-}
-
 export default function Home() {
   const [expanded, setExpanded] = useState(false);
   const { theme } = useTheme();
 
   return (
     <div className="relative min-h-dvh w-full overflow-x-clip">
-      <ScrollIndicator />
       <div className="relative mx-auto max-w-3xl">
         <Ruler />
       </div>
@@ -667,11 +633,11 @@ export default function Home() {
                 >
                   <Link
                     href={project.href}
-                    className="group flex cursor-pointer flex-col gap-4 rounded-xl border border-border/50 bg-card/30 p-4 transition-all duration-300 hover:border-foreground/20 hover:shadow-sm"
+                    className="group flex cursor-pointer flex-col gap-3 rounded-xl border border-border/20 bg-background/50 p-3 transition-all duration-500 hover:border-foreground/10 hover:shadow-[0_0_30px_-10px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_0_30px_-10px_rgba(255,255,255,0.05)]"
                   >
-                    <div className="relative aspect-video overflow-hidden rounded-lg transition-all duration-500 group-hover:scale-[1.02]">
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
                       {project.shader && (
-                        <div className="absolute inset-0 transition-all duration-700 group-hover:scale-110 group-hover:opacity-90">
+                        <div className="absolute inset-0 grayscale transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105">
                           <ShaderBackground variant={project.shader.variant} {...project.shader.props} className="h-full w-full" />
                         </div>
                       )}
@@ -679,9 +645,10 @@ export default function Home() {
                         src={project.img}
                         alt={project.title}
                         width={600}
-                        height={338}
-                        className="relative h-full w-full object-contain object-bottom p-2 transition-all duration-500 group-hover:scale-105"
+                        height={450}
+                        className="relative h-full w-full object-cover transition-all duration-500 group-hover:scale-[1.03]"
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
                       {project.status ? (
                         <span className="absolute bottom-2 right-2 rounded-full bg-green-500/90 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm">
                           Running
@@ -692,9 +659,9 @@ export default function Home() {
                         </span>
                       )}
                     </div>
-                    <div className="flex flex-col gap-1">
-                      <h4 className="text-base font-semibold text-foreground">{project.title}</h4>
-                      <p className="text-sm text-foreground/50">{project.content}</p>
+                    <div className="flex flex-col gap-0.5 px-0.5">
+                      <h4 className="text-sm font-semibold text-foreground">{project.title}</h4>
+                      <p className="text-xs text-foreground/45">{project.content}</p>
                     </div>
                   </Link>
                 </motion.div>

@@ -58,6 +58,7 @@ const homeProjects = [
     img: "/projects/3.png",
     title: "JEEIFY",
     status: "running",
+    badge: "100+ users!",
     content: "A full-stack JEE prep platform serving 100+ users with AI tutor, syllabus tracker, and more.",
     url: "https://jeeify.vercel.app/",
     href: "/projects/jeeify",
@@ -66,9 +67,10 @@ const homeProjects = [
   },
   {
     id: 2,
-    img: "/projects/7.png",
+    img: "/projects/4.png",
     title: "INNOVISION",
     status: "down",
+    badge: "Beta",
     content: "A platform that helps students choose the right stream after 10th & 12th.",
     url: "https://innovison.vercel.app/",
     href: "/projects/innovision",
@@ -80,6 +82,7 @@ const homeProjects = [
     img: "/placeholder-banner.svg",
     title: "WallX",
     status: "building",
+    badge: "In Development",
     content: "A curated wallpaper platform with dynamic collections and smart categorization.",
     url: "#",
     href: "/projects/wallx",
@@ -631,30 +634,35 @@ export default function Home() {
                     className="group flex cursor-pointer flex-col gap-2 rounded-lg border border-border/20 bg-background/50 p-2 transition-all duration-500 hover:border-foreground/10 hover:shadow-[0_0_30px_-10px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_0_30px_-10px_rgba(255,255,255,0.05)]"
                   >
                     <div className="relative aspect-[4/3] overflow-hidden rounded-md">
+                      {/* Shader background - visible behind image and through badge */}
                       {project.shader && (
                         <div className="absolute inset-0">
                           <ShaderBackground variant={project.shader.variant} {...project.shader.props} className="h-full w-full" />
                         </div>
                       )}
-                      <Image
-                        src={project.img}
-                        alt={project.title}
-                        width={600}
-                        height={450}
-                        className="relative h-full w-full object-contain object-left-bottom transition-all duration-500 group-hover:scale-[1.02]"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
-                      {/* Diagonal "100+ users!" banner on JEEIFY */}
-                      {project.title === "JEEIFY" && (
-                        <div className="absolute top-0 right-0 overflow-hidden pointer-events-none">
-                          <div className="relative">
-                            <span className="block w-32 translate-x-8 translate-y-3 rotate-45 bg-amber-500/90 py-0.5 text-center text-[9px] font-bold text-white shadow-sm transition-all duration-500 group-hover:brightness-110 group-hover:shadow-md">
-                              100+ users!
-                            </span>
-                            <span className="absolute inset-0 block w-32 translate-x-8 translate-y-3 rotate-45 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100 -translate-x-full group-hover:translate-x-full" />
-                          </div>
+                      {/* Animated image - slides from bottom toward center on hover */}
+                      <motion.div
+                        className="relative h-full w-full"
+                        initial={{ y: 0 }}
+                        whileHover={{ y: "-12%" }}
+                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                      >
+                        <Image
+                          src={project.img}
+                          alt={project.title}
+                          fill
+                          className="object-contain object-left-bottom"
+                        />
+                      </motion.div>
+                      {/* Redesigned badge with backdrop-blur - lets shader show through */}
+                      {project.badge && (
+                        <div className="absolute top-2 left-2 z-10">
+                          <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider backdrop-blur-md bg-white/20 dark:bg-black/20 text-white shadow-sm border border-white/25">
+                            {project.badge}
+                          </span>
                         </div>
                       )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
                     </div>
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center justify-between">

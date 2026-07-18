@@ -2,13 +2,25 @@
 
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NotFoundGlitch } from "./components/not-found/glitch";
 import { House, Sun, Moon } from "lucide-react";
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
-  useState(() => {});
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) {
+    return (
+      <button
+        className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full"
+        aria-label="Toggle theme"
+      >
+        <Sun className="size-5" />
+      </button>
+    );
+  }
 
   return (
     <button

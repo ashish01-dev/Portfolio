@@ -11,22 +11,19 @@ import type { ShaderVariant } from "../components/shader-background";
 
 const projects: ({
   title: string;
-  description?: string;
+  description: string;
   href: string;
   image?: string;
-  badge?: string;
-  badgeColor?: string;
+  live?: boolean;
   stack?: string[];
-  comingSoon?: boolean;
   shader?: { variant: ShaderVariant; props: Record<string, unknown> };
 })[] = [
   {
     title: "JEEIFY",
-    description: "JEEIFY is a JEE preparation assistant website.",
+    description: "A full-stack JEE prep platform serving 100+ users with AI tutor, syllabus tracker, and more.",
     href: "/projects/jeeify",
     image: "/projects/3.png",
-    badge: "100+ users!",
-    badgeColor: "green",
+    live: true,
     stack: ["Next.js", "Tailwind", "Supabase", "Drizzle"],
     shader: { variant: "mesh-gradient", props: { colors: ["#e0eaff", "#241d9a", "#f75092", "#9f50d3"], distortion: 0.8, swirl: 0.3, speed: 0.4 } },
   },
@@ -35,15 +32,18 @@ const projects: ({
     description: "A platform that helps students choose the right stream after 10th & 12th.",
     href: "/projects/innovision",
     image: "/projects/4.png",
-    badge: "Down!",
-    badgeColor: "red",
+    live: false,
     stack: ["Next.js", "TypeScript", "Tailwind"],
     shader: { variant: "grain-gradient", props: { colors: ["#7300ff", "#eba8ff", "#00bfff", "#2a00ff"], colorBack: "#000000", softness: 0.6, speed: 0.5 } },
   },
   {
-    title: "Coming Soon",
-    href: "#",
-    comingSoon: true,
+    title: "WallX",
+    description: "A curated wallpaper platform with dynamic collections and smart categorization.",
+    href: "/projects/wallx",
+    image: "/placeholder-banner.svg",
+    live: false,
+    stack: ["Next.js", "TypeScript", "Tailwind", "Supabase"],
+    shader: { variant: "warp", props: { colors: ["#121212", "#9470ff", "#121212", "#8838ff"], speed: 0.4 } },
   },
 ];
 
@@ -101,79 +101,59 @@ export default function ProjectsPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {projects.map((project, i) => (
               <motion.div
                 key={project.title}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
+                className={i === projects.length - 1 && projects.length % 2 === 1 ? "md:col-span-2 md:max-w-[calc(50%-1rem)] md:justify-self-center" : ""}
               >
-                {project.comingSoon ? (
-                  <div className="group flex flex-col gap-4 pb-4 pointer-events-none">
-                    <div className="relative aspect-[3/2] overflow-hidden rounded-lg border border-dashed border-foreground/20 bg-muted/30 flex items-center justify-center">
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-lg font-serif italic text-foreground/20 -rotate-12">Coming Soon</span>
+                <Link
+                  href={project.href}
+                  className="group flex cursor-pointer flex-col gap-4 rounded-xl border border-border/50 bg-card/30 p-4 transition-all duration-300 hover:border-foreground/20 hover:shadow-sm"
+                >
+                  <div className="relative aspect-video overflow-hidden rounded-lg">
+                    {project.shader && (
+                      <div className="absolute inset-0 transition-all duration-700 group-hover:scale-110 group-hover:opacity-90">
+                        <ShaderBackground variant={project.shader.variant} {...project.shader.props} className="h-full w-full" />
                       </div>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <h4 className="text-base font-semibold text-foreground/30">{project.title}</h4>
-                    </div>
+                    )}
+                    <Image
+                      src={project.image!}
+                      alt={project.title}
+                      width={600}
+                      height={338}
+                      className="relative h-full w-full object-contain object-bottom p-2 transition-all duration-500 group-hover:scale-105"
+                    />
+                    {project.live ? (
+                      <span className="absolute bottom-2 right-2 rounded-full bg-green-500/90 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm">
+                        Running
+                      </span>
+                    ) : (
+                      <span className="absolute bottom-2 right-2 rounded-full bg-red-500/90 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm">
+                        Down
+                      </span>
+                    )}
                   </div>
-                ) : (
-                  <Link
-                    href={project.href}
-                    className="group flex cursor-pointer flex-col gap-4 rounded-lg pb-4 transition-shadow duration-300 hover:shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] dark:hover:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)]"
-                  >
-                    <div className="relative aspect-[3/2] overflow-hidden rounded-lg transition-all duration-300 group-hover:scale-[1.05]">
-                      {project.shader && (
-                        <div className="absolute inset-0">
-                          <ShaderBackground variant={project.shader.variant} {...project.shader.props} className="h-full w-full" />
-                        </div>
-                      )}
-                      <Image
-                        src={project.image!}
-                        alt={project.title}
-                        width={400}
-                        height={300}
-                        className="relative h-full w-full object-contain object-bottom"
-                      />
-                      {project.badge && (
-                        <span className={`absolute bottom-2 right-2 rounded-full px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm ${project.badgeColor === "green" ? "bg-green-500/90" : "bg-red-500/90"}`}>
-                          {project.badge}
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex flex-col gap-1 transition-all duration-300 group-hover:translate-x-4">
-                      <h4 className="text-base font-semibold text-foreground">{project.title}</h4>
-                      <p className="w-[calc(100%-1.5rem)] text-sm text-foreground/50">{project.description}</p>
-                      {project.stack && (
-                        <div className="mt-auto flex items-center pt-2">
-                          {project.stack.slice(0, 4).map((tech, idx) => (
-                            <div
-                              key={tech}
-                              className="group/pill flex h-7 cursor-default items-center rounded-full border border-black/5 bg-background shadow-sm transition-all duration-200 max-w-7 hover:max-w-[200px] overflow-hidden dark:border-white/5"
-                              style={{ marginLeft: idx > 0 ? -8 : 0, zIndex: 4 - idx }}
-                            >
-                              <div className="flex h-7 w-7 shrink-0 items-center justify-center">
-                                <span className="text-[10px] font-bold text-foreground/60">{tech.slice(0, 2)}</span>
-                              </div>
-                              <span className="pr-2 text-[11px] font-medium whitespace-nowrap text-foreground/70">{tech}</span>
-                            </div>
-                          ))}
-                          {project.stack.length > 4 && (
-                            <div
-                              className="flex h-7 items-center rounded-full border border-black/5 bg-background shadow-sm px-2.5 dark:border-white/5"
-                              style={{ marginLeft: -8 }}
-                            >
-                              <span className="text-[11px] font-medium text-foreground/60">+{project.stack.length - 4}</span>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </Link>
-                )}
+                  <div className="flex flex-col gap-2">
+                    <h4 className="text-base font-semibold text-foreground">{project.title}</h4>
+                    <p className="text-sm text-foreground/50">{project.description}</p>
+                    {project.stack && (
+                      <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                        {project.stack.map((tech) => (
+                          <span
+                            key={tech}
+                            className="inline-flex items-center gap-1 rounded-full border border-black/5 dark:border-white/5 bg-background px-2 py-0.5 text-[10px] font-medium text-foreground/60 shadow-sm"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>

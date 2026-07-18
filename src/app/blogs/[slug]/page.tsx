@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { useTheme } from "next-themes";
+import { useState, useEffect } from "react";
 import { House, Sun, Moon } from "lucide-react";
 
 const beliefs = [
@@ -28,6 +29,8 @@ export default function BlogPost() {
   const params = useParams();
   const slug = params.slug as string;
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   if (slug !== "things-i-believe-in") {
     notFound();
@@ -50,7 +53,7 @@ export default function BlogPost() {
                 className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full"
                 aria-label="Toggle theme"
               >
-                {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+                {mounted && theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
               </button>
             </nav>
           </header>

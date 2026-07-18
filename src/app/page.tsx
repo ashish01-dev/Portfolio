@@ -14,7 +14,7 @@ import { ShaderBackground } from "./components/shader-background";
 import {
   House,
   ChevronDown,
-  Lightbulb,
+  Sun,
   Moon,
   MoveRight,
 } from "lucide-react";
@@ -129,19 +129,6 @@ const skills = [
   { name: "Figma", type: "icon" },
 ];
 
-const footerSocials = [
-  { href: "https://github.com/ashish01-dev", icon: GithubIcon, label: "Github", rotate: -20, z: "", color: "#333" },
-  { href: "https://www.instagram.com/ashish.kumar.singh", icon: InstagramIcon, label: "Instagram", rotate: -10, z: "", popup: true, color: "#E1306C" },
-  { href: "https://x.com/TechMaster54321", icon: XIcon, label: "Twitter", rotate: -2, z: "z-5", color: "#000" },
-  { href: "https://www.linkedin.com/in/ashish-kumar0406", icon: LinkedinIcon, label: "LinkedIn", rotate: 10, z: "z-2", color: "#0077B5" },
-  { href: "mailto:ashish.jayshreeram@gmail.com", icon: (p: any) => (
-    <svg viewBox="0 0 24 24" className={(p?.className) || "size-5"} fill="none" stroke="currentColor" strokeWidth="2">
-      <rect x="2" y="4" width="20" height="16" rx="2" />
-      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-    </svg>
-  ), label: "Mail", rotate: 20, z: "z-1", color: "#666" },
-];
-
 const Ruler = memo(function Ruler() {
   const marks = [];
   for (let i = 0; i <= 2450; i += 50) {
@@ -171,20 +158,6 @@ const Separator = memo(function Separator() {
     </div>
   );
 });
-
-function SocialTip({ text, children }: { text: string; children: React.ReactNode }) {
-  return (
-    <div className="relative flex items-center select-none">
-      <div className="group relative flex">
-        {children}
-        <span className="absolute bottom-9 left-1/2 transform transition-all -translate-x-1/2 mb-2 w-max bg-white text-black font-medium text-sm rounded-md py-1 px-1.5 scale-0 group-hover:scale-100 duration-100 pointer-events-none whitespace-nowrap">
-          {text}
-          <span className="absolute top-full left-1/2 transform -translate-x-1/2 border-8 border-transparent border-t-white" />
-        </span>
-      </div>
-    </div>
-  );
-}
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -224,7 +197,7 @@ function ThemeToggle() {
         className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full"
         aria-label="Toggle theme"
       >
-        <Lightbulb className="size-4" />
+        <Sun className="size-4" />
       </button>
     );
   }
@@ -236,7 +209,7 @@ function ThemeToggle() {
       aria-label="Toggle theme"
     >
       {theme === "dark" ? (
-        <Lightbulb className="size-4 fill-yellow-400 text-yellow-500" />
+        <Sun className="size-4" />
       ) : (
         <Moon className="size-4" />
       )}
@@ -398,20 +371,10 @@ const Clock = /*@__PURE__*/ memo(function Clock() {
 
   if (!currentTime) return null;
 
-  const formatted = currentTime
-    .toLocaleString("en-IN", {
-      timeZone: "Asia/Kolkata",
-      weekday: "short",
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: true,
-    })
-    .toUpperCase()
-    .replace(",", "  •");
+  const day = currentTime.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", weekday: "short" });
+  const date = currentTime.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", day: "2-digit", month: "short", year: "numeric" });
+  const time = currentTime.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true });
+  const formatted = `${day}, ${date}, ${time}`;
 
   return <>{formatted} IST.</>;
 });
@@ -451,7 +414,6 @@ function ScrollIndicator() {
 
 export default function Home() {
   const [expanded, setExpanded] = useState(false);
-  const [showInstaPopup, setShowInstaPopup] = useState(false);
   const { theme } = useTheme();
 
   return (
@@ -537,7 +499,7 @@ export default function Home() {
                     style={{ backgroundImage: "url(/me.png)" }}
                   />
                 </div>
-                <div className="mt-1 flex shrink-0 flex-col items-end gap-1.5">
+                <div className="mt-1 flex shrink-0 flex-col items-end gap-1">
                   <p className="flex items-center gap-1.5 font-mono text-[10px] font-medium whitespace-nowrap text-foreground/70 sm:text-xs">
                     <span className="relative flex h-2 w-2">
                       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75" />
@@ -545,10 +507,9 @@ export default function Home() {
                     </span>
                     Available for work
                   </p>
-                  <div suppressHydrationWarning className="flex items-center gap-2 font-mono text-[10px] text-foreground/40 sm:text-xs">
+                  <div suppressHydrationWarning className="flex flex-col items-end gap-0 font-mono text-[10px] text-foreground/40 sm:text-xs">
                     <span className="font-medium" suppressHydrationWarning><Clock /></span>
-                    <span className="text-foreground/30">&middot;</span>
-                    <span className="text-foreground/40" suppressHydrationWarning>5.5h ahead</span>
+                    <span className="text-foreground/40" suppressHydrationWarning>5.5 hours ahead</span>
                   </div>
                 </div>
               </div>
@@ -594,6 +555,35 @@ export default function Home() {
 
 
           </motion.div>
+        </div>
+
+        {/* SOCIAL PILLS */}
+        <div className="border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-3 px-8">
+          <div className="flex flex-wrap items-center gap-2">
+            {[
+              { icon: GithubIcon, href: "https://github.com/ashish01-dev", label: "GitHub" },
+              { icon: XIcon, href: "https://x.com/TechMaster54321", label: "X" },
+              { icon: LinkedinIcon, href: "https://www.linkedin.com/in/ashish-kumar0406", label: "LinkedIn" },
+              { icon: InstagramIcon, href: "https://www.instagram.com/ashish.kumar.singh", label: "Instagram" },
+              { icon: (p: any) => (
+                <svg viewBox="0 0 24 24" className={(p?.className) || "size-3"} fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </svg>
+              ), href: "mailto:ashish.jayshreeram@gmail.com", label: "Email" },
+            ].map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-full border border-black/5 dark:border-white/5 bg-background px-3 py-1.5 text-[10px] font-medium text-foreground/60 shadow-sm transition-all duration-200 hover:scale-105 hover:border-foreground/20 hover:text-foreground/90 hover:shadow-md"
+              >
+                <s.icon className="size-3" />
+                {s.label}
+              </a>
+            ))}
+          </div>
         </div>
 
         {/* GITHUB ACTIVITY */}
@@ -665,7 +655,7 @@ export default function Home() {
                 ALL <MoveRight className="size-3" />
               </Link>
             </div>
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
               {homeProjects.map((project) => (
                 <motion.div
                   key={project.id}
@@ -673,35 +663,38 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.35, delay: (project.id - 1) * 0.05 }}
+                  className={project.id === homeProjects.length && homeProjects.length % 2 === 1 ? "md:col-span-2 md:max-w-[calc(50%-1rem)] md:justify-self-center" : ""}
                 >
                   <Link
                     href={project.href}
-                    className="group flex cursor-pointer flex-col gap-4 rounded-lg pb-4 transition-shadow duration-300 hover:shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] dark:hover:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)]"
+                    className="group flex cursor-pointer flex-col gap-4 rounded-xl border border-border/50 bg-card/30 p-4 transition-all duration-300 hover:border-foreground/20 hover:shadow-sm"
                   >
-                    <div className="relative aspect-[3/2] overflow-hidden rounded-lg transition-all duration-300 group-hover:scale-[1.05]">
+                    <div className="relative aspect-video overflow-hidden rounded-lg transition-all duration-500 group-hover:scale-[1.02]">
                       {project.shader && (
-                        <div className="absolute inset-0">
+                        <div className="absolute inset-0 transition-all duration-700 group-hover:scale-110 group-hover:opacity-90">
                           <ShaderBackground variant={project.shader.variant} {...project.shader.props} className="h-full w-full" />
                         </div>
                       )}
                       <Image
                         src={project.img}
                         alt={project.title}
-                        width={400}
-                        height={300}
-                        className="relative h-full w-full object-contain object-bottom"
+                        width={600}
+                        height={338}
+                        className="relative h-full w-full object-contain object-bottom p-2 transition-all duration-500 group-hover:scale-105"
                       />
+                      {project.status ? (
+                        <span className="absolute bottom-2 right-2 rounded-full bg-green-500/90 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm">
+                          Running
+                        </span>
+                      ) : (
+                        <span className="absolute bottom-2 right-2 rounded-full bg-red-500/90 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm">
+                          Down
+                        </span>
+                      )}
                     </div>
-                    <div className="flex flex-col gap-1 transition-all duration-300 group-hover:translate-x-4">
-                      <div className="flex items-center gap-2">
-                        <h4 className="text-base font-semibold text-foreground">{project.title}</h4>
-                        {project.status ? (
-                          <span className="text-[10px] font-medium text-green-500 bg-green-500/10 rounded-full px-2 py-0.5">Live</span>
-                        ) : (
-                          <span className="text-[10px] font-medium text-red-500 bg-red-500/10 rounded-full px-2 py-0.5">Building</span>
-                        )}
-                      </div>
-                      <p className="w-[calc(100%-1.5rem)] text-sm text-foreground/50">{project.content}</p>
+                    <div className="flex flex-col gap-1">
+                      <h4 className="text-base font-semibold text-foreground">{project.title}</h4>
+                      <p className="text-sm text-foreground/50">{project.content}</p>
                     </div>
                   </Link>
                 </motion.div>
@@ -810,56 +803,7 @@ export default function Home() {
               </a>
             </div>
 
-            <p className="py-2 text-center text-sm font-medium text-foreground/40 uppercase">or</p>
 
-            {/* FOOTER SOCIAL CARDS — CSS group-hover matching reference */}
-            <motion.div
-              className="group flex items-center justify-center flex-wrap"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={{
-                visible: { transition: { staggerChildren: 0.05, delayChildren: 0.25 } },
-              }}
-            >
-              {footerSocials.map((s) => {
-                const rotation = s.label === "Github" ? "-rotate-20" : s.label === "Instagram" ? "-rotate-10" : s.label === "Twitter" ? "-rotate-2" : s.label === "LinkedIn" ? "rotate-10" : "rotate-20";
-                return (
-                  <motion.div
-                    key={s.label}
-                    variants={{
-                      hidden: { opacity: 0, y: 8, scale: 0.97 },
-                      visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.3, ease: "easeOut" } },
-                    }}
-                  >
-                    <SocialTip text={s.label}>
-                      {s.popup ? (
-                        <button
-                          type="button"
-                          onClick={() => setShowInstaPopup(true)}
-                          className={`${s.z} bg-background -mr-1 flex w-13 cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-foreground/20 p-2 text-foreground/60 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition-all duration-300 group-hover:mr-2 group-hover:rotate-0 dark:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)] ${rotation}`}
-                        >
-                          <span style={{ '--brand': (s as any).color } as React.CSSProperties} className="group-hover:text-[var(--brand)] transition-colors duration-200 flex">
-                            <s.icon className="size-5" />
-                          </span>
-                        </button>
-                      ) : (
-                        <a
-                          href={s.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`${s.z} bg-background -mr-1 flex w-13 cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-foreground/20 p-2 text-foreground/60 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition-all duration-300 group-hover:mr-2 group-hover:rotate-0 dark:shadow-[0px_2px_3px_-1px_rgba(255,255,255,0.06),0px_1px_0px_0px_rgba(255,255,255,0.04),0px_0px_0px_1px_rgba(255,255,255,0.08)] ${rotation}`}
-                        >
-                          <span style={{ '--brand': (s as any).color } as React.CSSProperties} className="group-hover:text-[var(--brand)] transition-colors duration-200 flex">
-                            <s.icon className="size-5" />
-                          </span>
-                        </a>
-                      )}
-                    </SocialTip>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
           </div>
         </MotionSection>
 
@@ -943,42 +887,18 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Preview Rail - right sidebar on desktop */}
-      <div className="hidden lg:fixed lg:right-[calc(50%-480px)] lg:top-1/2 lg:-translate-y-1/2 lg:flex lg:z-40 pointer-events-none">
+      {/* Preview Rail - far right side of screen */}
+      <div className="hidden lg:fixed lg:right-6 lg:top-1/2 lg:-translate-y-1/2 lg:flex lg:z-40 pointer-events-none">
         <PreviewRail
           items={railItems}
           orientation="vertical"
           defaultActiveId="experience"
           className="pointer-events-auto"
-          previewClassName="absolute left-[-16rem] w-60"
+          previewClassName="absolute right-full mr-4 w-60"
         />
       </div>
 
-      {/* Instagram popup */}
-      <AnimatePresence>
-        {showInstaPopup && (
-          <motion.div
-            className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2"
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-          >
-            <div className="flex items-center gap-3 rounded-lg border border-border bg-background px-5 py-3 shadow-lg">
-              <span className="text-sm text-foreground/70">Couldn&apos;t open Instagram — try again later</span>
-              <button
-                type="button"
-                onClick={() => setShowInstaPopup(false)}
-                className="ml-2 inline-flex size-6 items-center justify-center rounded-full border border-border/50 text-foreground/40 transition-colors hover:text-foreground/80"
-              >
-                <svg viewBox="0 0 24 24" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+
     </div>
   );
 }

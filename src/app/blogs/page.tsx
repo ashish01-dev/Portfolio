@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import { useState, useEffect } from "react";
 import { House, MoveRight, Sun, Moon } from "lucide-react";
 
 const blogs = [
@@ -29,6 +30,8 @@ function Separator() {
 
 export default function BlogsPage() {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   return (
     <div className="relative min-h-dvh w-full overflow-x-clip">
@@ -47,7 +50,7 @@ export default function BlogsPage() {
                 className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full"
                 aria-label="Toggle theme"
               >
-                {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+                {mounted && theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
               </button>
             </nav>
           </header>

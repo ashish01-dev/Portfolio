@@ -6,7 +6,7 @@ import { notFound, useParams } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { House, ArrowUpRight, Lightbulb, Moon } from "lucide-react";
+import { House, ArrowUpRight, Sun, Moon } from "lucide-react";
 
 const projectsData: Record<
   string,
@@ -140,7 +140,7 @@ function ThemeToggle() {
   if (!mounted) {
     return (
       <button className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 size-8 rounded-full" aria-label="Toggle theme">
-        <Lightbulb className="size-4" />
+        <Sun className="size-4" />
       </button>
     );
   }
@@ -152,7 +152,7 @@ function ThemeToggle() {
       aria-label="Toggle theme"
     >
       {theme === "dark" ? (
-        <Lightbulb className="size-4 fill-yellow-400 text-yellow-500" />
+        <Sun className="size-4" />
       ) : (
         <Moon className="size-4" />
       )}
@@ -218,15 +218,26 @@ export default function ProjectPage() {
             {/* Title & Visit */}
             <div className="flex items-start justify-between gap-4">
               <h1 className="font-serif text-4xl text-foreground/80 italic">{project.title}</h1>
-              <a
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="shrink-0 inline-flex items-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-xs font-medium text-foreground/60 hover:bg-accent/5 transition-colors"
-              >
-                <ArrowUpRight className="size-3.5" />
-                Visit
-              </a>
+              <div className="flex shrink-0 items-center gap-2">
+                {project.badge === "Down!" ? (
+                  <span className="rounded-full bg-red-500/90 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm">
+                    Down
+                  </span>
+                ) : project.badge === "100+ users!" ? (
+                  <span className="rounded-full bg-green-500/90 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm">
+                    Running
+                  </span>
+                ) : null}
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="shrink-0 inline-flex items-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-xs font-medium text-foreground/60 hover:bg-accent/5 transition-colors"
+                >
+                  <ArrowUpRight className="size-3.5" />
+                  Visit
+                </a>
+              </div>
             </div>
 
             {/* Stack */}

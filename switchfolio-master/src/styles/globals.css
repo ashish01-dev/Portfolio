@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-mainBlack text-mainWhite;
+}
+::selection {
+  @apply bg-mainWhite text-mainBlack;
+}
+
+/* For Firefox-specific styling */
+::-moz-selection {
+  @apply bg-mainWhite text-mainBlack;
+}
+
+.screen {
+  @apply md:w-[800px] md:mx-auto px-4 md:py-14 py-4;
+}
+.main-screen {
+  @apply py-3;
+}
+
+.pro-pic {
+  @apply md:size-[130px] size-auto rounded-md select-none;
+}
+
+.social-card {
+  @apply select-none bg-zinc-950 border border-zinc-700 rounded-md p-1.5 text-[1.35rem] hover:bg-zinc-900 transition-all duration-100;
+}
+.skills-card {
+  @apply select-none transition-colors duration-100 flex flex-row gap-1 items-center bg-zinc-900 border border-zinc-700 px-2  py-1 rounded-md;
+}
+
+.head-name {
+  @apply font-bold md:text-[2rem] text-[1.8rem] leading-[1.5rem];
+}
+
+.showMore-btn {
+  @apply select-none bg-zinc-700/30 w-full px-2 py-1 rounded-md hover:bg-zinc-700/50 transition-colors duration-100;
+}
+
+.btn {
+  @apply cursor-pointer w-fit select-none transition-colors duration-100 flex flex-row gap-1.5 items-center bg-zinc-900 border border-zinc-700 hover:bg-zinc-800 px-2  py-1 rounded-md;
+}
+
+.blog-post {
+  @apply cursor-pointer bg-zinc-900 border border-zinc-700 hover:bg-zinc-800/75 p-2 rounded-md transition-colors duration-100;
+}

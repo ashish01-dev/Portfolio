@@ -7,10 +7,9 @@ import { useTheme } from "next-themes";
 import { motion, useScroll, useMotionValueEvent, useMotionValue, animate, AnimatePresence } from "framer-motion";
 import BlurShimmerText from "./components/blur-shimmer-text";
 import GithubContributions from "./components/github-contributions";
+import ProjectCard from "./components/project-card";
 import {
   House,
-  MessageCircle,
-  PenLine,
   ChevronDown,
   Sun,
   Moon,
@@ -57,41 +56,73 @@ const socialLinks = [
   { href: "https://www.linkedin.com/in/ashish-kumar0406", icon: LinkedinIcon, label: "LinkedIn" },
 ];
 
-const projects = [
+const homeProjects = [
   {
+    id: 1,
+    img: "/projects/3.png",
     title: "JEEIFY",
-    description: "A full-stack JEE prep platform serving 100+ users with AI tutor, syllabus tracker, and more.",
-    href: "/projects/jeeify",
+    status: true,
+    content: "A full-stack JEE prep platform serving 100+ users with AI tutor, syllabus tracker, and more.",
     url: "https://jeeify.vercel.app/",
-    image: "/projects/3.png",
-    badge: "100+ users!",
-    stack: [
-      { name: "Next.js", type: "icon" },
-      { name: "Tailwind", type: "icon" },
-      { name: "Supabase", type: "icon" },
-      { name: "Drizzle", type: "icon" },
-    ],
+    skill: ["Next.js", "Tailwind", "Supabase", "Drizzle"],
   },
   {
+    id: 2,
+    img: "/projects/4.png",
     title: "INNOVISION",
-    description: "A platform that helps students choose the right stream after 10th & 12th.",
-    href: "/projects/innovision",
+    status: true,
+    content: "A platform that helps students choose the right stream after 10th & 12th.",
     url: "https://innovison.vercel.app/",
-    image: "/projects/4.png",
-    badge: "Down!",
-    stack: [
-      { name: "Next.js", type: "icon" },
-      { name: "TypeScript", type: "icon" },
-      { name: "Tailwind", type: "icon" },
-    ],
+    skill: ["Next.js", "TypeScript", "Tailwind"],
   },
   {
-    title: "Coming Soon",
-    description: "",
-    href: "#",
-    image: "",
-    comingSoon: true,
-    stack: [],
+    id: 3,
+    img: "/projects/divine-canvas/home.svg",
+    title: "Divine Canvas",
+    status: true,
+    content: "An e-commerce platform offering premium, sacred vector paintings.",
+    url: "https://divinecanvas.art/",
+    skill: ["Next.js", "Tailwind", "Motion", "Payload", "PostgreSQL"],
+  },
+  {
+    id: 4,
+    img: "/rvyu.svg",
+    title: "rvyu.",
+    status: true,
+    content: "A place for developers to share their side projects and get feedback from peers.",
+    url: "https://rvyu.dev/",
+    skill: ["Next.js", "Tailwind", "Motion", "Drizzle", "PostgreSQL"],
+  },
+  {
+    id: 5,
+    img: "/projects/theleansuite/theleansuite.svg",
+    title: "The Leansuite",
+    status: true,
+    content: "SaaS website and dashboard with a custom CMS to manage blogs and pages.",
+    url: "https://theleansuite.com/",
+    skill: ["Next.js", "Tailwind", "Motion", "Sanity"],
+  },
+];
+
+const contactLinks = [
+  { name: "GitHub", icon: GithubIcon, href: "https://github.com/ashish01-dev" },
+  { name: "X", icon: XIcon, href: "https://x.com/TechMaster54321" },
+  { name: "LinkedIn", icon: LinkedinIcon, href: "https://www.linkedin.com/in/ashish-kumar0406" },
+  {
+    name: "Instagram",
+    icon: InstagramIcon,
+    href: "#instagram",
+    popup: true,
+  },
+  {
+    name: "Email",
+    icon: (p: any) => (
+      <svg viewBox="0 0 24 24" className={(p?.className) || "size-5"} fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+      </svg>
+    ),
+    href: "mailto:ashish.jayshreeram@gmail.com",
   },
 ];
 
@@ -159,6 +190,20 @@ const Separator = memo(function Separator() {
     </div>
   );
 });
+
+function SocialTip({ text, children }: { text: string; children: React.ReactNode }) {
+  return (
+    <div className="relative flex items-center select-none">
+      <div className="group relative flex">
+        {children}
+        <span className="absolute bottom-9 left-1/2 transform transition-all -translate-x-1/2 mb-2 w-max bg-foreground text-background font-medium text-sm rounded-md py-1 px-1.5 scale-0 group-hover:scale-100 duration-100 pointer-events-none whitespace-nowrap">
+          {text}
+          <span className="absolute top-full left-1/2 transform -translate-x-1/2 border-8 border-transparent border-t-foreground" />
+        </span>
+      </div>
+    </div>
+  );
+}
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -268,81 +313,6 @@ function StackIcon({ name, type, src }: { name: string; type: string; src?: stri
         <span className="text-[10px] font-medium text-foreground/70">{name}</span>
       </motion.div>
     </motion.div>
-  );
-}
-
-function ProjectStackBadge({ stack, more }: { stack: any[]; more?: string }) {
-  const [hoveredTech, setHoveredTech] = useState<string | null>(null);
-
-  return (
-    <div className="mt-auto flex items-center pt-2">
-      {stack.slice(0, 5).map((s) => {
-        const isHovered = hoveredTech === s.name;
-        return (
-          <motion.div
-            key={s.name}
-            className="flex h-7 cursor-pointer items-center rounded-full border border-black/5 bg-white shadow-sm dark:border-white/5 dark:bg-white/5"
-            style={{ marginLeft: "-8px", zIndex: isHovered ? 10 : 1 }}
-            animate={{ width: isHovered ? "auto" : "28px" }}
-            onMouseEnter={() => setHoveredTech(s.name)}
-            onMouseLeave={() => setHoveredTech(null)}
-            layout
-            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-          >
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center">
-              {s.type === "image" ? (
-                <Image src={s.src} alt={s.name} width={16} height={16} className="h-4 w-4 rounded-full object-contain" />
-              ) : (
-                <div className="flex h-4 w-4 items-center justify-center">
-                  <TechIcon name={s.name} className="size-4" />
-                </div>
-              )}
-            </div>
-            <AnimatePresence>
-              {isHovered && (
-                <motion.span
-                  className="overflow-hidden pr-2 text-xs font-medium"
-                  initial={{ width: 0, opacity: 0, marginLeft: 0 }}
-                  animate={{ width: "auto", opacity: 1, marginLeft: "4px" }}
-                  exit={{ width: 0, opacity: 0, marginLeft: 0 }}
-                  transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-                >
-                  <span className="whitespace-nowrap">{s.name}</span>
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        );
-      })}
-      {more && (
-        <motion.div
-          className="flex h-7 cursor-pointer items-center rounded-full border border-black/5 bg-white text-[10px] font-medium text-black/40 shadow-sm hover:bg-white dark:border-white/5 dark:bg-white/5 dark:text-white/40"
-          style={{ marginLeft: "-8px", zIndex: hoveredTech === "more" ? 10 : 1 }}
-          animate={{ width: hoveredTech === "more" ? "auto" : "28px" }}
-          onMouseEnter={() => setHoveredTech("more")}
-          onMouseLeave={() => setHoveredTech(null)}
-          layout
-          transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-        >
-          <div className="flex h-7 w-7 shrink-0 items-center justify-center">
-            <span className="text-[10px] font-semibold text-black/60 dark:text-white/60">{more}</span>
-          </div>
-          <AnimatePresence>
-            {hoveredTech === "more" && (
-              <motion.span
-                className="overflow-hidden pr-2 text-xs font-medium"
-                initial={{ width: 0, opacity: 0, marginLeft: 0 }}
-                animate={{ width: "auto", opacity: 1, marginLeft: "4px" }}
-                exit={{ width: 0, opacity: 0, marginLeft: 0 }}
-                transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-              >
-                <span className="whitespace-nowrap">more</span>
-              </motion.span>
-            )}
-          </AnimatePresence>
-        </motion.div>
-      )}
-    </div>
   );
 }
 
@@ -611,29 +581,32 @@ export default function Home() {
                     <p>Frontend Developer — <BlurShimmerText texts={["Designer", "Developer", "Creator", "Freelancer", "Problem Solver"]} blur={4} interval={4} className="text-foreground" /></p>
                   </div>
                 </div>
-                <div className="mt-3 flex justify-start gap-1 px-0 sm:mt-0 sm:gap-2">
-                  {socialLinks.map((link) =>
-                    link.label === "Instagram" ? (
-                      <button
-                        key={link.label}
-                        type="button"
-                        onClick={() => setShowInstaPopup(true)}
-                        className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all bg-secondary text-secondary-foreground hover:bg-secondary/80 size-8 rounded-full touch-manipulation active:opacity-75"
-                      >
-                        <link.icon className="size-4" />
-                      </button>
-                    ) : (
-                      <a
-                        key={link.label}
-                        className="inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all bg-secondary text-secondary-foreground hover:bg-secondary/80 size-8 rounded-full touch-manipulation active:opacity-75"
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <link.icon className="size-4" />
-                      </a>
-                    )
-                  )}
+                <div className="mt-3 flex justify-start gap-1.5 px-0 sm:mt-0 sm:gap-2">
+                  {socialLinks.map((link) => {
+                    const isInsta = link.label === "Instagram";
+                    return (
+                      <SocialTip key={link.label} text={link.label}>
+                        {isInsta ? (
+                          <button
+                            type="button"
+                            onClick={() => setShowInstaPopup(true)}
+                            className="select-none bg-background border border-border rounded-md p-1.5 text-[1.35rem] hover:bg-muted transition-all duration-100 cursor-pointer flex items-center justify-center"
+                          >
+                            <link.icon className="size-4" />
+                          </button>
+                        ) : (
+                          <a
+                            className="select-none bg-background border border-border rounded-md p-1.5 text-[1.35rem] hover:bg-muted transition-all duration-100 cursor-pointer flex items-center justify-center"
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <link.icon className="size-4" />
+                          </a>
+                        )}
+                      </SocialTip>
+                    );
+                  })}
                 </div>
               </div>
             </motion.div>
@@ -663,23 +636,35 @@ export default function Home() {
                 visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
               }}
             >
-              <div className="mt-4 flex items-center px-4 sm:px-8">
-                <a
-                  className="inline-flex items-center cursor-pointer justify-center whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 h-8 rounded-md gap-1.5 px-3"
-                  href="https://x.com/messages/compose?recipient_id=TechMaster54321"
-                  target="_blank"
-                >
-                  <MessageCircle className="size-4 opacity-40" />
-                  Twitter DM
-                </a>
-                <span className="mx-1 text-xs font-medium text-foreground/20">OR</span>
-                <a
-                  className="inline-flex items-center cursor-pointer justify-center whitespace-nowrap text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent/5 h-8 rounded-md gap-1.5 px-3"
-                  href="mailto:ashish.jayshreeram@gmail.com"
-                >
-                  <PenLine className="size-4 opacity-40" />
-                  Email
-                </a>
+              <div className="mt-4 flex flex-col gap-2.5 px-4 sm:px-8">
+                <p className="text-sm text-foreground/60">Most of the time, you&apos;ll find me building things or exploring new tech. Feel free to DM me on X or reach out via email if you have any queries.</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  {contactLinks.map((link) => {
+                    const Icon = link.icon;
+                    return link.popup ? (
+                      <button
+                        key={link.name}
+                        type="button"
+                        onClick={() => setShowInstaPopup(true)}
+                        className="cursor-pointer w-fit select-none transition-colors duration-100 flex flex-row gap-1.5 items-center bg-muted border border-border hover:bg-accent/5 px-2 py-1 rounded-md text-sm font-medium text-foreground/70"
+                      >
+                        {typeof Icon === "function" ? <Icon className="size-4" /> : Icon}
+                        {link.name}
+                      </button>
+                    ) : (
+                      <a
+                        key={link.name}
+                        className="cursor-pointer w-fit select-none transition-colors duration-100 flex flex-row gap-1.5 items-center bg-muted border border-border hover:bg-accent/5 px-2 py-1 rounded-md text-sm font-medium text-foreground/70"
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {typeof Icon === "function" ? <Icon className="size-4" /> : Icon}
+                        {link.name}
+                      </a>
+                    );
+                  })}
+                </div>
               </div>
             </motion.div>
           </motion.div>
@@ -719,14 +704,13 @@ export default function Home() {
                   <p className="text-[10px] tracking-tight text-foreground/30 normal-case sm:text-xs">Delhi, India</p>
                 </div>
               </div>
-              <AnimatePresence initial={false}>
+              <AnimatePresence mode="wait">
                 {expanded && (
                   <motion.div
-                    key="expanded-content"
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ ease: "easeInOut", duration: 0.3 }}
                     className="overflow-hidden"
                   >
                     <div className="space-y-4 text-sm leading-relaxed text-foreground/70 pt-4 md:text-base">
@@ -755,61 +739,26 @@ export default function Home() {
                 ALL <MoveRight className="size-3" />
               </Link>
             </div>
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {projects.map((project, i) => (
+            <div className="flex flex-col md:gap-2.5 gap-3.5">
+              {homeProjects.map((project) => (
                 <motion.div
-                  key={project.title}
+                  key={project.id}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.1 }}
+                  transition={{ duration: 0.4, delay: (project.id - 1) * 0.075 }}
                 >
-                  {project.comingSoon ? (
-                    <div className="group flex flex-col gap-4 pb-4 pointer-events-none">
-                      <div className="relative aspect-[3/2] overflow-hidden rounded-lg border border-dashed border-foreground/20 bg-muted/30 flex items-center justify-center">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-lg font-serif italic text-foreground/20 -rotate-12">Coming Soon</span>
-                        </div>
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        <h4 className="text-base font-semibold text-foreground/30">{project.title}</h4>
-                      </div>
-                    </div>
-                  ) : (
-                    <Link
-                      href={project.href}
-                      className="group flex cursor-pointer flex-col gap-4 pb-4"
-                    >
-                      <div className="relative perspective-[2000px]">
-                        <motion.div
-                          initial={{ rotateY: -12, rotateX: 5, x: 8, y: -6 }}
-                          whileHover={{ rotateY: 0, rotateX: 0, x: 0, y: 0 }}
-                          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                          style={{ transformStyle: "preserve-3d" }}
-                          className="relative aspect-[3/2] overflow-hidden rounded-lg"
-                        >
-                          <Image src={project.image} alt={project.title} width={400} height={300} loading="lazy" className="h-full w-full object-cover object-top" />
-                          {project.badge && (
-                            <span className={`absolute bottom-2 right-2 rounded-full px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm ${project.badge === "100+ users!" ? "bg-green-500/90" : "bg-red-500/90"}`}>
-                              {project.badge}
-                            </span>
-                          )}
-                        </motion.div>
-                        <div className="pointer-events-none absolute inset-0 -z-10 rounded-lg border-x border-(--pattern-fg) bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px]" />
-                      </div>
-                      <div className="flex flex-col gap-1 transition-all duration-300 group-hover:translate-x-4">
-                        <h4 className="text-base font-semibold text-foreground">{project.title}</h4>
-                        <p className="w-[calc(100%-1.5rem)] text-sm text-foreground/50 line-clamp-2">{project.description}</p>
-                        <ProjectStackBadge stack={project.stack} more={(project as any).more} />
-                      </div>
-                    </Link>
-                  )}
+                  <ProjectCard
+                    title={project.title}
+                    img={project.img}
+                    content={project.content}
+                    status={project.status}
+                    skill={project.skill}
+                    url={project.url}
+                  />
                 </motion.div>
               ))}
             </div>
-            <h5 className="font-serif mt-4 bg-linear-to-r from-gray-200 via-gray-400 to-gray-600 bg-clip-text py-1 text-center text-3xl font-bold whitespace-nowrap text-transparent opacity-30 transition-all duration-300 hover:opacity-80 md:text-6xl">
-              More Projects Soon . . .
-            </h5>
           </div>
         </MotionSection>
 

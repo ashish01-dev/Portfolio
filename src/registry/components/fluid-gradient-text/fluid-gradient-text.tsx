@@ -48,12 +48,12 @@ export function FluidGradientText({
 
   return (
     <div
-      className={cn("relative size-full overflow-hidden after:absolute after:bottom-0 after:h-px after:w-full after:bg-current/15", className)}
+      className={cn("relative size-full overflow-hidden font-sans after:absolute after:bottom-0 after:h-px after:w-full after:bg-current/15", className)}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
       <svg
-        className="size-full translate-y-[37.5%] select-none"
+        className="size-full translate-y-[37.5%] select-none font-sans"
         viewBox={`0 0 ${svgViewBoxWidth} ${svgViewBoxHeight}`}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +68,7 @@ export function FluidGradientText({
           strokeWidth="2"
           fill="url(#fluid_gradient_text_linear)"
           style={{
-            fontFamily: "var(--font-sans)",
+            fontFamily: "inherit",
             fontSize: svgViewBoxHeight,
             fontWeight: "bold",
           }}

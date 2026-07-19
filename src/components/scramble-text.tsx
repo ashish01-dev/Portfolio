@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 
 interface ScrambleTextProps {
   text: string
@@ -14,6 +14,14 @@ interface ScrambleTextProps {
 
 const defaultScrambleChars = "!<>-_\\/[]{}—=+*^?#________"
 
+function randomScramble(length: number, chars: string) {
+  let result = ""
+  for (let i = 0; i < length; i++) {
+    result += chars[Math.floor(Math.random() * chars.length)]
+  }
+  return result
+}
+
 export function ScrambleText({
   text,
   className,
@@ -23,7 +31,11 @@ export function ScrambleText({
   play = true,
   onComplete,
 }: ScrambleTextProps) {
-  const [displayText, setDisplayText] = useState(text)
+  const initialScrambled = useMemo(
+    () => randomScramble(text.length, scrambleChars),
+    []
+  )
+  const [displayText, setDisplayText] = useState(initialScrambled)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {

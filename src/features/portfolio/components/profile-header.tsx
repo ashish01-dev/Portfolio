@@ -22,17 +22,20 @@ export function ProfileHeader() {
       <div className="flex flex-col sm:row-span-2 sm:row-start-1">
         <div className="screen-line-top mt-auto shrink-0 border-r border-line">
           <AvatarLightsToggle className="group/avatar-lights-toggle mx-0.5 my-0.75 flex outline-none">
-            <SpinningCircularText
-              text="Trying to be better"
-              fontSize="1.25rem"
-              charSpacing={1.4}
-              spinClassName="duration-[20s]"
-            >
-              <AvatarLights
-                className="ring-border ring-offset-background group-focus-visible/avatar-lights-toggle:ring-1 group-focus-visible/avatar-lights-toggle:ring-offset-2"
-                variants={USER.avatarVariants}
+            <div className="relative grid place-items-center">
+              <SpinningCircularText
+                text="Trying to be better"
+                fontSize="1.18rem"
+                charSpacing={1.5}
+                spinClassName="duration-[20s]"
               />
-            </SpinningCircularText>
+              <div className="pointer-events-none absolute inset-0 grid place-items-center">
+                <AvatarLights
+                  className="ring-border ring-offset-background group-focus-visible/avatar-lights-toggle:ring-1 group-focus-visible/avatar-lights-toggle:ring-offset-2"
+                  variants={USER.avatarVariants}
+                />
+              </div>
+            </div>
           </AvatarLightsToggle>
         </div>
       </div>

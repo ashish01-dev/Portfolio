@@ -34,9 +34,11 @@ export function FeedbackPopover() {
       <PopoverTrigger className="flex items-center text-muted-foreground transition-[color] hover:text-foreground">
         <MessageSquare className="size-4" />
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent className="border border-line bg-background ring-1 ring-foreground/10">
         <PopoverHeader>
-          <PopoverTitle>Feedback</PopoverTitle>
+          <PopoverTitle className="font-heading text-base font-medium">
+            Feedback
+          </PopoverTitle>
         </PopoverHeader>
         {isSent ? (
           <div className="flex items-center gap-2 text-sm text-green-500">
@@ -47,12 +49,17 @@ export function FeedbackPopover() {
           <>
             <Textarea
               placeholder="Your feedback..."
-              className="min-h-24"
+              className="min-h-24 border-line bg-transparent focus-visible:border-ring"
               value={feedbackText}
               onChange={(e) => setFeedbackText(e.target.value)}
             />
             <div className="flex justify-end gap-2">
-              <Button variant="outline" size="sm" onClick={handleCancel}>
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-line bg-transparent text-muted-foreground hover:text-foreground"
+                onClick={handleCancel}
+              >
                 Cancel
               </Button>
               <Button

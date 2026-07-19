@@ -1,216 +1,108 @@
 "use client"
 
-import { useRef } from "react"
-import Link from "next/link"
-import { ArrowRightIcon } from "lucide-react"
-import { useInView, usePageInView } from "motion/react"
-
-import { cn } from "@/lib/utils"
-import { useMediaQuery } from "@/hooks/use-media-query"
-import { Button } from "@/components/base/ui/button"
-import type { MarqueeContentProps } from "@/components/kibo-ui/marquee"
-import {
-  Marquee,
-  MarqueeContent,
-  MarqueeFade,
-  MarqueeItem,
-} from "@/components/kibo-ui/marquee"
-import {
-  Testimonial,
-  TestimonialAuthor,
-  TestimonialAuthorName,
-  TestimonialAuthorTagline,
-  TestimonialAvatar,
-  TestimonialAvatarImg,
-  TestimonialAvatarRing,
-  TestimonialQuote,
-} from "@/registry/transformed/components/testimonial"
-import { TestimonialSpotlight } from "@/registry/transformed/components/testimonial-spotlight"
-import { Twemoji } from "@/registry/transformed/components/twemoji/twemoji"
-import { SOCIAL } from "@/features/portfolio/data/social-links"
-import {
-  TESTIMONIALS_1,
-  TESTIMONIALS_2,
-} from "@/features/portfolio/data/testimonials"
-import type { Testimonial as TestimonialType } from "@/features/portfolio/types/testimonials"
-
+import { Card, CardContent } from "@/components/ui/card"
+import { Marquee } from "@/components/marquee"
 import { Panel, PanelContent, PanelHeader, PanelTitle } from "./panel"
 
 const ID = "testimonials"
 
-const TESTIMONIALS = [...TESTIMONIALS_1, ...TESTIMONIALS_2].sort(
-  (a, b) => Number(a.order ?? 999) - Number(b.order ?? 999)
-)
+const reviews = [
+  {
+    name: "Arjun Mehta",
+    username: "@arjunmehta",
+    body: "“Our productivity has nearly doubled since onboarding. Automation features removed repetitive tasks, allowing our team to focus on building instead of managing operations.”",
+    profile: "https://images.shadcnspace.com/assets/profiles/rough.webp",
+  },
+  {
+    name: "Priya Sharma",
+    username: "@priyasharma",
+    body: "“What surprised us most was how quickly our team adapted. Minimal learning curve, excellent documentation, and powerful features make it a must-have for modern SaaS companies.”",
+    profile: "https://images.shadcnspace.com/assets/profiles/albert.webp",
+  },
+  {
+    name: "Vikram Patel",
+    username: "@vikrampatel",
+    body: "“This is easily one of the most reliable SaaS tools we've adopted. The UI is intuitive, integrations are seamless, and it saves us countless hours every week.”",
+    profile: "https://images.shadcnspace.com/assets/profiles/linda.webp",
+  },
+  {
+    name: "Ananya Gupta",
+    username: "@ananyagupta",
+    body: "Switching to this platform streamlined our entire workflow. Setup was effortless, performance improved instantly, and our team now ships features faster without worrying about infrastructure.",
+    profile: "https://images.shadcnspace.com/assets/profiles/jessica.webp",
+  },
+  {
+    name: "Rohit Verma",
+    username: "@rohitverma",
+    body: "“We evaluated multiple solutions, but this stood out immediately. It's fast, scalable, and thoughtfully designed for growing teams that need stability without added complexity.”",
+    profile: "https://images.shadcnspace.com/assets/profiles/jenny.webp",
+  },
+  {
+    name: "Neha Singh",
+    username: "@nehasingh",
+    body: "“What surprised us most was how quickly our team adapted. Minimal learning curve, excellent documentation, and powerful features make it a must-have for modern SaaS companies.”",
+    profile: "https://images.shadcnspace.com/assets/profiles/albert.webp",
+  },
+  {
+    name: "Aditya Kapoor",
+    username: "@adityakapoor",
+    body: "“Our productivity has nearly doubled since onboarding. Automation features removed repetitive tasks, allowing our team to focus on building instead of managing operations.”",
+    profile: "https://images.shadcnspace.com/assets/profiles/rough.webp",
+  },
+]
 
-const TESTIMONIALS_MOBILE = TESTIMONIALS.slice(0, 8)
-
-const TESTIMONIALS_FEATURED = TESTIMONIALS.filter((item) => item.isFeatured)
-
-const TESTIMONIALS_1_FILTERED = TESTIMONIALS_1.filter(
-  (item) => !item.isFeatured
-)
-
-const TESTIMONIALS_2_FILTERED = TESTIMONIALS_2.filter(
-  (item) => !item.isFeatured
-)
-
-export function Testimonials() {
-  const ref = useRef<HTMLDivElement>(null)
-  const isPageInView = usePageInView()
-  const isInView = useInView(ref)
-  const isDesktop = useMediaQuery("(min-width: 40rem)") // sm breakpoint
-  const play = isPageInView && isInView && isDesktop
-
-  return (
-    <Panel ref={ref} id={ID}>
-      <PanelHeader>
-        <PanelTitle>
-          Trusted by
-          <span className="block sm:hidden" /> top builders on{" "}
-          <a href={SOCIAL.x.href} target="_blank" rel="noopener" aria-label="X">
-            𝕏
-          </a>
-        </PanelTitle>
-      </PanelHeader>
-
-      <div className="grid gap-4 py-4 sm:hidden">
-        {TESTIMONIALS_MOBILE.map((item) => (
-          <TestimonialItem
-            key={item.url}
-            className="screen-line-top screen-line-bottom"
-            {...item}
-          />
-        ))}
-      </div>
-
-      <PanelContent className="hidden gap-1 sm:grid sm:grid-cols-2">
-        {TESTIMONIALS_FEATURED.map((item) => (
-          <TestimonialSpotlight
-            key={item.url}
-            className="bg-background inset-ring-foreground/20 [--spotlight-size:50%]"
-          >
-            <TestimonialItem {...item} showIcon />
-          </TestimonialSpotlight>
-        ))}
-
-        <TestimonialsMarquee
-          className="sm:col-span-2"
-          data={TESTIMONIALS_1_FILTERED}
-          play={play}
-        />
-
-        <TestimonialsMarquee
-          className="sm:col-span-2"
-          data={TESTIMONIALS_2_FILTERED}
-          direction="right"
-          play={play}
-        />
-      </PanelContent>
-
-      <div className="screen-line-top flex justify-center py-2">
-        <Button
-          className="gap-2 pr-2.5 pl-3"
-          variant="secondary"
-          size="sm"
-          nativeButton={false}
-          render={<Link href="/testimonials" />}
-        >
-          All builders
-          <ArrowRightIcon />
-        </Button>
-      </div>
-    </Panel>
-  )
-}
-
-function TestimonialsMarquee({
-  data,
-  direction,
-  play,
-  className,
+function ReviewCard({
+  profile,
+  name,
+  username,
+  body,
 }: {
-  data: TestimonialType[]
-  direction?: MarqueeContentProps["direction"]
-  play?: boolean
-  className?: string
+  profile: string
+  name: string
+  username: string
+  body: string
 }) {
   return (
-    <Marquee className={className}>
-      <MarqueeFade side="left" />
-      <MarqueeFade side="right" />
-
-      <MarqueeContent
-        className="[&_.rfm-initial-child-container]:items-stretch! [&_.rfm-marquee]:items-stretch!"
-        play={play}
-        pauseOnHover={false}
-        direction={direction}
-        speed={30}
-      >
-        {data.map((item) => (
-          <MarqueeItem
-            key={item.url}
-            className="mx-0.5 h-full w-xs rounded-xl bg-background inset-ring-1 inset-ring-border transition-[background-color] ease-out hover:bg-accent-muted"
-          >
-            <TestimonialItem {...item} />
-          </MarqueeItem>
-        ))}
-      </MarqueeContent>
-    </Marquee>
+    <Card className="relative mx-2 w-72 cursor-pointer overflow-hidden border border-line bg-card p-4 shadow-none shrink-0">
+      <CardContent className="flex flex-col gap-3 p-0">
+        <div className="flex items-center gap-2">
+          <img
+            className="size-8 rounded-full"
+            src={profile}
+            alt=""
+          />
+          <div className="flex flex-col">
+            <p className="text-sm font-medium text-foreground">{name}</p>
+            <p className="text-xs font-medium text-muted-foreground">
+              {username}
+            </p>
+          </div>
+        </div>
+        <p className="line-clamp-2 text-sm text-foreground">{body}</p>
+      </CardContent>
+    </Card>
   )
 }
 
-function TestimonialItem({
-  className,
-  authorAvatar,
-  authorName,
-  authorTagline,
-  url,
-  quote,
-  icon,
-  showIcon = false,
-}: TestimonialType & { className?: string; showIcon?: boolean }) {
+export function Testimonials() {
   return (
-    <Testimonial className={cn("group/testimonial relative", className)}>
-      <TestimonialQuote className="font-serif text-base">
-        <p>
-          <Twemoji className="grayscale transition-[filter] duration-300 ease-[cubic-bezier(0.42,0,0.58,1)] group-hover/testimonial:grayscale-0">
-            {quote}
-          </Twemoji>
-        </p>
-      </TestimonialQuote>
+    <Panel id={ID}>
+      <PanelHeader>
+        <PanelTitle>Trusted by many</PanelTitle>
+      </PanelHeader>
 
-      <TestimonialAuthor>
-        <TestimonialAvatar>
-          <TestimonialAvatarImg
-            className="grayscale transition-[filter] duration-300 ease-[cubic-bezier(0.42,0,0.58,1)] group-hover/testimonial:grayscale-0"
-            src={authorAvatar}
-            alt={authorName}
-          />
-          <TestimonialAvatarRing />
-        </TestimonialAvatar>
+      <PanelContent className="relative overflow-hidden">
+        <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
+          <Marquee speed={20} pauseOnHover direction="left">
+            {reviews.map((review) => (
+              <ReviewCard key={review.username} {...review} />
+            ))}
+          </Marquee>
 
-        <TestimonialAuthorName>
-          <a href={url} target="_blank" rel="noopener">
-            <span className="absolute inset-0" aria-hidden />
-            {authorName}
-          </a>
-          {/* {isVerified && (
-            <TestimonialVerifiedBadge className="text-info">
-              <VerifiedIcon />
-            </TestimonialVerifiedBadge>
-          )} */}
-        </TestimonialAuthorName>
-        <TestimonialAuthorTagline>{authorTagline}</TestimonialAuthorTagline>
-      </TestimonialAuthor>
-
-      {showIcon && icon && (
-        <div
-          className="pointer-events-none absolute right-3 bottom-3 flex size-8 items-center justify-center [&_svg]:size-4 [&_svg]:text-muted-foreground/80"
-          aria-hidden
-        >
-          {icon}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-background" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-background" />
         </div>
-      )}
-    </Testimonial>
+      </PanelContent>
+    </Panel>
   )
 }

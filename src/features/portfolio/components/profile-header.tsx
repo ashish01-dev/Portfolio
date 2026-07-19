@@ -20,7 +20,7 @@ export function ProfileHeader() {
           playsInline
           className="h-auto w-full"
         />
-        <figcaption className="pointer-events-none absolute bottom-2 left-2 flex items-center gap-2 sm:bottom-4 sm:left-4">
+        <figcaption className="absolute bottom-2 left-2 flex items-center gap-2 sm:bottom-4 sm:left-4">
           <ScrambleText
             text={USER.displayName}
             className="text-[2rem]/none font-medium tracking-tight"
@@ -33,7 +33,7 @@ export function ProfileHeader() {
         <div className="screen-line-top mt-auto shrink-0 border-r border-line">
           <AvatarLightsToggle className="group/avatar-lights-toggle mx-0.5 my-0.75 flex outline-none">
             <SpinningCircularText
-              text="Trying to do better"
+              text="Trying  to  do  better"
               fontSize="1.2rem"
               charSpacing={2.5}
               spinClassName="duration-[20s]"

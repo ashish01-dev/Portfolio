@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef, useCallback, useEffect } from "react"
 
 interface ScrambleTextProps {
   text: string
@@ -33,32 +33,31 @@ export function ScrambleText({
 }: ScrambleTextProps) {
   const [displayText, setDisplayText] = useState(text)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const frameRef = useRef(0)
 
-  useEffect(() => {
-    const onCompleteRef = { current: onComplete }
-    if (!play) {
-      setDisplayText(text)
-      return
+  const startScramble = useCallback(() => {
+    if (intervalRef.current !== null) {
+      clearInterval(intervalRef.current)
     }
 
-    // Immediately scramble on mount
+    frameRef.current = 0
     setDisplayText(randomScramble(text.length, scrambleChars))
 
-    let frame = 0
     const totalFrames = text.length * 2
+    const onCompleteRef = { current: onComplete }
 
-    const scramble = () => {
+    intervalRef.current = setInterval(() => {
       let result = ""
       for (let i = 0; i < text.length; i++) {
-        if (frame >= i * 2) {
+        if (frameRef.current >= i * 2) {
           result += text[i]
         } else {
           result += scrambleChars[Math.floor(Math.random() * scrambleChars.length)]
         }
       }
       setDisplayText(result)
-      frame++
-      if (frame > totalFrames) {
+      frameRef.current++
+      if (frameRef.current > totalFrames) {
         setDisplayText(text)
         onCompleteRef.current?.()
         if (intervalRef.current !== null) {
@@ -66,17 +65,40 @@ export function ScrambleText({
           intervalRef.current = null
         }
       }
+    }, speed)
+  }, [text, speed, scrambleChars, onComplete])
+
+  const resetText = useCallback(() => {
+    if (intervalRef.current !== null) {
+      clearInterval(intervalRef.current)
+      intervalRef.current = null
     }
+    setDisplayText(text)
+  }, [text])
 
-    intervalRef.current = setInterval(scramble, speed)
-
+  useEffect(() => {
+    if (!play) {
+      resetText()
+    }
     return () => {
       if (intervalRef.current !== null) {
         clearInterval(intervalRef.current)
         intervalRef.current = null
       }
     }
-  }, [text, speed, scrambleChars, play])
+  }, [play, resetText])
 
-  return <Tag className={className}>{displayText}</Tag>
+  if (!play) {
+    return <Tag className={className}>{text}</Tag>
+  }
+
+  return (
+    <Tag
+      className={className}
+      onMouseEnter={startScramble}
+      onMouseLeave={resetText}
+    >
+      {displayText}
+    </Tag>
+  )
 }

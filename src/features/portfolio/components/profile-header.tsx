@@ -6,16 +6,21 @@ import { TextFlip } from "@/registry/components/text-flip"
 
 import { AvatarLightsToggle } from "./avatar-lights-toggle"
 import { PronounceMyName } from "./pronounce-my-name"
-import { SpotlightLogo } from "@/registry/components/spotlight-logo/spotlight-logo"
 import { VerifiedIcon } from "./verified-icon"
 
 export function ProfileHeader() {
   return (
     <div className="screen-line-bottom grid grid-cols-[auto_1fr] grid-rows-[1fr_auto] border-x border-line">
       <figure className="relative col-span-2 p-2 sm:col-span-1 sm:col-start-2 sm:p-4">
-        <SpotlightLogo />
+        <iframe
+          src="https://assets.pinterest.com/ext/embed.html?id=59180182597377985"
+          height="295"
+          width="345"
+          frameBorder="0"
+          scrolling="no"
+        />
         <figcaption className="pointer-events-none absolute right-2 bottom-2 font-mono text-xs leading-none text-zinc-400 select-none sm:right-4 dark:text-zinc-700">
-          FIG_001
+          <ScrambleText text={USER.displayName} />
         </figcaption>
       </figure>
 
@@ -59,7 +64,7 @@ export function ProfileHeader() {
             )}
           </div>
 
-          <div className="border-t border-line py-1 pl-4">
+          <div className="py-2 pl-4">
             <TextFlip
               className="font-mono text-sm text-muted-foreground"
               interval={2.5}

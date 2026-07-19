@@ -31,9 +31,7 @@ export function ScrambleText({
   play = true,
   onComplete,
 }: ScrambleTextProps) {
-  const [displayText, setDisplayText] = useState(() =>
-    randomScramble(text.length, scrambleChars)
-  )
+  const [displayText, setDisplayText] = useState(text)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
@@ -42,6 +40,9 @@ export function ScrambleText({
       setDisplayText(text)
       return
     }
+
+    // Immediately scramble on mount
+    setDisplayText(randomScramble(text.length, scrambleChars))
 
     let frame = 0
     const totalFrames = text.length * 2
@@ -77,5 +78,5 @@ export function ScrambleText({
     }
   }, [text, speed, scrambleChars, play])
 
-  return <Tag className={className} suppressHydrationWarning>{displayText}</Tag>
+  return <Tag className={className}>{displayText}</Tag>
 }

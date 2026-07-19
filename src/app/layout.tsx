@@ -1,7 +1,8 @@
 import type { Metadata } from "next"
 import { Manrope, Instrument_Serif, Geist_Mono } from "next/font/google"
-import { Toaster } from "react-hot-toast"
 import { SwitchProvider } from "@/components/Context/SwitchContext"
+import { TooltipProvider } from "@/components/ui/tooltip"
+import { Toaster } from "@/components/ui/sonner"
 import "../styles/globals.css"
 
 const manrope = Manrope({
@@ -42,15 +43,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${manrope.variable} ${instrumentSerif.variable} ${geistMono.variable} antialiased`}>
       <body className="min-h-dvh bg-background text-foreground">
-        <Toaster
-          position="bottom-center"
-          toastOptions={{
-            style: { background: "#18181b", color: "#e4e4e7", border: "1px solid #3f3f46", fontSize: "14px" },
-          }}
-        />
-        <SwitchProvider>
-          {children}
-        </SwitchProvider>
+        <TooltipProvider>
+          <SwitchProvider>
+            {children}
+          </SwitchProvider>
+          <Toaster richColors position="bottom-center" />
+        </TooltipProvider>
       </body>
     </html>
   )

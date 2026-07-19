@@ -43,10 +43,12 @@ export default function HomePage() {
 
           <Overview />
           <SocialLinks />
-          <GitHubContributions />
           <Separator />
 
           <Hello />
+          <Separator />
+
+          <GitHubContributions />
           <Separator />
 
           <Experiences />

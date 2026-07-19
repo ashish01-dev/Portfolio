@@ -117,7 +117,7 @@ const LineNavItem = memo(function LineNavItem({
           variants={lineVariants}
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
         />
-        <span className="text-sm whitespace-nowrap text-muted-foreground transition-[color] ease-out group-hover:text-foreground group-aria-[current=page]:text-foreground">
+        <span className="text-sm whitespace-nowrap text-muted-foreground opacity-0 transition-[color,opacity] ease-out group-hover:opacity-100 group-hover:text-foreground group-aria-[current=page]:opacity-100 group-aria-[current=page]:text-foreground">
           {title}
         </span>
       </motion.a>

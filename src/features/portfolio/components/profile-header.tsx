@@ -1,11 +1,12 @@
 import { AvatarLights } from "@/features/portfolio/components/avatar-lights"
 import { USER } from "@/features/portfolio/data/user"
+import { ScrambleText } from "@/components/scramble-text"
 import { SpinningCircularText } from "@/registry/components/spinning-circular-text/spinning-circular-text"
+import { TextFlip } from "@/registry/components/text-flip"
 
 import { AvatarLightsToggle } from "./avatar-lights-toggle"
-import { SpotlightLogo } from "@/registry/components/spotlight-logo/spotlight-logo"
-import { FlipSentences } from "./flip-sentences"
 import { PronounceMyName } from "./pronounce-my-name"
+import { SpotlightLogo } from "@/registry/components/spotlight-logo/spotlight-logo"
 import { VerifiedIcon } from "./verified-icon"
 
 export function ProfileHeader() {
@@ -21,20 +22,17 @@ export function ProfileHeader() {
       <div className="flex flex-col sm:row-span-2 sm:row-start-1">
         <div className="screen-line-top mt-auto shrink-0 border-r border-line">
           <AvatarLightsToggle className="group/avatar-lights-toggle mx-0.5 my-0.75 flex outline-none">
-            <div className="relative">
+            <SpinningCircularText
+              text="Trying to be better"
+              fontSize="1.25rem"
+              charSpacing={1.4}
+              spinClassName="duration-[20s]"
+            >
               <AvatarLights
                 className="ring-border ring-offset-background group-focus-visible/avatar-lights-toggle:ring-1 group-focus-visible/avatar-lights-toggle:ring-offset-2"
                 variants={USER.avatarVariants}
               />
-              <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                <SpinningCircularText
-                  text="Developer • Designer • Rookie"
-                  fontSize="0.65rem"
-                  charSpacing={1.2}
-                  spinClassName="duration-[20s]"
-                />
-              </div>
-            </div>
+            </SpinningCircularText>
           </AvatarLightsToggle>
         </div>
       </div>
@@ -42,9 +40,11 @@ export function ProfileHeader() {
       <div className="flex flex-col">
         <div className="z-1 mt-auto border-t border-line">
           <div className="flex items-center gap-2 pl-4">
-            <h1 className="-translate-y-px text-[2rem]/none font-medium tracking-tight">
-              {USER.displayName}
-            </h1>
+            <ScrambleText
+              as="h1"
+              text={USER.displayName}
+              className="-translate-y-px text-[2rem]/none font-medium tracking-tight"
+            />
 
             <VerifiedIcon className="size-4.5 select-none" aria-hidden />
 
@@ -55,9 +55,16 @@ export function ProfileHeader() {
             )}
           </div>
 
-          <FlipSentences className="h-12.5 border-t border-line py-1 pl-4 sm:h-9">
-            {USER.flipSentences}
-          </FlipSentences>
+          <div className="border-t border-line py-1 pl-4">
+            <TextFlip
+              className="font-mono text-sm text-muted-foreground"
+              interval={2.5}
+            >
+              <span>Developer</span>
+              <span>Builder</span>
+              <span>Designer</span>
+            </TextFlip>
+          </div>
         </div>
       </div>
     </div>

@@ -2,6 +2,8 @@
 
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react"
 
+import { cn } from "@/lib/utils"
+
 export type FluidGradientTextProps = {
   /** Text content rendered inside the SVG. */
   text: string
@@ -15,12 +17,14 @@ export type FluidGradientTextProps = {
    * @default 300
    * */
   svgViewBoxHeight?: number
+  className?: string
 }
 
 export function FluidGradientText({
   text,
   svgViewBoxWidth = 1200,
   svgViewBoxHeight = 300,
+  className,
 }: FluidGradientTextProps) {
   const gradientX1Raw = useMotionValue(0.5)
   const gradientX1 = useSpring(
@@ -44,7 +48,7 @@ export function FluidGradientText({
 
   return (
     <div
-      className="relative size-full overflow-hidden after:absolute after:bottom-0 after:h-px after:w-full after:bg-current/15"
+      className={cn("relative size-full overflow-hidden after:absolute after:bottom-0 after:h-px after:w-full after:bg-current/15", className)}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
@@ -64,7 +68,7 @@ export function FluidGradientText({
           strokeWidth="2"
           fill="url(#fluid_gradient_text_linear)"
           style={{
-            fontFamily: "Helvetica",
+            fontFamily: "var(--font-sans)",
             fontSize: svgViewBoxHeight,
             fontWeight: "bold",
           }}

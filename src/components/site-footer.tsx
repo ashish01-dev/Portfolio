@@ -19,16 +19,7 @@ export function SiteFooter() {
         <dl className="flex flex-col gap-4 py-8 font-mono [&_dd]:text-sm [&_dt]:text-right [&_dt]:text-sm [&_dt]:text-muted-foreground [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-2">
           <Item>
             <dt>Crafted by</dt>
-            <dd>
-              <a
-                className="link-underline"
-                href={xLink.href}
-                target="_blank"
-                rel="noopener"
-              >
-                {xLink.handle}
-              </a>
-            </dd>
+            <dd>Ashish</dd>
           </Item>
 
           <Item>

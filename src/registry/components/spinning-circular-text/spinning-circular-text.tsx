@@ -1,9 +1,6 @@
 import { cn } from "@/lib/utils"
 
-export type SpinningCircularTextProps = Omit<
-  React.ComponentProps<"div">,
-  "children"
-> & {
+export type SpinningCircularTextProps = React.ComponentProps<"div"> & {
   text: string
 
   /**
@@ -38,12 +35,13 @@ export function SpinningCircularText({
   renderChar,
   className,
   style,
+  children,
   ...props
 }: SpinningCircularTextProps) {
   return (
     <div
       className={cn(
-        "grid size-(--sc-container-size) place-items-center font-mono font-medium uppercase select-none",
+        "relative grid size-(--sc-container-size) place-items-center font-mono font-medium uppercase select-none",
         className
       )}
       style={
@@ -62,6 +60,11 @@ export function SpinningCircularText({
       }
       {...props}
     >
+      {children && (
+        <div className="absolute inset-0 z-1 grid place-items-center pointer-events-none">
+          {children}
+        </div>
+      )}
       <div
         className={cn(
           "relative animate-spin-ccw text-(size:--sc-size) leading-none",

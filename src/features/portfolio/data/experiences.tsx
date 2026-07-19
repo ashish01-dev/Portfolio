@@ -10,16 +10,16 @@ export const EXPERIENCES: Experience[] = [
     id: "freelance",
     companyName: "Freelance",
     companyIcon: <BriefcaseBusinessIcon strokeWidth={1.8} />,
-    location: "Bihar, India",
+    location: "Delhi, India",
     locationType: "Remote",
     positions: [
       {
         id: "1",
         title: "Frontend Developer",
         employmentPeriod: {
-          start: "01.2024",
+          start: "06.2025",
         },
-        employmentType: "Full-time",
+        employmentType: "Part-time",
         icon: <CodeXmlIcon />,
         description: `- Build high-converting websites for B2C and B2B brands.
 - Design and develop scalable product interfaces for startups.

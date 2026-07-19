@@ -1,5 +1,6 @@
 import { AvatarLights } from "@/features/portfolio/components/avatar-lights"
 import { USER } from "@/features/portfolio/data/user"
+import { SpinningCircularText } from "@/registry/components/spinning-circular-text/spinning-circular-text"
 
 import { AvatarLightsToggle } from "./avatar-lights-toggle"
 import { ChanhDaiMarkIsometric } from "./chanhdai-mark-isometric"
@@ -20,10 +21,18 @@ export function ProfileHeader() {
       <div className="flex flex-col sm:row-span-2 sm:row-start-1">
         <div className="screen-line-top mt-auto shrink-0 border-r border-line">
           <AvatarLightsToggle className="group/avatar-lights-toggle mx-0.5 my-0.75 flex outline-none">
-            <AvatarLights
-              className="ring-border ring-offset-background group-focus-visible/avatar-lights-toggle:ring-1 group-focus-visible/avatar-lights-toggle:ring-offset-2"
-              variants={USER.avatarVariants}
-            />
+            <SpinningCircularText
+              text="Developer • Designer • Rookie"
+              fontSize="0.5rem"
+              charSpacing={1.1}
+              spinClassName="duration-[20s]"
+              className="[--sc-container-size:9rem]"
+            >
+              <AvatarLights
+                className="ring-border ring-offset-background group-focus-visible/avatar-lights-toggle:ring-1 group-focus-visible/avatar-lights-toggle:ring-offset-2"
+                variants={USER.avatarVariants}
+              />
+            </SpinningCircularText>
           </AvatarLightsToggle>
         </div>
       </div>

@@ -6,8 +6,8 @@ export const EDUCATION: Education[] = [
     school: "GGSIPU, Delhi, India",
     degree: "BTech in Information Technology",
     period: {
-      start: "08.2021",
-      end: "08.2025",
+      start: "08.2025",
+      end: "08.2029",
     },
     description: `- Pursuing BTech in Information Technology at Guru Gobind Singh Indraprastha University
 - Focused on software engineering, web development, and system design

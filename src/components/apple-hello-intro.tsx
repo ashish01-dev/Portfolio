@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 import { AnimatePresence, motion } from "motion/react"
 
 import { AppleHelloEffectEnglish } from "@/registry/components/apple-hello-effect/apple-hello-effect-english"
@@ -8,25 +8,13 @@ import { AppleHelloEffectEnglish } from "@/registry/components/apple-hello-effec
 export function AppleHelloIntro() {
   const [show, setShow] = useState(true)
   const [animationDone, setAnimationDone] = useState(false)
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-    const seen = sessionStorage.getItem("apple-hello-seen")
-    if (seen) {
-      setShow(false)
-    }
-  }, [])
 
   const handleAnimationComplete = useCallback(() => {
     setAnimationDone(true)
     setTimeout(() => {
       setShow(false)
-      sessionStorage.setItem("apple-hello-seen", "true")
     }, 1500)
   }, [])
-
-  if (!mounted) return null
 
   return (
     <AnimatePresence>

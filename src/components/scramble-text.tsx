@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef, useMemo } from "react"
+import { useState, useEffect, useRef } from "react"
 
 interface ScrambleTextProps {
   text: string
@@ -31,11 +31,9 @@ export function ScrambleText({
   play = true,
   onComplete,
 }: ScrambleTextProps) {
-  const initialScrambled = useMemo(
-    () => randomScramble(text.length, scrambleChars),
-    []
+  const [displayText, setDisplayText] = useState(() =>
+    randomScramble(text.length, scrambleChars)
   )
-  const [displayText, setDisplayText] = useState(initialScrambled)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
@@ -79,5 +77,5 @@ export function ScrambleText({
     }
   }, [text, speed, scrambleChars, play])
 
-  return <Tag className={className}>{displayText}</Tag>
+  return <Tag className={className} suppressHydrationWarning>{displayText}</Tag>
 }

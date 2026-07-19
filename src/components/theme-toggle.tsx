@@ -1,5 +1,6 @@
 "use client"
 
+import { useCallback } from "react"
 import { useTheme } from "next-themes"
 import { useHotkeys } from "react-hotkeys-hook"
 
@@ -20,7 +21,7 @@ export function ThemeToggle() {
 
   const [click] = useClickSound()
 
-  const switchTheme = () => {
+  const switchTheme = useCallback(() => {
     const next = resolvedTheme === "dark" ? "light" : "dark"
 
     click()
@@ -30,9 +31,17 @@ export function ThemeToggle() {
         ? META_THEME_COLORS.light
         : META_THEME_COLORS.dark
     )
-  }
+  }, [resolvedTheme, systemTheme, click, setTheme, setMetaColor])
 
-  useHotkeys("d", () => switchTheme())
+  const handleToggle = useCallback(() => {
+    if (!document.startViewTransition) {
+      switchTheme()
+    } else {
+      document.startViewTransition(switchTheme)
+    }
+  }, [switchTheme])
+
+  useHotkeys("d", () => handleToggle())
 
   return (
     <Tooltip>
@@ -43,7 +52,7 @@ export function ThemeToggle() {
             variant="ghost"
             size="icon-sm"
             aria-label="Toggle mode"
-            onClick={() => switchTheme()}
+            onClick={() => handleToggle()}
           >
             <span
               className="absolute size-12 pointer-fine:hidden"

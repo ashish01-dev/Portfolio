@@ -1,0 +1,44 @@
+---
+title: "Demo Post 2: Optimizing React Performance"
+description: "Learn key techniques to optimize your React applications for better performance and user experience."
+createdAt: "2025-03-22"
+updatedAt: "2025-07-10"
+---
+
+## Why Performance Matters
+
+In today's fast-paced web, users expect instant load times and smooth interactions. A 100ms delay can significantly impact conversion rates.
+
+## Key Optimization Techniques
+
+### 1. Memoization
+
+Use `React.memo`, `useMemo`, and `useCallback` to prevent unnecessary re-renders:
+
+```tsx
+const ExpensiveComponent = React.memo(({ data }: Props) => {
+  return <div>{/* render logic */}</div>
+})
+```
+
+### 2. Code Splitting
+
+Lazy load components that aren't needed immediately:
+
+```tsx
+const HeavyComponent = dynamic(() => import("./HeavyComponent"), {
+  loading: () => <Skeleton />,
+})
+```
+
+### 3. Virtualization
+
+For long lists, use virtualization libraries like `react-window` or `@tanstack/virtual` to render only visible items.
+
+## Measuring Performance
+
+Use tools like Lighthouse, Chrome DevTools Performance tab, and React DevTools Profiler to identify bottlenecks.
+
+## Summary
+
+Performance optimization is an ongoing process. Start with the biggest wins and iterate.

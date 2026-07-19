@@ -42,24 +42,20 @@
   --font-mono: var(--font-geist-mono);
 }
 
-html {
-  transition: color-scheme 0.3s ease;
-}
-
 ::view-transition-old(root) {
   animation: none;
 }
 
 ::view-transition-new(root) {
-  animation: slide-reveal 0.65s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation: semicircle-rise 0.8s cubic-bezier(0.42, 0, 0.58, 1) both;
 }
 
-@keyframes slide-reveal {
+@keyframes semicircle-rise {
   from {
-    clip-path: var(--theme-clip-from, inset(100% 0 0 0));
+    clip-path: circle(0% at 50% 100%);
   }
   to {
-    clip-path: var(--theme-clip-to, inset(0 0 0 0));
+    clip-path: circle(141.4% at 50% 100%);
   }
 }
 
@@ -67,7 +63,6 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 *, *::before, *::after {

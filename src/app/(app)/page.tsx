@@ -49,15 +49,6 @@ export default function HomePage() {
           <Hello />
           <Separator />
 
-          <Testimonials />
-          <Separator />
-
-          <Blog />
-          <Separator />
-
-          <TechStack />
-          <Separator />
-
           <Experiences />
           <Separator />
 
@@ -65,6 +56,15 @@ export default function HomePage() {
           <Separator />
 
           <Projects />
+          <Separator />
+
+          <TechStack />
+          <Separator />
+
+          <Testimonials />
+          <Separator />
+
+          <Blog />
           <Separator />
 
           <Awards />

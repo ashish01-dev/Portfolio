@@ -9,12 +9,9 @@ export const USER: User = {
   pronouns: "he/him",
   bio: "Frontend Developer — Designer, Developer, Creator, Freelancer, Problem Solver",
   flipSentences: [
-    "Frontend Developer.",
-    "Designer.",
-    "Problem Solver.",
-    "Freelancer.",
+    "ASHISH",
   ],
-  address: "Bihar, India",
+  address: "Delhi, India",
   phoneNumberB64: "KzkxOTk5OTk5OTk5", // base64 encoded (placeholder)
   emailB64: "YXNoaXNoLmpheXNocmVlcmFtQGdtYWlsLmNvbQ==", // base64 encoded
   website: "https://ashish-kumar.vercel.app",

@@ -20,11 +20,12 @@ export function ProfileHeader() {
           playsInline
           className="h-auto w-full"
         />
-        <figcaption className="pointer-events-none absolute bottom-2 left-2 sm:bottom-4 sm:left-4">
+        <figcaption className="pointer-events-none absolute bottom-2 left-2 flex items-center gap-2 sm:bottom-4 sm:left-4">
           <ScrambleText
             text={USER.displayName}
             className="text-[2rem]/none font-medium tracking-tight"
           />
+          <VerifiedIcon className="size-4.5 select-none" aria-hidden />
         </figcaption>
       </figure>
 
@@ -49,8 +50,6 @@ export function ProfileHeader() {
       <div className="flex flex-col">
         <div className="z-1 mt-auto border-t border-line">
           <div className="flex items-center gap-2 pl-4">
-            <VerifiedIcon className="size-4.5 select-none" aria-hidden />
-
             {USER.namePronunciationUrl && (
               <PronounceMyName
                 namePronunciationUrl={USER.namePronunciationUrl}

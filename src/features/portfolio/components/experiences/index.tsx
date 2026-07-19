@@ -6,6 +6,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/base/ui/collapsible"
+import { ScrambleText } from "@/components/scramble-text"
 import {
   Panel,
   PanelHeader,
@@ -25,7 +26,7 @@ export function Experiences() {
     <Panel id={ID}>
       <PanelHeader>
         <PanelTitle>
-          <a href={`#${ID}`}>Experience</a>
+          <a href={`#${ID}`}><ScrambleText text="Experience" /></a>
           <PanelTitleCopy id={ID} />
         </PanelTitle>
       </PanelHeader>

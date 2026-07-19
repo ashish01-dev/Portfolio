@@ -1,3 +1,4 @@
+import { ScrambleText } from "@/components/scramble-text"
 import {
   Panel,
   PanelHeader,
@@ -16,7 +17,7 @@ export function Education() {
     <Panel id={ID}>
       <PanelHeader>
         <PanelTitle>
-          <a href={`#${ID}`}>Education</a>
+          <a href={`#${ID}`}><ScrambleText text="Education" /></a>
           <PanelTitleCopy id={ID} />
         </PanelTitle>
       </PanelHeader>

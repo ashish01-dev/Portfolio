@@ -1,5 +1,6 @@
 import { compareDesc } from "date-fns"
 
+import { ScrambleText } from "@/components/scramble-text"
 import { CollapsibleList } from "@/components/collapsible-list"
 import {
   Panel,
@@ -23,7 +24,7 @@ export function Awards() {
     <Panel id={ID}>
       <PanelHeader>
         <PanelTitle>
-          <a href={`#${ID}`}>Awards</a>
+          <a href={`#${ID}`}><ScrambleText text="Awards" /></a>
           <PanelTitleSup>({AWARDS.length})</PanelTitleSup>
           <PanelTitleCopy id={ID} />
         </PanelTitle>

@@ -1,3 +1,4 @@
+import { ScrambleText } from "@/components/scramble-text"
 import { TECH_STACK } from "../data/tech-stack"
 import type { TechStack as TechStackType } from "../types/tech-stack"
 import { Panel, PanelHeader, PanelTitle } from "./panel"
@@ -10,7 +11,7 @@ export function TechStack() {
     <Panel id={ID}>
       <PanelHeader>
         <PanelTitle>
-          <a href={`#${ID}`}>Stack</a>
+          <a href={`#${ID}`}><ScrambleText text="Stack" /></a>
           <PanelTitleCopy id={ID} />
         </PanelTitle>
       </PanelHeader>

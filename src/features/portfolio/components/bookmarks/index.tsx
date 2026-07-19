@@ -1,5 +1,6 @@
 import { compareDesc } from "date-fns"
 
+import { ScrambleText } from "@/components/scramble-text"
 import { CollapsibleList } from "@/components/collapsible-list"
 import {
   Panel,
@@ -23,7 +24,7 @@ export function Bookmarks() {
     <Panel id={ID}>
       <PanelHeader>
         <PanelTitle>
-          <a href={`#${ID}`}>Bookmarks</a>
+          <a href={`#${ID}`}><ScrambleText text="Bookmarks" /></a>
           <PanelTitleSup>({SORTED_BOOKMARKS.length})</PanelTitleSup>
           <PanelTitleCopy id={ID} />
         </PanelTitle>

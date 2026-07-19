@@ -2,6 +2,7 @@ import { formatDuration } from "@/utils/format"
 import { format } from "date-fns"
 
 import { cn } from "@/lib/utils"
+import { ScrambleText } from "@/components/scramble-text"
 import Grid from "@/components/charts/grid"
 import LineChart, { Line } from "@/components/charts/line-chart"
 import { ChartTooltip } from "@/components/charts/tooltip"
@@ -27,7 +28,7 @@ export async function Insights() {
     <Panel id={ID}>
       <PanelHeader>
         <PanelTitle>
-          <a href={`#${ID}`}>Insights</a>
+          <a href={`#${ID}`}><ScrambleText text="Insights" /></a>
           <PanelTitleSup>
             ({format(new Date(data.startDate), "dd.MM")} –{" "}
             {format(new Date(data.endDate), "dd.MM")})

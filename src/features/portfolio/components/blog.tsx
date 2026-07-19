@@ -2,6 +2,7 @@ import Link from "next/link"
 import { ArrowRightIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { ScrambleText } from "@/components/scramble-text"
 import { Button } from "@/components/base/ui/button"
 import { PostItem } from "@/features/blog/components/post-item"
 import { getBlogPosts } from "@/features/doc/data/documents"
@@ -22,7 +23,7 @@ export function Blog() {
     <Panel id={ID}>
       <PanelHeader>
         <PanelTitle>
-          <a href={`#${ID}`}>Blog</a>
+          <a href={`#${ID}`}><ScrambleText text="Blog" /></a>
           <PanelTitleSup>({allPosts.length})</PanelTitleSup>
           <PanelTitleCopy id={ID} />
         </PanelTitle>

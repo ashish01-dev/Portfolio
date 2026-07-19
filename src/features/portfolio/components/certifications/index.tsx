@@ -1,3 +1,4 @@
+import { ScrambleText } from "@/components/scramble-text"
 import { CollapsibleList } from "@/components/collapsible-list"
 import {
   Panel,
@@ -17,7 +18,7 @@ export function Certifications() {
     <Panel id={ID}>
       <PanelHeader>
         <PanelTitle>
-          <a href={`#${ID}`}>Certifications</a>
+          <a href={`#${ID}`}><ScrambleText text="Certifications" /></a>
           <PanelTitleSup>({CERTIFICATIONS.length})</PanelTitleSup>
           <PanelTitleCopy id={ID} />
         </PanelTitle>

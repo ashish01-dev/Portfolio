@@ -8,6 +8,7 @@ export const PROJECTS: Project[] = [
       start: "01.2025",
     },
     link: "https://jeeify.vercel.app/",
+    github: "https://github.com/ashish01-dev/jeeify",
     skills: [
       "Next.js",
       "Tailwind",
@@ -25,6 +26,7 @@ export const PROJECTS: Project[] = [
       start: "03.2024",
     },
     link: "https://innovison.vercel.app/",
+    github: "https://github.com/ashish01-dev/innovision",
     skills: [
       "Next.js",
       "TypeScript",
@@ -39,7 +41,8 @@ export const PROJECTS: Project[] = [
     period: {
       start: "06.2024",
     },
-    link: "https://github.com/ashish01-dev",
+    link: "https://wallx.vercel.app/",
+    github: "https://github.com/ashish01-dev/wallx",
     skills: [
       "Next.js",
       "TypeScript",

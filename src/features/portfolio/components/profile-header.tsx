@@ -33,7 +33,7 @@ export function ProfileHeader() {
         <div className="screen-line-top mt-auto shrink-0 border-r border-line">
           <AvatarLightsToggle className="group/avatar-lights-toggle mx-0.5 my-0.75 flex outline-none">
             <SpinningCircularText
-              text="Trying  to  do  better"
+              text="Trying to do better"
               fontSize="1.2rem"
               charSpacing={2.5}
               spinClassName="duration-[20s]"

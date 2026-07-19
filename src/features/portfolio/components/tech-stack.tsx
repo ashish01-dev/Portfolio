@@ -6,6 +6,22 @@ import { PanelTitleCopy } from "./panel-title-copy"
 
 const ID = "stack"
 
+const BRAND_COLORS: Record<string, string> = {
+  typescript: "#3178C6",
+  javascript: "#F7DF1E",
+  react: "#61DAFB",
+  nextjs: "#FFFFFF",
+  tailwindcss: "#06B6D4",
+  "shadcn-ui": "#FFFFFF",
+  nodejs: "#339933",
+  postgresql: "#4169E1",
+  mongodb: "#47A248",
+  git: "#F05032",
+  github: "#FFFFFF",
+  figma: "#F24E1E",
+  supabase: "#3ECF8E",
+}
+
 export function TechStack() {
   return (
     <Panel id={ID}>
@@ -52,15 +68,19 @@ export function TechStack() {
                   className="flex flex-wrap gap-1.5 px-4"
                 >
                   {items.map((item) => {
+                    const brandColor = BRAND_COLORS[item.key] ?? "currentColor"
                     return (
                       <li key={item.key} className="flex">
                         <a
                           href={item.href}
                           target="_blank"
                           rel="noopener"
-                          className="flex h-(--badge-height) items-center justify-center gap-1.25 rounded-full bg-zinc-50/80 px-2 font-mono text-xs text-foreground inset-ring-1 inset-ring-border dark:bg-zinc-900/80 [&_svg]:pointer-events-none [&_svg]:size-3.5 [&_svg]:shrink-0 [&_svg]:text-muted-foreground/80"
+                          className="flex h-(--badge-height) items-center justify-center gap-1.25 rounded-full bg-zinc-50/80 px-2 font-mono text-xs text-foreground inset-ring-1 inset-ring-border transition-all duration-200 hover:scale-110 dark:bg-zinc-900/80 [&_svg]:pointer-events-none [&_svg]:size-3.5 [&_svg]:shrink-0 [&_svg]:text-muted-foreground/80"
+                          style={{ "--brand-color": brandColor } as React.CSSProperties}
                         >
-                          {item.icon}
+                          <span className="[&>svg]:transition-colors [&>svg]:duration-200 [&>svg]:hover:text-[var(--brand-color)]">
+                            {item.icon}
+                          </span>
                           {item.title}
                         </a>
                       </li>

@@ -18,8 +18,10 @@ import { Input } from "@/components/ui/input"
 
 export function BlogSubscribe() {
   const [isSubscribed, setIsSubscribed] = useState(false)
+  const [email, setEmail] = useState("")
 
   const handleSubscribe = () => {
+    if (!email.trim()) return
     setIsSubscribed(true)
   }
 
@@ -44,11 +46,21 @@ export function BlogSubscribe() {
             Thank you for subscribing!
           </div>
         ) : (
-          <Input type="email" placeholder="your@email.com" />
+          <Input
+            type="email"
+            placeholder="your@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         )}
         <DialogFooter>
           {!isSubscribed && (
-            <Button onClick={handleSubscribe}>Subscribe</Button>
+            <Button
+              onClick={handleSubscribe}
+              disabled={!email.trim()}
+            >
+              Subscribe
+            </Button>
           )}
           {isSubscribed && (
             <DialogClose asChild>

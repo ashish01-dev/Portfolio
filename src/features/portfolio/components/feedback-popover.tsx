@@ -16,14 +16,17 @@ import { Textarea } from "@/components/ui/textarea"
 export function FeedbackPopover() {
   const [isSent, setIsSent] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const [feedbackText, setFeedbackText] = useState("")
 
   const handleSend = () => {
+    if (!feedbackText.trim()) return
     setIsSent(true)
   }
 
   const handleCancel = () => {
     setIsOpen(false)
     setIsSent(false)
+    setFeedbackText("")
   }
 
   return (
@@ -42,12 +45,21 @@ export function FeedbackPopover() {
           </div>
         ) : (
           <>
-            <Textarea placeholder="Your feedback..." className="min-h-24" />
+            <Textarea
+              placeholder="Your feedback..."
+              className="min-h-24"
+              value={feedbackText}
+              onChange={(e) => setFeedbackText(e.target.value)}
+            />
             <div className="flex justify-end gap-2">
               <Button variant="outline" size="sm" onClick={handleCancel}>
                 Cancel
               </Button>
-              <Button size="sm" onClick={handleSend}>
+              <Button
+                size="sm"
+                onClick={handleSend}
+                disabled={!feedbackText.trim()}
+              >
                 Send
               </Button>
             </div>

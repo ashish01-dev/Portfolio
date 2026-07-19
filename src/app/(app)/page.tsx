@@ -67,7 +67,7 @@ export default function HomePage() {
 
           <section className="flex flex-col items-center gap-4 py-8">
             <p className="text-sm text-muted-foreground">
-              want to know more about me
+              Want to know more about me?
             </p>
             <a
               href="/resume.pdf"

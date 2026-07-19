@@ -36,7 +36,7 @@ export function Projects() {
         {PROJECTS.map((project) => (
           <Card
             key={project.id}
-            className="overflow-hidden rounded-none border-0 pt-0 shadow-none ring-0"
+            className="overflow-hidden rounded-none border-0 pt-0 shadow-none ring-0 bg-zinc-900/50"
           >
             <CardContent className="px-0">
               <div className="aspect-video w-full bg-muted/50" />

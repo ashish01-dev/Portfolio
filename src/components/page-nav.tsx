@@ -7,7 +7,7 @@ import type { LineNavItem } from "@/registry/components/line-nav/line-nav"
 
 const NAV_ITEMS: LineNavItem[] = [
   { title: "Overview", href: "#overview" },
-  { title: "Hello", href: "#hello" },
+  { title: "Introduction", href: "#hello" },
   { title: "Experience", href: "#experience" },
   { title: "Education", href: "#education" },
   { title: "Projects", href: "#projects" },
@@ -17,7 +17,7 @@ const NAV_ITEMS: LineNavItem[] = [
   { title: "Awards", href: "#awards" },
   { title: "Certifications", href: "#certs" },
   { title: "Bookmarks", href: "#bookmarks" },
-  { title: "Insights", href: "#insights" },
+  { title: "Resume", href: "#resume" },
 ]
 
 export function PageNav() {

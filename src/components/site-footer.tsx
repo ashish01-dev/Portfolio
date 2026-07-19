@@ -1,7 +1,7 @@
 import { LICENSE, SOURCE_CODE_GITHUB_URL } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { DmcaIcon, GitHubIcon, LinkedInIcon, XIcon } from "@/components/icons"
-import { SiteFooterInteractiveLogotype } from "@/components/site-footer-brand"
+import { FluidGradientText } from "@/registry/components/fluid-gradient-text/fluid-gradient-text"
 import { SOCIAL } from "@/features/portfolio/data/social-links"
 
 export function SiteFooter() {
@@ -149,7 +149,9 @@ export function SiteFooter() {
         </div> */}
       </div>
 
-      <SiteFooterInteractiveLogotype />
+      <div className="screen-line-bottom after:z-1 after:bg-foreground/15">
+        <FluidGradientText text="Ashish" />
+      </div>
 
       <div className="h-(--fade-bottom-height)" />
       <div className="pb-[env(safe-area-inset-bottom,0)]" />

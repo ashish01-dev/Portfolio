@@ -39,11 +39,27 @@ export function Projects() {
             className="overflow-hidden rounded-none border-0 pt-0 shadow-none ring-0"
           >
             <CardContent className="px-0">
-              <div className="aspect-video w-full bg-muted" />
+              <div className="aspect-video w-full bg-muted/50" />
             </CardContent>
             <CardHeader className="px-4 py-4">
               <CardTitle className="font-heading text-lg font-medium">
-                {project.title}
+                <span className="flex items-center gap-2">
+                  {project.title}
+                  {project.status && (
+                    <span className="flex items-center gap-1.5 text-xs font-normal">
+                      <span
+                        className={`size-2 rounded-full animate-pulse ${
+                          project.status === "running"
+                            ? "bg-green-500"
+                            : project.status === "down"
+                              ? "bg-red-500"
+                              : "bg-amber-700 dark:bg-yellow-700"
+                        }`}
+                      />
+                      {project.status}
+                    </span>
+                  )}
+                </span>
               </CardTitle>
               <CardDescription className="line-clamp-3">
                 {project.description}

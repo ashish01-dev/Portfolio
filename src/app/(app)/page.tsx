@@ -5,6 +5,8 @@ import type { ProfilePage, WithContext } from "schema-dts"
 import { JSON_LD_ID } from "@/config/json-ld"
 import { JsonLdScript } from "@/lib/json-ld"
 import { absoluteUrl, cn } from "@/lib/utils"
+import { Download } from "lucide-react"
+
 import { Awards } from "@/features/portfolio/components/awards"
 import { Blog } from "@/features/portfolio/components/blog"
 import { Bookmarks } from "@/features/portfolio/components/bookmarks"
@@ -61,6 +63,21 @@ export default function HomePage() {
           <Separator />
 
           <TechStack />
+          <Separator />
+
+          <section className="flex flex-col items-center gap-4 py-8">
+            <p className="text-sm text-muted-foreground">
+              want to know more about me
+            </p>
+            <a
+              href="/resume.pdf"
+              download
+              className="inline-flex items-center gap-2 rounded-lg border-2 border-dashed border-foreground/20 px-6 py-2.5 text-sm font-medium transition-colors hover:border-foreground/40 hover:bg-muted"
+            >
+              <Download className="size-4" />
+              Resume
+            </a>
+          </section>
           <Separator />
 
           <Testimonials />

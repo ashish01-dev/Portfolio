@@ -2,6 +2,7 @@ import { LICENSE, SOURCE_CODE_GITHUB_URL } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { DmcaIcon, GitHubIcon, LinkedInIcon, XIcon } from "@/components/icons"
 import { FluidGradientText } from "@/registry/components/fluid-gradient-text/fluid-gradient-text"
+import { FeedbackPopover } from "@/features/portfolio/components/feedback-popover"
 import { SOCIAL } from "@/features/portfolio/data/social-links"
 
 export function SiteFooter() {
@@ -125,6 +126,10 @@ export function SiteFooter() {
             >
               <LinkedInIcon className="size-4" />
             </a>
+
+            <Separator />
+
+            <FeedbackPopover />
 
             <Separator />
 

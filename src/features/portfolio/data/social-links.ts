@@ -19,6 +19,18 @@ export const SOCIAL = {
     href: "https://www.linkedin.com/in/ashish-kumar0406",
     sameAs: true,
   },
+  discord: {
+    title: "Discord",
+    handle: "ashish01",
+    href: "https://discord.com/users/ashish01",
+    sameAs: true,
+  },
+  email: {
+    title: "Email",
+    handle: "ashish.jayshreeram@gmail.com",
+    href: "mailto:ashish.jayshreeram@gmail.com",
+    sameAs: false,
+  },
 } satisfies Record<string, SocialProfile>
 
 export type SocialName = keyof typeof SOCIAL

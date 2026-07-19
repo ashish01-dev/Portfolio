@@ -11,6 +11,7 @@ import { jsonLdBreadcrumbList, JsonLdScript } from "@/lib/json-ld"
 import { absoluteUrl } from "@/lib/utils"
 import { Kbd } from "@/components/ui/kbd"
 import { Button } from "@/components/base/ui/button"
+import { BlogSubscribe } from "@/features/portfolio/components/blog-subscribe"
 import {
   Tooltip,
   TooltipContent,
@@ -277,6 +278,10 @@ export default async function Page({ params }: PageProps<"/blog/[slug]">) {
                 <MDX code={doc.content} />
               </div>
             </Prose>
+
+            <div className="flex justify-center py-6">
+              <BlogSubscribe />
+            </div>
 
             <div className="screen-line-top h-4" />
           </DocContentCol>

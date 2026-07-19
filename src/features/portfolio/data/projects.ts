@@ -4,6 +4,7 @@ export const PROJECTS: Project[] = [
   {
     id: "jeeify",
     title: "JEEIFY",
+    status: "running",
     period: {
       start: "01.2025",
     },
@@ -22,6 +23,7 @@ export const PROJECTS: Project[] = [
   {
     id: "innovision",
     title: "INNOVISION",
+    status: "down",
     period: {
       start: "03.2024",
     },
@@ -38,6 +40,7 @@ export const PROJECTS: Project[] = [
   {
     id: "wallx",
     title: "WallX",
+    status: "building",
     period: {
       start: "06.2024",
     },

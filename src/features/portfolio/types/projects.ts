@@ -16,6 +16,8 @@ export type Project = {
   link: string
   /** GitHub repository URL. */
   github?: string
+  /** Status indicator: running, down, or building. */
+  status?: "running" | "down" | "building"
   /** Tags/technologies for chips or filtering. */
   skills: string[]
   /** Optional rich description; Markdown and line breaks supported. */

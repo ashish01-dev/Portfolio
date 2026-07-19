@@ -10,7 +10,7 @@ import GithubContributions from "./components/github-contributions";
 import { TextReveal } from "./components/text-reveal";
 import { PreviewRail } from "./components/preview-rail";
 import type { PreviewRailItem } from "./components/preview-rail";
-import { ShaderBackground } from "./components/shader-background";
+import ProjectBox from "./components/project-box";
 import {
   House,
   ChevronDown,
@@ -19,6 +19,7 @@ import {
   MoveRight,
 } from "lucide-react";
 import { NextJS, TypeScript, TailwindCSS, ReactIcon, Prisma, Supabase, Figma, Sanity, Drizzle } from "./components/icons";
+import { MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from "react-icons/md";
 
 function GithubIcon({ className }: { className?: string }) {
   return (
@@ -57,37 +58,34 @@ const homeProjects = [
     id: 1,
     img: "/projects/3.png",
     title: "JEEIFY",
-    status: "running",
-    badge: "100+ users!",
+    status: true,
     content: "A full-stack JEE prep platform serving 100+ users with AI tutor, syllabus tracker, and more.",
     url: "https://jeeify.vercel.app/",
-    href: "/projects/jeeify",
+    github: "https://github.com/ashish01-dev/jeeify",
     skill: ["Next.js", "Tailwind", "Supabase", "Drizzle"],
-    shader: { variant: "mesh-gradient" as const, props: { colors: ["#e0eaff", "#241d9a", "#f75092", "#9f50d3"], distortion: 0.8, swirl: 0.3, speed: 0.4 } },
+    preview: "",
   },
   {
     id: 2,
     img: "/projects/7.png",
     title: "INNOVISION",
-    status: "down",
-    badge: "Beta",
+    status: false,
     content: "A platform that helps students choose the right stream after 10th & 12th.",
     url: "https://innovison.vercel.app/",
-    href: "/projects/innovision",
+    github: "",
     skill: ["Next.js", "TypeScript", "Tailwind"],
-    shader: { variant: "grain-gradient" as const, props: { colors: ["#7300ff", "#eba8ff", "#00bfff", "#2a00ff"], colorBack: "#000000", softness: 0.6, speed: 0.5 } },
+    preview: "",
   },
   {
     id: 3,
     img: "/placeholder-banner.svg",
     title: "WallX",
-    status: "building",
-    badge: "In Development",
+    status: false,
     content: "A curated wallpaper platform with dynamic collections and smart categorization.",
-    url: "#",
-    href: "/projects/wallx",
+    url: "",
+    github: "",
     skill: ["Next.js", "TypeScript", "Tailwind", "Supabase"],
-    shader: { variant: "warp" as const, props: { colors: ["#121212", "#9470ff", "#121212", "#8838ff"], speed: 0.4 } },
+    preview: "",
   },
 ];
 
@@ -605,107 +603,57 @@ export default function Home() {
 
         <Separator />
 
-        {/* PROJECTS */}
+        {/* PROJECTS — switchfolio ProjectBox exact copy */}
         <MotionSection id="projects" delay={0.2}>
           <div className="section-contain border-border ring-0.5 ring-border mx-auto w-full max-w-3xl border-x py-4 px-8">
-            <div className="mb-4 flex items-center justify-between">
+            <div className="flex flex-col gap-3">
               <h2 className="font-serif text-xl text-foreground/60">Projects</h2>
-              <Link href="/projects" className="inline-flex items-center gap-1 text-xs font-medium text-foreground/40 transition-colors duration-200 hover:text-foreground/90">
-                ALL <MoveRight className="size-3" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-              {homeProjects.map((project) => (
-                <motion.div
-                  key={project.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: (project.id - 1) * 0.05 }}
-                >
-                  <Link
-                    href={project.href}
-                    className="group flex cursor-pointer flex-col gap-2 rounded-lg border border-border/20 bg-background/50 p-2 transition-all duration-500 hover:border-foreground/10 hover:shadow-[0_0_30px_-10px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_0_30px_-10px_rgba(255,255,255,0.05)]"
-                  >
-                    <div className="relative aspect-[4/3] overflow-hidden rounded-md">
-                      {/* Shader background - visible behind image and through badge */}
-                      {project.shader && (
-                        <div className="absolute inset-0">
-                          <ShaderBackground variant={project.shader.variant} {...project.shader.props} className="h-full w-full" />
-                        </div>
-                      )}
-                      {/* Animated image - slides from bottom toward center on hover */}
-                      <motion.div
-                        className="relative h-full w-full"
-                        initial={{ y: 0 }}
-                        whileHover={{ y: "-12%" }}
-                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                      >
-                        <Image
-                          src={project.img}
-                          alt={project.title}
-                          fill
-                          className="object-contain object-left-bottom"
-                        />
-                      </motion.div>
-                      {/* Modern colored badge per project */}
-                      {project.badge && (() => {
-                        if (project.status === "running") return (
-                          <div className="absolute top-2 left-2 z-10">
-                            <span className="inline-flex items-center gap-1.5 rounded-full bg-linear-to-r from-emerald-500 to-emerald-600 px-2.5 py-1 text-[10px] font-semibold text-white shadow-xs">
-                              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-white/80" />
-                              {project.badge}
-                            </span>
-                          </div>
-                        );
-                        if (project.status === "down") return (
-                          <div className="absolute top-2 left-2 z-10">
-                            <span className="inline-flex items-center gap-1.5 rounded-full bg-linear-to-r from-rose-500 to-rose-600 px-2.5 py-1 text-[10px] font-semibold text-white shadow-xs">
-                              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-white/80" />
-                              {project.badge}
-                            </span>
-                          </div>
-                        );
-                        return (
-                          <div className="absolute top-2 left-2 z-10">
-                            <span className="inline-flex items-center gap-1.5 rounded-full bg-linear-to-r from-amber-500 to-orange-500 px-2.5 py-1 text-[10px] font-semibold text-white shadow-xs">
-                              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-white/80" />
-                              {project.badge}
-                            </span>
-                          </div>
-                        );
-                      })()}
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
+              {(() => {
+                const [showAll, setShowAll] = useState(false)
+                const visibleProjects = showAll ? homeProjects : homeProjects.slice(0, 2)
+                const showAllVis = homeProjects.length > 2
+                let delayValue = 0
+                return (
+                  <>
+                    <div className="flex flex-col md:gap-2.5 gap-3.5">
+                      {visibleProjects.map((project) => (
+                        <motion.div
+                          key={project.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.35, delay: project.id === 1 ? delayValue : (delayValue += 0.075) }}
+                        >
+                          <ProjectBox
+                            img={project.img}
+                            status={project.status}
+                            title={project.title}
+                            content={project.content}
+                            url={project.url}
+                            github={project.github}
+                            skill={project.skill}
+                            preview={project.preview}
+                          />
+                        </motion.div>
+                      ))}
                     </div>
-                    <div className="flex flex-col gap-1">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-serif text-sm italic font-medium text-foreground">{project.title}</h4>
-                        {(() => {
-                          if (project.status === "running") return (
-                            <span className="inline-flex items-center gap-1 rounded-md bg-green-500/10 px-1.5 py-0.5 text-[10px] font-medium text-green-500 select-none whitespace-nowrap">
-                              <span className="inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-green-500" />
-                              Running
-                            </span>
-                          );
-                          if (project.status === "down") return (
-                            <span className="inline-flex items-center gap-1 rounded-md bg-red-500/10 px-1.5 py-0.5 text-[10px] font-medium text-red-500 select-none whitespace-nowrap">
-                              <span className="inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-red-500" />
-                              Down
-                            </span>
-                          );
-                          return (
-                            <span className="inline-flex items-center gap-1 rounded-md bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-500 select-none whitespace-nowrap">
-                              <span className="inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-amber-600 dark:bg-amber-500" />
-                              Building
-                            </span>
-                          );
-                        })()}
-                      </div>
-                      <p className="text-[11px] text-foreground/45">{project.content}</p>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
+                    {showAllVis && (
+                      <button className="flex items-center justify-center gap-0.5 w-full text-sm font-medium text-zinc-400 hover:text-zinc-300 transition-colors duration-100 cursor-pointer py-1" onClick={() => setShowAll((prev) => !prev)}>
+                        {showAll ? (
+                          <div className="flex gap-0.5 justify-center items-center">
+                            <span className="animate-pulse"><MdKeyboardDoubleArrowUp /></span>
+                            Show less
+                          </div>
+                        ) : (
+                          <div className="flex gap-0.5 justify-center items-center">
+                            <span className="animate-pulse"><MdKeyboardDoubleArrowDown /></span>
+                            Show all
+                          </div>
+                        )}
+                      </button>
+                    )}
+                  </>
+                )
+              })()}
             </div>
           </div>
         </MotionSection>

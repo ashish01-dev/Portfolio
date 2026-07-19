@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, Manrope, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -49,6 +50,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <Toaster
+            position="bottom-center"
+            toastOptions={{
+              style: { background: "#18181b", color: "#e4e4e7", border: "1px solid #3f3f46", fontSize: "14px" },
+            }}
+          />
         </ThemeProvider>
       </body>
     </html>

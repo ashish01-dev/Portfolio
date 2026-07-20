@@ -16,14 +16,18 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 export function BlogSubscribe() {
   const [isSubscribed, setIsSubscribed] = useState(false)
   const [email, setEmail] = useState("")
 
   const handleSubscribe = () => {
-    if (!email.trim()) return
+    if (!EMAIL_REGEX.test(email.trim())) return
     setIsSubscribed(true)
   }
+
+  const isValidEmail = EMAIL_REGEX.test(email.trim())
 
   return (
     <Dialog>
@@ -46,18 +50,24 @@ export function BlogSubscribe() {
             Thank you for subscribing!
           </div>
         ) : (
-          <Input
-            type="email"
-            placeholder="your@email.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <>
+            <p className="text-sm text-muted-foreground">
+              Want to stay in the loop? Drop your email and I&apos;ll ping you
+              whenever there&apos;s something new.
+            </p>
+            <Input
+              type="email"
+              placeholder="your@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </>
         )}
         <DialogFooter>
           {!isSubscribed && (
             <Button
               onClick={handleSubscribe}
-              disabled={!email.trim()}
+              disabled={!isValidEmail}
             >
               Subscribe
             </Button>

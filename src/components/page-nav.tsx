@@ -12,12 +12,12 @@ const NAV_ITEMS: LineNavItem[] = [
   { title: "Education", href: "#education" },
   { title: "Projects", href: "#projects" },
   { title: "Tech Stack", href: "#stack" },
+  { title: "Resume", href: "#resume" },
   { title: "Testimonials", href: "#testimonials" },
   { title: "Blog", href: "#blog" },
   { title: "Awards", href: "#awards" },
   { title: "Certifications", href: "#certs" },
   { title: "Bookmarks", href: "#bookmarks" },
-  { title: "Resume", href: "#resume" },
 ]
 
 export function PageNav() {

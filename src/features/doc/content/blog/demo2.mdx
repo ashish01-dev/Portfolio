@@ -7,7 +7,9 @@ updatedAt: "2025-07-10"
 
 ## Why Performance Matters
 
-In today's fast-paced web, users expect instant load times and smooth interactions. A 100ms delay can significantly impact conversion rates.
+In today's fast-paced web, users expect instant load times and smooth interactions. A 100ms delay can significantly impact conversion rates. Studies show that a one-second delay in page load time can result in a 7% reduction in conversions.
+
+Performance isn't just about user experience — it also affects SEO rankings, accessibility, and overall brand perception. Google uses Core Web Vitals as ranking signals, making performance optimization a business-critical concern.
 
 ## Key Optimization Techniques
 
@@ -21,6 +23,28 @@ const ExpensiveComponent = React.memo(({ data }: Props) => {
 })
 ```
 
+Understanding when to memoize is crucial. Over-memoization can actually hurt performance by adding overhead. The general rule is: memoize when the component re-renders with the same props frequently, or when the rendering logic is expensive.
+
+```tsx
+function Dashboard({ users, posts }: DashboardProps) {
+  const sortedUsers = useMemo(() => {
+    return [...users].sort((a, b) => a.name.localeCompare(b.name))
+  }, [users])
+
+  const handleClick = useCallback((id: string) => {
+    console.log('User clicked:', id)
+  }, [])
+
+  return (
+    <div>
+      {sortedUsers.map(user => (
+        <UserCard key={user.id} user={user} onClick={handleClick} />
+      ))}
+    </div>
+  )
+}
+```
+
 ### 2. Code Splitting
 
 Lazy load components that aren't needed immediately:
@@ -31,14 +55,232 @@ const HeavyComponent = dynamic(() => import("./HeavyComponent"), {
 })
 ```
 
+Next.js supports both page-level and component-level code splitting. Use dynamic imports for:
+- Large third-party libraries
+- Modals and dialogs
+- Charts and data visualizations
+- Rich text editors
+
+```tsx
+import dynamic from 'next/dynamic'
+
+const Chart = dynamic(() => import('@/components/Chart'), {
+  loading: () => <div className="h-64 animate-pulse bg-muted rounded-lg" />,
+  ssr: false, // Disable SSR for browser-only libraries
+})
+
+const MarkdownEditor = dynamic(
+  () => import('@/components/MarkdownEditor'),
+  { loading: () => <TextareaSkeleton /> }
+)
+```
+
 ### 3. Virtualization
 
 For long lists, use virtualization libraries like `react-window` or `@tanstack/virtual` to render only visible items.
+
+```tsx
+import { useVirtualizer } from '@tanstack/react-virtual'
+
+function VirtualList({ items }: { items: Item[] }) {
+  const parentRef = useRef<HTMLDivElement>(null)
+
+  const virtualizer = useVirtualizer({
+    count: items.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 50,
+  })
+
+  return (
+    <div ref={parentRef} className="h-96 overflow-auto">
+      <div
+        style={{
+          height: `${virtualizer.getTotalSize()}px`,
+          position: 'relative',
+        }}
+      >
+        {virtualizer.getVirtualItems().map((virtualItem) => (
+          <div
+            key={virtualItem.key}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: `${virtualItem.size}px`,
+              transform: `translateY(${virtualItem.start}px)`,
+            }}
+          >
+            {items[virtualItem.index].name}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+```
+
+### 4. Image Optimization
+
+Images are often the largest assets on a page. Optimize them with:
+
+```tsx
+import Image from 'next/image'
+
+<Image
+  src="/hero.webp"
+  alt="Hero"
+  width={1200}
+  height={675}
+  priority // Load above-the-fold images eagerly
+  quality={85}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,..."
+/>
+```
+
+Best practices for images:
+- Use modern formats: WebP, AVIF
+- Serve responsive sizes with srcset
+- Lazy load below-the-fold images
+- Use blur placeholders for perceived performance
+- Optimize image dimensions to avoid layout shift
+
+### 5. Bundle Analysis
+
+Understand what's in your JavaScript bundle:
+
+```bash
+# Analyze Next.js bundle
+ANALYZE=true npm run build
+
+# With Webpack Bundle Analyzer
+npm install @next/bundle-analyzer
+```
+
+```javascript
+// next.config.js
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
+module.exports = withBundleAnalyzer({
+  // your config
+})
+```
+
+### 6. State Management Optimization
+
+Choose the right state management approach:
+
+- **Local state** — useState, useReducer for component-local state
+- **Server state** — React Query, SWR for caching server data
+- **Global state** — Zustand, Jotai for truly global state
+
+```tsx
+// React Query for server state
+function UserProfile({ userId }: { userId: string }) {
+  const { data, isLoading } = useQuery({
+    queryKey: ['user', userId],
+    queryFn: () => fetchUser(userId),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  })
+
+  if (isLoading) return <Skeleton />
+  return <ProfileCard user={data} />
+}
+```
 
 ## Measuring Performance
 
 Use tools like Lighthouse, Chrome DevTools Performance tab, and React DevTools Profiler to identify bottlenecks.
 
+### Core Web Vitals
+
+Focus on three key metrics:
+
+1. **Largest Contentful Paint (LCP)** — < 2.5s
+2. **First Input Delay (FID)** — < 100ms
+3. **Cumulative Layout Shift (CLS)** — < 0.1
+
+### Profiling with React DevTools
+
+```tsx
+import { Profiler } from 'react'
+
+function onRenderCallback(
+  id: string,
+  phase: 'mount' | 'update',
+  actualDuration: number,
+) {
+  console.log(`Component ${id} ${phase}: ${actualDuration}ms`)
+}
+
+<Profiler id="Dashboard" onRender={onRenderCallback}>
+  <Dashboard />
+</Profiler>
+```
+
+## Advanced Patterns
+
+### Server Components
+
+React Server Components let you render components on the server, reducing the JavaScript sent to the client:
+
+```tsx
+// This component runs on the server
+async function ProductList() {
+  const products = await db.query.products.findAll()
+  return (
+    <div>
+      {products.map(product => (
+        <ProductCard key={product.id} product={product} />
+      ))}
+    </div>
+  )
+}
+```
+
+### Streaming and Suspense
+
+Use Suspense boundaries to stream content progressively:
+
+```tsx
+<Suspense fallback={<ProductListSkeleton />}>
+  <ProductList />
+</Suspense>
+
+<Suspense fallback={<ReviewsSkeleton />}>
+  <Reviews />
+</Suspense>
+```
+
+## Common Pitfalls
+
+Avoid these performance anti-patterns:
+
+- **Prop drilling** — Passing props through many levels causes unnecessary re-renders
+- **Inline functions in render** — Creates new function references on every render
+- **Missing key props** — Causes full list re-renders instead of targeted updates
+- **Unoptimized context** — Context updates re-render all consumers
+- **Large bundle imports** — Importing entire libraries when you only need a small part
+
+```tsx
+// ❌ Bad: imports entire library
+import { debounce } from 'lodash'
+
+// ✅ Good: imports only what's needed
+import debounce from 'lodash/debounce'
+```
+
 ## Summary
 
-Performance optimization is an ongoing process. Start with the biggest wins and iterate.
+Performance optimization is an ongoing process. Start with the biggest wins and iterate. Measure first, then optimize. The most impactful changes are often the simplest:
+
+1. Optimize images
+2. Code split heavy components
+3. Memoize expensive computations
+4. Virtualize long lists
+5. Use performance monitoring tools
+
+Remember: premature optimization is the root of all evil. Profile first, then optimize the actual bottlenecks. A performance budget can help you stay on track as your application grows.

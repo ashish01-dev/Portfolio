@@ -12,6 +12,7 @@ import { absoluteUrl } from "@/lib/utils"
 import { Kbd } from "@/components/ui/kbd"
 import { Button } from "@/components/base/ui/button"
 import { BlogSubscribe } from "@/features/portfolio/components/blog-subscribe"
+import { BlogNavToc } from "@/features/portfolio/components/blog-nav-toc"
 import {
   Tooltip,
   TooltipContent,
@@ -293,6 +294,8 @@ export default async function Page({ params }: PageProps<"/blog/[slug]">) {
           </DocRightCol>
         </DocGrid>
       </DocPageRoot>
+
+      <BlogNavToc items={toc} />
     </>
   )
 }

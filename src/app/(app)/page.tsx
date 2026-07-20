@@ -65,7 +65,7 @@ export default function HomePage() {
           <TechStack />
           <Separator />
 
-          <section className="flex flex-col items-center gap-4 py-8">
+          <section id="resume" className="flex flex-col items-center gap-4 py-8">
             <p className="text-sm text-muted-foreground">
               Want to know more about me?
             </p>

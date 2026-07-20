@@ -65,7 +65,7 @@ export function FeedbackPopover() {
               <Button
                 size="sm"
                 onClick={handleSend}
-                disabled={!feedbackText.trim()}
+                disabled={feedbackText.trim().length < 15}
               >
                 Send
               </Button>

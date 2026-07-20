@@ -1,0 +1,113 @@
+import { Metadata } from "next";
+import Link from "next/link";
+
+import { generateWebsiteMetadata } from "@/config/metadata";
+import { cn } from "@/lib/utils";
+import { getDocsByCategory } from "@/features/doc/data/documents";
+
+export const metadata: Metadata = generateWebsiteMetadata({
+  title: "Components",
+  description:
+    "A curated component registry built on shadcn/ui. More coming soon.",
+  keywords: [
+    "components",
+    "ui",
+    "ui components library",
+    "shadcn",
+    "shadcn/ui",
+    "ui components",
+    "react",
+    "Ratnesh components",
+  ],
+  image: "components/components.png",
+});
+
+export default function ComponentsPage() {
+  const docs = getDocsByCategory("components");
+
+  return (
+    <section
+      className="h-[calc(100svh-17.5rem)] space-y-12 pt-8"
+      aria-labelledby="components-heading"
+    >
+      <header className="flex flex-col gap-3">
+        <h2 id="components-heading" className="font-geist-pixel-square text-xl">
+          Components
+        </h2>
+        <p className="font-geist-sans text-muted-foreground">
+          A curated component registry built on shadcn/ui. More coming soon.
+        </p>
+      </header>
+      <div className="grid grid-cols-1 font-geist-sans sm:grid-cols-2 md:grid-cols-3 [&:has(a:hover)_a:not(:hover)]:text-ring [&:has(a:hover)_a:not(:hover)_span]:bg-info/25">
+        {docs
+          .slice()
+          .sort((a, b) =>
+            a.metadata.title.localeCompare(b.metadata.title, "en", {
+              sensitivity: "base",
+            })
+          )
+          .map((doc) => (
+            <ComponentItem key={doc.slug} href={`/components/${doc.slug}`}>
+              <ComponentItemTitle as="h3">
+                {doc.metadata.title}
+              </ComponentItemTitle>
+              {doc.metadata.new && <ComponentItemDot aria-label="New" />}
+            </ComponentItem>
+          ))}
+      </div>
+    </section>
+  );
+}
+
+export function ComponentItem({
+  className,
+  ...props
+}: React.ComponentProps<typeof Link>) {
+  return (
+    <Link
+      className={cn(
+        "flex w-full items-center gap-3 py-4 text-foreground sm:py-5",
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export function ComponentItemDot({
+  className,
+  ...props
+}: Omit<React.ComponentProps<"span">, "children">) {
+  return (
+    <span
+      className={cn(
+        "size-2 shrink-0 rounded-full bg-info ring-1 ring-background",
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+type HeadingTypes = "h2" | "h3" | "h4" | "h5" | "h6";
+type HeadingProps<T extends HeadingTypes> = React.ComponentProps<T> & {
+  as?: T;
+};
+
+export function ComponentItemTitle<T extends HeadingTypes = "h2">({
+  as,
+  className,
+  ...props
+}: HeadingProps<T>) {
+  const Comp = as ?? "h2";
+
+  return (
+    <Comp
+      className={cn(
+        "line-clamp-1 leading-snug font-medium text-balance",
+        className
+      )}
+      {...props}
+    />
+  );
+}

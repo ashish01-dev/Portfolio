@@ -17,9 +17,14 @@ export function FeedbackPopover() {
   const [isSent, setIsSent] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [feedbackText, setFeedbackText] = useState("")
+  const [error, setError] = useState("")
 
   const handleSend = () => {
-    if (!feedbackText.trim()) return
+    if (feedbackText.trim().length < 10) {
+      setError("Minimum 10 characters required")
+      return
+    }
+    setError("")
     setIsSent(true)
   }
 
@@ -27,6 +32,7 @@ export function FeedbackPopover() {
     setIsOpen(false)
     setIsSent(false)
     setFeedbackText("")
+    setError("")
   }
 
   return (
@@ -51,8 +57,14 @@ export function FeedbackPopover() {
               placeholder="Your feedback..."
               className="min-h-24 border-line bg-transparent focus-visible:border-ring"
               value={feedbackText}
-              onChange={(e) => setFeedbackText(e.target.value)}
+              onChange={(e) => {
+                setFeedbackText(e.target.value)
+                if (error) setError("")
+              }}
             />
+            {error && (
+              <p className="mt-1 text-xs text-red-500">{error}</p>
+            )}
             <div className="flex justify-end gap-2">
               <Button
                 variant="outline"
@@ -65,7 +77,7 @@ export function FeedbackPopover() {
               <Button
                 size="sm"
                 onClick={handleSend}
-                disabled={feedbackText.trim().length < 15}
+                disabled={!feedbackText.trim()}
               >
                 Send
               </Button>

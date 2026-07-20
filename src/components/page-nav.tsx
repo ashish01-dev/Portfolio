@@ -64,7 +64,7 @@ export function PageNav() {
   if (pathname !== "/") return null
 
   return (
-    <div className="fixed top-1/2 right-8 z-50 hidden -translate-y-1/2 xl:block">
+    <div className="fixed top-1/2 right-0 z-50 hidden -translate-y-1/2 xl:block">
       <LineNav
         items={NAV_ITEMS}
         activeHref={activeHref}

@@ -52,7 +52,7 @@ export function LineNav({
 
   return (
     <nav
-      className={cn("group/nav flex flex-col gap-2 py-5.25", className)}
+      className={cn("group/nav flex flex-col gap-2 py-5.25 items-end", className)}
       style={
         {
           "--line-nav-width": `${lineVariants.normal.width}px`,
@@ -112,14 +112,14 @@ const LineNavItem = memo(function LineNavItem({
         whileHover="hover"
         onClick={onClick}
       >
+        <span className="text-sm whitespace-nowrap text-muted-foreground opacity-0 transition-[color,opacity] ease-out group-hover/nav:opacity-100 group-hover/nav:text-foreground">
+          {title}
+        </span>
         <motion.span
           className="block h-px shrink-0 bg-foreground/20 transition-[background-color] ease-out group-hover:bg-foreground group-aria-[current=page]:bg-foreground"
           variants={lineVariants}
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
         />
-        <span className="text-sm whitespace-nowrap text-muted-foreground opacity-0 transition-[color,opacity] ease-out group-hover/nav:opacity-100 group-hover/nav:text-foreground">
-          {title}
-        </span>
       </motion.a>
 
       {!isLast && (

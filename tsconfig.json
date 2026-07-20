@@ -30,5 +30,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "portfolio-v2-main", "switchfolio-master", "chanhdai.com-main", "src/scripts", "Website-Mirror", "ratneshc.com-main"]
+  "exclude": ["node_modules", "NOT NEEDED", "src/scripts"]
 }

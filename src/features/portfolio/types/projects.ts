@@ -24,6 +24,10 @@ export type Project = {
   description?: string
   /** Logo image URL (absolute or path under /public). */
   logo?: string
+  /** Screenshot image shown in the card panel. */
+  image?: string
+  /** Background image that fades in on hover. */
+  bgImage?: string
   /** Whether the project card is expanded by default in the UI. */
   isExpanded?: boolean
 }

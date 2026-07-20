@@ -36,10 +36,36 @@ export function Projects() {
         {PROJECTS.map((project) => (
           <Card
             key={project.id}
-            className="overflow-hidden rounded-none border-0 pt-0 shadow-none ring-0 bg-zinc-900/50"
+            className="group overflow-hidden rounded-none border-0 pt-0 shadow-none ring-0 bg-zinc-900/50"
           >
-            <CardContent className="px-0">
-              <div className="aspect-video w-full bg-muted/50" />
+            <CardContent className="relative px-0">
+              <div className="relative aspect-video w-full overflow-hidden bg-muted/50">
+                {/* Background image — fades in on hover */}
+                {project.bgImage && (
+                  <div
+                    className="absolute inset-0 bg-cover bg-center opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                    style={{ backgroundImage: `url(${project.bgImage})` }}
+                  />
+                )}
+
+                {/* Screenshot panel — slightly shrinks on hover */}
+                {project.image && (
+                  <div className="bg-background/95 rounded-t-lg absolute bottom-0 left-1/2 -translate-x-1/2 w-[85%] h-[75%] transition-all duration-300 group-hover:h-[70%] p-[2px] pb-0 overflow-hidden">
+                    <div className="w-full h-full rounded-t-md overflow-hidden">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover object-top"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Label — slides from left to center on hover */}
+                <span className="absolute top-2 left-2 text-xs text-muted-foreground/80 font-medium transition-all duration-300 group-hover:text-white group-hover:left-1/2 group-hover:-translate-x-1/2 z-10">
+                  {project.title}
+                </span>
+              </div>
             </CardContent>
             <CardHeader className="px-4 py-4">
               <CardTitle className="font-heading text-lg font-medium">
@@ -89,7 +115,7 @@ export function Projects() {
                   rel="noopener"
                 >
                   Visit Now
-                  <ArrowUpRight className="size-3.5" />
+                  <ArrowUpRight className="size-3.5 transition-transform duration-300 group-hover:rotate-45" />
                 </a>
               </Button>
             </CardFooter>

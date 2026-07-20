@@ -3,6 +3,10 @@ import { cn } from "@/lib/utils"
 import { DmcaIcon, GitHubIcon, LinkedInIcon, XIcon } from "@/components/icons"
 import { FluidGradientText } from "@/registry/components/fluid-gradient-text/fluid-gradient-text"
 import { FeedbackPopover } from "@/features/portfolio/components/feedback-popover"
+import {
+  SocialTooltip,
+  type SocialPlatform,
+} from "@/features/portfolio/components/social-tooltip"
 import { SOCIAL } from "@/features/portfolio/data/social-links"
 
 export function SiteFooter() {
@@ -74,39 +78,45 @@ export function SiteFooter() {
 
         <div className="screen-line-top screen-line-bottom flex w-full before:z-1 after:z-1">
           <div className="mx-auto flex items-center justify-center gap-3 border-x border-line bg-background px-4">
-            <a
-              className="flex items-center text-muted-foreground transition-[color] hover:text-foreground"
-              href={xLink.href}
-              target="_blank"
-              rel="noopener"
-              aria-label="X Profile"
-            >
-              <XIcon className="size-4" />
-            </a>
+            <SocialTooltip platform="X" username={xLink.handle}>
+              <a
+                className="flex items-center text-muted-foreground transition-[color] hover:text-foreground"
+                href={xLink.href}
+                target="_blank"
+                rel="noopener"
+                aria-label="X Profile"
+              >
+                <XIcon className="size-4" />
+              </a>
+            </SocialTooltip>
 
             <Separator />
 
-            <a
-              className="flex items-center text-muted-foreground transition-[color] hover:text-foreground"
-              href={githubLink.href}
-              target="_blank"
-              rel="noopener"
-              aria-label="GitHub Profile"
-            >
-              <GitHubIcon className="size-4" />
-            </a>
+            <SocialTooltip platform="GitHub" username={githubLink.handle}>
+              <a
+                className="flex items-center text-muted-foreground transition-[color] hover:text-foreground"
+                href={githubLink.href}
+                target="_blank"
+                rel="noopener"
+                aria-label="GitHub Profile"
+              >
+                <GitHubIcon className="size-4" />
+              </a>
+            </SocialTooltip>
 
             <Separator />
 
-            <a
-              className="flex items-center text-muted-foreground transition-[color] hover:text-foreground"
-              href={linkedinLink.href}
-              target="_blank"
-              rel="noopener"
-              aria-label="LinkedIn Profile"
-            >
-              <LinkedInIcon className="size-4" />
-            </a>
+            <SocialTooltip platform="LinkedIn" username={linkedinLink.handle}>
+              <a
+                className="flex items-center text-muted-foreground transition-[color] hover:text-foreground"
+                href={linkedinLink.href}
+                target="_blank"
+                rel="noopener"
+                aria-label="LinkedIn Profile"
+              >
+                <LinkedInIcon className="size-4" />
+              </a>
+            </SocialTooltip>
 
             <Separator />
 

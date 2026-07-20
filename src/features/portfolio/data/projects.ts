@@ -18,6 +18,8 @@ export const PROJECTS: Project[] = [
     ],
     description: `A full-stack JEE prep platform serving 100+ users with AI tutor, syllabus tracker, and more. Built with Next.js and Supabase, it provides a comprehensive dashboard for tracking syllabus progress, practicing 900+ PYQs, analyzing performance trends, and getting AI-powered doubt resolution — all synced across devices.`,
     logo: "/projects/3.png",
+    image: "/projects/3.png",
+    bgImage: "/projects/3.png",
     isExpanded: true,
   },
   {
@@ -35,7 +37,9 @@ export const PROJECTS: Project[] = [
       "Tailwind",
     ],
     description: `A platform that helps students choose the right stream after 10th & 12th through interest assessments, career path visualization, and curated guidance resources — turning confusion into clarity for one of life's biggest decisions.`,
-    logo: "/projects/4.png",
+    logo: "/projects/7.png",
+    image: "/projects/7.png",
+    bgImage: "/projects/7.png",
   },
   {
     id: "wallx",
@@ -53,6 +57,8 @@ export const PROJECTS: Project[] = [
       "Supabase",
     ],
     description: `A curated wallpaper discovery platform featuring dynamic collections across categories — minimal, abstract, nature, and anime. Smart search, daily discovery, and community collections all wrapped in a performance-optimized browsing experience.`,
-    logo: "/placeholder-banner.svg",
+    logo: "/projects/2.png",
+    image: "/projects/2.png",
+    bgImage: "/projects/2.png",
   },
 ]
